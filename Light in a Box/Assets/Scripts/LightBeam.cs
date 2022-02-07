@@ -27,10 +27,10 @@ public class LightBeam
         this.beam.endColor = Color.yellow;
 
         beamIndices.Add(pos);
-        CastRay(pos, dir, beam);
+        CastRay(pos, dir);
     }
 
-    void CastRay(Vector2 pos, Vector2 dir, LineRenderer beam)
+    void CastRay(Vector2 pos, Vector2 dir)
     {      
         
         RaycastHit2D hit = Physics2D.Raycast(pos, dir, 10);
@@ -42,7 +42,7 @@ public class LightBeam
             Vector2 nextdir = Vector2.Reflect(dir, hit.normal);
             Vector2 nextpos = hit.point + nextdir * 0.0001f;            
 
-            CastRay(nextpos, nextdir, beam);
+            CastRay(nextpos, nextdir);
         }
         UpdateBeam();
     }
