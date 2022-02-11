@@ -11,7 +11,7 @@ public class CastBeam : MonoBehaviour
     List<Vector3> shapePath = new List<Vector3>();
 
     LightBeam2D beam2D2;
-    List<Vector3> shapePath2 = new List<Vector3>();
+    List<Vector3> shapePathRD1 = new List<Vector3>();
     int bounces = 0;
 
     Vector3[] lightPath = { new Vector3(1, 1), new Vector3(1, 0), new Vector3(0, 1) };
@@ -20,10 +20,8 @@ public class CastBeam : MonoBehaviour
     void Start()
     {
         Shine(gameObject.transform.position);
-        FindShapePaths();
-        beam2D = new LightBeam2D(shapePath.ToArray());
-        beam2D2 = new LightBeam2D(shapePath2.ToArray());
     }
+        
 
     // Update is called once per frame
     void Update()
@@ -34,11 +32,8 @@ public class CastBeam : MonoBehaviour
             Destroy(GameObject.Find("2D Lightbeam"));
             rayDataSet.Clear();
             shapePath.Clear();
-            shapePath2.Clear();
+            shapePathRD1.Clear();
             Shine(gameObject.transform.position);
-            FindShapePaths();
-            beam2D = new LightBeam2D(shapePath.ToArray());
-            beam2D2 = new LightBeam2D(shapePath2.ToArray());
         }
     }
 
@@ -58,6 +53,8 @@ public class CastBeam : MonoBehaviour
             bounces = 0;
             rayIndices.Clear();
         }
+
+        FindShapePaths();
     }
 
     void CastRay(Vector2 pos, Vector2 dir)
@@ -65,7 +62,7 @@ public class CastBeam : MonoBehaviour
         RaycastHit2D hit = Physics2D.Raycast(pos, dir, 10);
         rayIndices.Add(hit.point);
 
-        if (hit.collider.gameObject.tag == "Mirror" && bounces < 5)
+        if (hit.collider.gameObject.tag == "Mirror" && bounces < 3)
         {
             bounces++;
             Vector2 nextdir = Vector2.Reflect(dir, hit.normal);
@@ -78,32 +75,40 @@ public class CastBeam : MonoBehaviour
     void FindShapePaths()
     {
         int count = 0;
-        int reflectionS = 0;
-        int reflectionE = 0;
-        bool inreflection = false;
+        int reflectionD1S = 0;
+        int reflectionD1E = 0;
+        bool inReflectionDepth1 = false;
         foreach (RayData idx in rayDataSet)
         {
-            if (idx.bounces > 0 && !inreflection)
+            if (idx.bounces > 0 && !inReflectionDepth1)
             {
-                reflectionS = count;
-                inreflection = true;
+                reflectionD1S = count;
+                inReflectionDepth1 = true;
             }
-            else if(idx.bounces == 0 && inreflection)
+            else if(idx.bounces == 0 && inReflectionDepth1)
             {
-                reflectionE = count;
-                inreflection = false;
+                reflectionD1E = count;
+                inReflectionDepth1 = false;
+                OrderShapePath(reflectionD1S, reflectionD1E, 1);
+                beam2D2 = new LightBeam2D(shapePathRD1.ToArray());
+                shapePathRD1.Clear();
             }
             shapePath.Add(idx.hits[0]);
             count++;
         }
 
+        beam2D = new LightBeam2D(shapePath.ToArray());
+    }
+
+    void OrderShapePath(int reflectionS, int reflectionE, int depth)
+    {
         for (int i = reflectionS; i < reflectionE; i++)
         {
-            shapePath2.Add(rayDataSet[i].hits[0]);
+            shapePathRD1.Add(rayDataSet[i].hits[depth - 1]);
         }
         for (int i = reflectionE - 1; i >= reflectionS; i--)
         {
-            shapePath2.Add(rayDataSet[i].hits[1]);
+            shapePathRD1.Add(rayDataSet[i].hits[depth]);
         }
     }
 }
