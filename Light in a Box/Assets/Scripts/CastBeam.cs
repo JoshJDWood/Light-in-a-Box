@@ -9,30 +9,27 @@ public class CastBeam : MonoBehaviour
     List<RayData> rayDataSet = new List<RayData>();
     List<Vector2> rayIndices = new List<Vector2>();
     List<Vector3> shapePath = new List<Vector3>();
-
-    LightBeam2D beam2D2;
-    List<Vector3> shapePathRD1 = new List<Vector3>();
+    List<Vector3> shapePathReuseable = new List<Vector3>();
     int bounces = 0;
-
-    Vector3[] lightPath = { new Vector3(1, 1), new Vector3(1, 0), new Vector3(0, 1) };
+    int maxBounces = 3;
 
     // Start is called before the first frame update
     void Start()
     {
         Shine(gameObject.transform.position);
     }
-        
+
 
     // Update is called once per frame
     void Update()
     {
-        if(Input.GetKeyDown(KeyCode.Space))
+        if (Input.GetKeyDown(KeyCode.Space))
         {
             Destroy(GameObject.Find("2D Lightbeam"));
             Destroy(GameObject.Find("2D Lightbeam"));
             rayDataSet.Clear();
             shapePath.Clear();
-            shapePathRD1.Clear();
+            shapePathReuseable.Clear();
             Shine(gameObject.transform.position);
         }
     }
@@ -40,8 +37,8 @@ public class CastBeam : MonoBehaviour
     void Shine(Vector2 pos)
     {
         Vector2 dir = new Vector2(0, 1);
-        int angleincrement = 1;
-        for (int i = 0; i < 360; i += angleincrement)
+        float angleincrement = 1;
+        for (float i = 0; i < 360; i += angleincrement)
         {
             RayData curRayData;
             dir = Quaternion.Euler(0, 0, angleincrement) * dir;
@@ -62,7 +59,7 @@ public class CastBeam : MonoBehaviour
         RaycastHit2D hit = Physics2D.Raycast(pos, dir, 10);
         rayIndices.Add(hit.point);
 
-        if (hit.collider.gameObject.tag == "Mirror" && bounces < 3)
+        if (hit.collider.gameObject.tag == "Mirror" && bounces < maxBounces)
         {
             bounces++;
             Vector2 nextdir = Vector2.Reflect(dir, hit.normal);
@@ -75,40 +72,52 @@ public class CastBeam : MonoBehaviour
     void FindShapePaths()
     {
         int count = 0;
-        int reflectionD1S = 0;
-        int reflectionD1E = 0;
-        bool inReflectionDepth1 = false;
+        int prevDepth = 0;       
+        int[] reflectionS = new int[maxBounces];//if i change the number of bouces possible in cast ray must change the size of these arrays
+        int[] reflectionE = new int[maxBounces];
+
         foreach (RayData idx in rayDataSet)
-        {
-            if (idx.bounces > 0 && !inReflectionDepth1)
-            {
-                reflectionD1S = count;
-                inReflectionDepth1 = true;
-            }
-            else if(idx.bounces == 0 && inReflectionDepth1)
-            {
-                reflectionD1E = count;
-                inReflectionDepth1 = false;
-                OrderShapePath(reflectionD1S, reflectionD1E, 1);
-                beam2D2 = new LightBeam2D(shapePathRD1.ToArray());
-                shapePathRD1.Clear();
-            }
+        {            
+            AssessDepth(idx.bounces);
+
             shapePath.Add(idx.hits[0]);
             count++;
         }
 
         beam2D = new LightBeam2D(shapePath.ToArray());
+
+        void AssessDepth(int bounces)
+        {
+            if (bounces > prevDepth)
+            {
+                reflectionS[prevDepth] = count;
+                prevDepth++;
+                AssessDepth(bounces);
+            }
+            else if (bounces < prevDepth)
+            {
+                prevDepth--;
+                reflectionE[prevDepth] = count;
+                OrderShapePath(reflectionS[prevDepth], reflectionE[prevDepth], prevDepth);
+                if(shapePathReuseable.Count > 2)
+                {
+                    beam2D = new LightBeam2D(shapePathReuseable.ToArray());
+                }
+                shapePathReuseable.Clear();
+                AssessDepth(bounces);
+            }
+        }
     }
 
     void OrderShapePath(int reflectionS, int reflectionE, int depth)
     {
         for (int i = reflectionS; i < reflectionE; i++)
         {
-            shapePathRD1.Add(rayDataSet[i].hits[depth - 1]);
+            shapePathReuseable.Add(rayDataSet[i].hits[depth]);
         }
         for (int i = reflectionE - 1; i >= reflectionS; i--)
         {
-            shapePathRD1.Add(rayDataSet[i].hits[depth]);
+            shapePathReuseable.Add(rayDataSet[i].hits[depth + 1]);
         }
     }
 }
