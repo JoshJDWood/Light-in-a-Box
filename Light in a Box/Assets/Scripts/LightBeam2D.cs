@@ -9,8 +9,8 @@ public class LightBeam2D
     GameObject beamObj;
     Light2D beam;
     List<Vector3> beamVertices = new List<Vector3>();
-    float falloffInt = 0.1f;
-    float falloffSize = 0.07f;
+    //float falloffInt = 0.1f;
+    float falloffSize = 0.04f;
 
     public LightBeam2D(Vector3[] shapePath)
     {
@@ -19,10 +19,10 @@ public class LightBeam2D
         this.beamObj.name = "2D Lightbeam";
 
         this.beam = this.beamObj.AddComponent(typeof(Light2D)) as Light2D;
-        this.beam.lightType = Light2D.LightType.Freeform;        
+        this.beam.lightType = Light2D.LightType.Freeform;
 
-        SetShapePath(beam, shapePath) ;
         SetFalloffSize(beam, falloffSize);
+        SetShapePath(beam, shapePath) ;        
         //SetFalloffIntensity(beam, falloffInt);
     }    
 

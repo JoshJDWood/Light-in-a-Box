@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System;
 using UnityEngine;
 using UnityEngine.Experimental.Rendering.Universal;
 
@@ -36,8 +37,8 @@ public class CastBeam : MonoBehaviour
 
     void Shine(Vector2 pos)
     {
-        Vector2 dir = new Vector2(0, 1);
-        float angleincrement = 1;
+        Vector2 dir = new Vector2(-1, 0);
+        float angleincrement = 1f;
         for (float i = 0; i < 360; i += angleincrement)
         {
             RayData curRayData;
@@ -73,8 +74,10 @@ public class CastBeam : MonoBehaviour
     {
         int count = 0;
         int prevDepth = 0;       
-        int[] reflectionS = new int[maxBounces];//if i change the number of bouces possible in cast ray must change the size of these arrays
+        int[] reflectionS = new int[maxBounces];
         int[] reflectionE = new int[maxBounces];
+        Vector2 newDir;
+        Vector2 prevDir;
 
         foreach (RayData idx in rayDataSet)
         {            
@@ -82,6 +85,12 @@ public class CastBeam : MonoBehaviour
 
             shapePath.Add(idx.hits[0]);
             count++;
+        }
+
+        for (int i = 0; i < prevDepth; i++)
+        {
+            reflectionE[i] = count;
+            OrderShapePath(reflectionS[i], reflectionE[i], i);            
         }
 
         beam2D = new LightBeam2D(shapePath.ToArray());
@@ -98,13 +107,23 @@ public class CastBeam : MonoBehaviour
             {
                 prevDepth--;
                 reflectionE[prevDepth] = count;
-                OrderShapePath(reflectionS[prevDepth], reflectionE[prevDepth], prevDepth);
-                if(shapePathReuseable.Count > 2)
-                {
-                    beam2D = new LightBeam2D(shapePathReuseable.ToArray());
-                }
-                shapePathReuseable.Clear();
+                OrderShapePath(reflectionS[prevDepth], reflectionE[prevDepth], prevDepth);                
                 AssessDepth(bounces);
+            }
+            else if (count > 1 && bounces > 0)
+            {
+                int prev2Depths = Math.Min(prevDepth, rayDataSet[count - 2].bounces);
+                for (int i = 0; i < Math.Min(bounces, prev2Depths); i++)
+                {
+                    newDir = rayDataSet[count].hits[i] - rayDataSet[count - 1].hits[i];
+                    prevDir = rayDataSet[count - 1].hits[i] - rayDataSet[count - 2].hits[i];
+                    if (Math.Abs(newDir.normalized.x - prevDir.normalized.x) > 0.01)
+                    {
+                        reflectionE[i] = count;
+                        OrderShapePath(reflectionS[i], reflectionE[i], i);                        
+                        reflectionS[i] = count;
+                    }
+                }
             }
         }
     }
@@ -119,5 +138,10 @@ public class CastBeam : MonoBehaviour
         {
             shapePathReuseable.Add(rayDataSet[i].hits[depth + 1]);
         }
+        if (shapePathReuseable.Count > 2)
+        {
+            beam2D = new LightBeam2D(shapePathReuseable.ToArray());
+        }
+        shapePathReuseable.Clear();
     }
 }
