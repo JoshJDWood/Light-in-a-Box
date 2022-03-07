@@ -37,7 +37,7 @@ public class CastBeam : MonoBehaviour
 
     void Shine(Vector2 pos)
     {
-        Vector2 dir = new Vector2(-1, 0);
+        Vector2 dir = new Vector2(1, 0);
         float angleincrement = 1f;
         for (float i = 0; i < 360; i += angleincrement)
         {
@@ -119,9 +119,18 @@ public class CastBeam : MonoBehaviour
                     prevDir = rayDataSet[count - 1].hits[i] - rayDataSet[count - 2].hits[i];
                     if (Math.Abs(newDir.normalized.x - prevDir.normalized.x) > 0.01)
                     {
-                        reflectionE[i] = count;
-                        OrderShapePath(reflectionS[i], reflectionE[i], i);                        
-                        reflectionS[i] = count;
+                        if (Math.Abs(newDir.normalized.x - prevDir.normalized.x) > 0.9) //temp solution to avoid bug when ray hits corner perfectly
+                        {
+                            reflectionE[i] = count - 1;
+                            OrderShapePath(reflectionS[i], reflectionE[i], i);
+                            reflectionS[i] = count;
+                        }
+                        else
+                        {
+                            reflectionE[i] = count;
+                            OrderShapePath(reflectionS[i], reflectionE[i], i);
+                            reflectionS[i] = count;
+                        }                            
                     }
                 }
             }

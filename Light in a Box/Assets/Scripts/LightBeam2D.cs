@@ -8,7 +8,6 @@ public class LightBeam2D
 {    
     GameObject beamObj;
     Light2D beam;
-    List<Vector3> beamVertices = new List<Vector3>();
     //float falloffInt = 0.1f;
     float falloffSize = 0.04f;
 
