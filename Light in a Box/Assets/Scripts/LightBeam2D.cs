@@ -11,11 +11,11 @@ public class LightBeam2D
     //float falloffInt = 0.1f;
     float falloffSize = 0.04f;
 
-    public LightBeam2D(Vector3[] shapePath)
+    public LightBeam2D(Vector3[] shapePath, int id)
     {
         this.beam = new Light2D();
         this.beamObj = new GameObject();
-        this.beamObj.name = "2D Lightbeam";
+        this.beamObj.name = "2D Lightbeam " + id;
 
         this.beam = this.beamObj.AddComponent(typeof(Light2D)) as Light2D;
         this.beam.lightType = Light2D.LightType.Freeform;

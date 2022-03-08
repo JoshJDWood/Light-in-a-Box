@@ -13,6 +13,7 @@ public class CastBeam : MonoBehaviour
     List<Vector3> shapePathReuseable = new List<Vector3>();
     int bounces = 0;
     int maxBounces = 3;
+    int beamCount = 0;
 
     // Start is called before the first frame update
     void Start()
@@ -26,8 +27,11 @@ public class CastBeam : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            Destroy(GameObject.Find("2D Lightbeam"));
-            Destroy(GameObject.Find("2D Lightbeam"));
+            for (int i = 0; i <= beamCount; i++)
+            {            
+                Destroy(GameObject.Find("2D Lightbeam " + i));
+            }
+            beamCount = 0;
             rayDataSet.Clear();
             shapePath.Clear();
             shapePathReuseable.Clear();
@@ -60,7 +64,7 @@ public class CastBeam : MonoBehaviour
         RaycastHit2D hit = Physics2D.Raycast(pos, dir, 10);
         rayIndices.Add(hit.point);
 
-        if (hit.collider.gameObject.tag == "Mirror" && bounces < maxBounces)
+        if (hit.collider.gameObject.CompareTag("Mirror") && bounces < maxBounces)
         {
             bounces++;
             Vector2 nextdir = Vector2.Reflect(dir, hit.normal);
@@ -93,7 +97,7 @@ public class CastBeam : MonoBehaviour
             OrderShapePath(reflectionS[i], reflectionE[i], i);            
         }
 
-        beam2D = new LightBeam2D(shapePath.ToArray());
+        beam2D = new LightBeam2D(shapePath.ToArray(), 0);
 
         void AssessDepth(int bounces)
         {
@@ -149,7 +153,8 @@ public class CastBeam : MonoBehaviour
         }
         if (shapePathReuseable.Count > 2)
         {
-            beam2D = new LightBeam2D(shapePathReuseable.ToArray());
+            beamCount++;
+            beam2D = new LightBeam2D(shapePathReuseable.ToArray(), beamCount);
         }
         shapePathReuseable.Clear();
     }
