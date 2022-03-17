@@ -5,11 +5,12 @@ TagManager:
   serializedVersion: 2
   tags:
   - Mirror
+  - ValidTile
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - Invisable
   - Water
   - UI
   - 
