@@ -5,6 +5,7 @@ using UnityEngine;
 public class DragController : MonoBehaviour
 {
     [SerializeField] private Camera cam;
+    private GridManager gridManager;
     private bool isDragActive = false;
 
     private Vector2 screenPos;
@@ -15,6 +16,7 @@ public class DragController : MonoBehaviour
     void Awake()
     {
         cam = Camera.main;
+        gridManager = FindObjectOfType<GridManager>();
     }
 
 
@@ -23,7 +25,7 @@ public class DragController : MonoBehaviour
         if(isDragActive && Input.GetMouseButtonUp(0))
         {
             RaycastHit2D hit = Physics2D.Raycast(worldPos, Vector2.zero);
-            if (hit.collider.CompareTag("ValidTile"))
+            if (hit.collider != null && hit.collider.CompareTag("ValidTile"))
             {
                 Debug.Log("hit had tag of " + hit.collider.tag);
                 lastDragged.transform.position = hit.transform.position;
@@ -31,7 +33,14 @@ public class DragController : MonoBehaviour
             }
             else
             {
-                Debug.Log("invadid hit" + hit.transform.gameObject.name);
+                if (hit.collider != null)
+                {
+                    Debug.Log("drop and hit the " + hit.transform.gameObject.name);
+                }
+                else
+                {
+                    Debug.Log("drop hit nothing");
+                }
                 Drop();
             }
             
@@ -58,6 +67,14 @@ public class DragController : MonoBehaviour
             RaycastHit2D hit = Physics2D.Raycast(worldPos, Vector2.zero);
             if (hit.collider != null)
             {
+                Debug.Log("pick up and hit the " + hit.transform.gameObject.name);
+            }
+            else
+            {
+                Debug.Log("pick up hit nothing");
+            }
+            if (hit.collider != null)
+            {
                 Draggable draggable = hit.transform.gameObject.GetComponent<Draggable>();
                 if (draggable != null)
                 {
@@ -71,6 +88,7 @@ public class DragController : MonoBehaviour
 
     void InitDrag()
     {
+        gridManager.SeeTiles();
         UpdateDragStatus(true);
     }
 
@@ -81,12 +99,13 @@ public class DragController : MonoBehaviour
 
     void Drop()
     {
+        gridManager.IgnoreTiles();
         UpdateDragStatus(false);
     }
 
     void UpdateDragStatus(bool isDragging)
     {
         isDragActive = lastDragged.isDragging = isDragging;
-        lastDragged.gameObject.layer = isDragging ? Layer.Invisable : Layer.Default;
+        lastDragged.gameObject.layer = isDragging ? Layer.Ignore : Layer.Default;
     }
 }

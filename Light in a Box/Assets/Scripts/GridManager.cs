@@ -5,6 +5,7 @@ using UnityEngine;
 public class GridManager : MonoBehaviour
 {
     [SerializeField] private int width, height;
+    private List<Tile> tiles = new List<Tile>();
 
     [SerializeField] private Tile tilePrefab;
     [SerializeField] private GameObject outerWall;
@@ -25,6 +26,7 @@ public class GridManager : MonoBehaviour
             {
                 Tile spawnedTile = Instantiate(tilePrefab, new Vector2(x, y), Quaternion.identity);
                 spawnedTile.name = $"Tile {x} {y}";
+                tiles.Add(spawnedTile);
             }
         }
 
@@ -40,5 +42,21 @@ public class GridManager : MonoBehaviour
     {
         GameObject outerWallspawn = Instantiate(outerWall, pos, Quaternion.identity);
         outerWallspawn.transform.localScale = scale;        
+    }
+
+    public void SeeTiles()
+    {
+        foreach (Tile idx in tiles)
+        {
+            idx.gameObject.layer = Layer.Default;
+        }
+    }
+
+    public void IgnoreTiles()
+    {
+        foreach (Tile idx in tiles)
+        {
+            idx.gameObject.layer = Layer.Ignore;
+        }
     }
 }

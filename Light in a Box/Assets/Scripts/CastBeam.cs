@@ -18,7 +18,7 @@ public class CastBeam : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        Shine(gameObject.transform.position);
+        //Shine(gameObject.transform.position);
     }
 
 
@@ -27,16 +27,21 @@ public class CastBeam : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            for (int i = 0; i <= beamCount; i++)
-            {            
-                Destroy(GameObject.Find("2D Lightbeam " + i));
-            }
-            beamCount = 0;
-            rayDataSet.Clear();
-            shapePath.Clear();
-            shapePathReuseable.Clear();
-            Shine(gameObject.transform.position);
+            Relight();
         }
+    }
+
+    void Relight()
+    {
+        for (int i = 0; i <= beamCount; i++)
+        {
+            Destroy(GameObject.Find("2D Lightbeam " + i));
+        }
+        beamCount = 0;
+        rayDataSet.Clear();
+        shapePath.Clear();
+        shapePathReuseable.Clear();
+        Shine(gameObject.transform.position);
     }
 
     void Shine(Vector2 pos)
@@ -77,14 +82,14 @@ public class CastBeam : MonoBehaviour
     void FindShapePaths()
     {
         int count = 0;
-        int prevDepth = 0;       
+        int prevDepth = 0;
         int[] reflectionS = new int[maxBounces];
         int[] reflectionE = new int[maxBounces];
         Vector2 newDir;
         Vector2 prevDir;
 
         foreach (RayData idx in rayDataSet)
-        {            
+        {
             AssessDepth(idx.bounces);
 
             shapePath.Add(idx.hits[0]);
@@ -94,7 +99,7 @@ public class CastBeam : MonoBehaviour
         for (int i = 0; i < prevDepth; i++)
         {
             reflectionE[i] = count;
-            OrderShapePath(reflectionS[i], reflectionE[i], i);            
+            OrderShapePath(reflectionS[i], reflectionE[i], i);
         }
 
         beam2D = new LightBeam2D(shapePath.ToArray(), 0);
@@ -111,7 +116,7 @@ public class CastBeam : MonoBehaviour
             {
                 prevDepth--;
                 reflectionE[prevDepth] = count;
-                OrderShapePath(reflectionS[prevDepth], reflectionE[prevDepth], prevDepth);                
+                OrderShapePath(reflectionS[prevDepth], reflectionE[prevDepth], prevDepth);
                 AssessDepth(bounces);
             }
             else if (count > 1 && bounces > 0)
@@ -134,7 +139,7 @@ public class CastBeam : MonoBehaviour
                             reflectionE[i] = count;
                             OrderShapePath(reflectionS[i], reflectionE[i], i);
                             reflectionS[i] = count;
-                        }                            
+                        }
                     }
                 }
             }
