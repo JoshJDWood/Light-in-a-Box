@@ -6,6 +6,7 @@ public class GridManager : MonoBehaviour
 {
     [SerializeField] private int width, height;
     private List<Tile> tiles = new List<Tile>();
+    private Draggable[] blocks;
 
     [SerializeField] private Tile tilePrefab;
     [SerializeField] private GameObject outerWall;
@@ -16,6 +17,7 @@ public class GridManager : MonoBehaviour
     void Start()
     {
         GenerateGrid();
+        blocks = FindObjectsOfType<Draggable>();        
     }
 
     void GenerateGrid()
@@ -55,6 +57,22 @@ public class GridManager : MonoBehaviour
     public void IgnoreTiles()
     {
         foreach (Tile idx in tiles)
+        {
+            idx.gameObject.layer = Layer.Ignore;
+        }
+    }
+
+    public void SeeBlocks()
+    {
+        foreach (Draggable idx in blocks)
+        {
+            idx.gameObject.layer = Layer.Default;
+        }
+    }
+
+    public void IgnoreBlocks()
+    {
+        foreach (Draggable idx in blocks)
         {
             idx.gameObject.layer = Layer.Ignore;
         }

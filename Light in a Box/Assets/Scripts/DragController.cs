@@ -6,6 +6,7 @@ public class DragController : MonoBehaviour
 {
     [SerializeField] private Camera cam;
     private GridManager gridManager;
+    private CastBeam lightSource;
     private bool isDragActive = false;
 
     private Vector2 screenPos;
@@ -17,6 +18,7 @@ public class DragController : MonoBehaviour
     {
         cam = Camera.main;
         gridManager = FindObjectOfType<GridManager>();
+        lightSource = FindObjectOfType<CastBeam>();
     }
 
 
@@ -30,6 +32,7 @@ public class DragController : MonoBehaviour
                 Debug.Log("hit had tag of " + hit.collider.tag);
                 lastDragged.transform.position = hit.transform.position;
                 Drop();
+                StartCoroutine(RelightSequence());
             }
             else
             {
@@ -63,7 +66,7 @@ public class DragController : MonoBehaviour
             Drag();
         }
         else
-        {
+        {            
             RaycastHit2D hit = Physics2D.Raycast(worldPos, Vector2.zero);
             if (hit.collider != null)
             {
@@ -107,5 +110,15 @@ public class DragController : MonoBehaviour
     {
         isDragActive = lastDragged.isDragging = isDragging;
         lastDragged.gameObject.layer = isDragging ? Layer.Ignore : Layer.Default;
+    }
+
+    IEnumerator RelightSequence()
+    {
+        yield return new WaitForFixedUpdate();
+        gridManager.IgnoreBlocks();
+        yield return new WaitForFixedUpdate();
+        lightSource.Relight();
+        gridManager.SeeBlocks();
+        Debug.Log("in coroutine");
     }
 }

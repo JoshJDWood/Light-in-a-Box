@@ -31,7 +31,7 @@ public class CastBeam : MonoBehaviour
         }
     }
 
-    void Relight()
+    public void Relight()
     {
         for (int i = 0; i <= beamCount; i++)
         {
