@@ -18,7 +18,7 @@ public class CastBeam : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        //Shine(gameObject.transform.position);
+        
     }
 
 
@@ -128,7 +128,7 @@ public class CastBeam : MonoBehaviour
                     prevDir = rayDataSet[count - 1].hits[i] - rayDataSet[count - 2].hits[i];
                     if (Math.Abs(newDir.normalized.x - prevDir.normalized.x) > 0.01)
                     {
-                        if (Math.Abs(newDir.normalized.x - prevDir.normalized.x) > 0.9) //temp solution to avoid bug when ray hits corner perfectly
+                        if (Math.Abs(newDir.normalized.x - prevDir.normalized.x) > 0.95) //temp solution to avoid bug when ray hits corner perfectly
                         {
                             reflectionE[i] = count - 1;
                             OrderShapePath(reflectionS[i], reflectionE[i], i);
@@ -148,19 +148,24 @@ public class CastBeam : MonoBehaviour
 
     void OrderShapePath(int reflectionS, int reflectionE, int depth)
     {
-        for (int i = reflectionS; i < reflectionE; i++)
+        if (reflectionE - reflectionS > 2)//
         {
-            shapePathReuseable.Add(rayDataSet[i].hits[depth]);
+            reflectionS++;// temp solution to hitting a corner with one edge being a mirror
+            reflectionE--;//
+            for (int i = reflectionS; i < reflectionE; i++)
+            {
+                shapePathReuseable.Add(rayDataSet[i].hits[depth]);
+            }
+            for (int i = reflectionE - 1; i >= reflectionS; i--)
+            {
+                shapePathReuseable.Add(rayDataSet[i].hits[depth + 1]);
+            }
+            if (shapePathReuseable.Count > 2)
+            {
+                beamCount++;
+                beam2D = new LightBeam2D(shapePathReuseable.ToArray(), beamCount);
+            }
+            shapePathReuseable.Clear();
         }
-        for (int i = reflectionE - 1; i >= reflectionS; i--)
-        {
-            shapePathReuseable.Add(rayDataSet[i].hits[depth + 1]);
-        }
-        if (shapePathReuseable.Count > 2)
-        {
-            beamCount++;
-            beam2D = new LightBeam2D(shapePathReuseable.ToArray(), beamCount);
-        }
-        shapePathReuseable.Clear();
     }
 }

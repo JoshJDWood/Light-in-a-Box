@@ -21,6 +21,11 @@ public class DragController : MonoBehaviour
         lightSource = FindObjectOfType<CastBeam>();
     }
 
+    private void Start()
+    {
+        StartCoroutine(RelightSequence());
+    }
+
 
     void Update()
     {
