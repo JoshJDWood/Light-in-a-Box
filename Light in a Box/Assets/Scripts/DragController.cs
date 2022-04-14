@@ -37,6 +37,7 @@ public class DragController : MonoBehaviour
                 Debug.Log("hit had tag of " + hit.collider.tag);
                 lastDragged.transform.position = hit.transform.position;
                 Drop();
+                lastDragged.SeeWalls();
                 StartCoroutine(RelightSequence());
             }
             else
@@ -87,7 +88,7 @@ public class DragController : MonoBehaviour
                 if (draggable != null)
                 {
                     lastDragged = draggable;
-                    dragOffset = lastDragged.transform.position - worldPos;
+                    dragOffset = lastDragged.transform.position - worldPos;                    
                     InitDrag();
                 }
             }
@@ -96,8 +97,10 @@ public class DragController : MonoBehaviour
 
     void InitDrag()
     {
-        gridManager.SeeTiles();
+        lastDragged.IgnoreWalls();
         UpdateDragStatus(true);
+        StartCoroutine(RelightSequencePickUp());
+        
     }
 
     void Drag()
@@ -121,9 +124,18 @@ public class DragController : MonoBehaviour
     {
         yield return new WaitForFixedUpdate();
         gridManager.IgnoreBlocks();
+        //yield return new WaitForFixedUpdate();
+        lightSource.Relight();
+        gridManager.SeeBlocks();            
+    }
+
+    IEnumerator RelightSequencePickUp()
+    {
         yield return new WaitForFixedUpdate();
+        gridManager.IgnoreBlocks();
         lightSource.Relight();
         gridManager.SeeBlocks();
-        Debug.Log("in coroutine");
+        UpdateDragStatus(true);
+        gridManager.SeeTiles();
     }
 }

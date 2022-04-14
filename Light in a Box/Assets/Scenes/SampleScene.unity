@@ -134,7 +134,7 @@ GameObject:
   - component: {fileID: 50055978}
   - component: {fileID: 50055980}
   - component: {fileID: 50055979}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Wall R
   m_TagString: Mirror
   m_Icon: {fileID: 0}
@@ -548,7 +548,7 @@ GameObject:
   - component: {fileID: 664323785}
   - component: {fileID: 664323787}
   - component: {fileID: 664323786}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Wall R
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -744,7 +744,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 891217822}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 1, y: 1, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1512786144}
@@ -774,7 +774,7 @@ GameObject:
   - component: {fileID: 984311922}
   - component: {fileID: 984311924}
   - component: {fileID: 984311923}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Wall B
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -883,7 +883,7 @@ GameObject:
   - component: {fileID: 1213438848}
   - component: {fileID: 1213438850}
   - component: {fileID: 1213438849}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Wall R
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1033,7 +1033,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1225174064}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -1, y: 2, z: 0}
+  m_LocalPosition: {x: -1, y: 3, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 664323785}
@@ -1121,7 +1121,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1313143006}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: -1, y: 2, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1630908747}
@@ -1261,7 +1261,7 @@ GameObject:
   - component: {fileID: 1629021695}
   - component: {fileID: 1629021697}
   - component: {fileID: 1629021696}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Mirror Wall T
   m_TagString: Mirror
   m_Icon: {fileID: 0}
@@ -1370,7 +1370,7 @@ GameObject:
   - component: {fileID: 1630908747}
   - component: {fileID: 1630908749}
   - component: {fileID: 1630908748}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Mirror Wall T
   m_TagString: Mirror
   m_Icon: {fileID: 0}
@@ -1479,7 +1479,7 @@ GameObject:
   - component: {fileID: 1669093766}
   - component: {fileID: 1669093768}
   - component: {fileID: 1669093767}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Wall B
   m_TagString: Untagged
   m_Icon: {fileID: 0}

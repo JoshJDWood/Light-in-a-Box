@@ -49,7 +49,7 @@ public class CastBeam : MonoBehaviour
     void Shine(Vector2 pos)
     {
         Vector2 dir = new Vector2(1, 0);
-        float angleincrement = 1f;
+        float angleincrement = 0.5f;
         for (float i = 0; i < 360; i += angleincrement)
         {
             RayData curRayData;
@@ -143,7 +143,7 @@ public class CastBeam : MonoBehaviour
                 {
                     newDir = rayDataSet[count].hits[i] - rayDataSet[count - 1].hits[i];
                     prevDir = rayDataSet[count - 1].hits[i] - rayDataSet[count - 2].hits[i];
-                    if (Math.Abs(newDir.normalized.x - prevDir.normalized.x) > 0.01)
+                    if (Math.Abs(newDir.normalized.x - prevDir.normalized.x) > 0.0001)
                     {
                         //if (Math.Abs(newDir.normalized.x - prevDir.normalized.x) > 0.95) //temp solution to avoid bug when ray hits corner perfectly
                         //{
