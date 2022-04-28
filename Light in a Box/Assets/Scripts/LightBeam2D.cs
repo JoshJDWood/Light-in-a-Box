@@ -9,7 +9,8 @@ public class LightBeam2D
     GameObject beamObj;
     Light2D beam;
     //float falloffInt = 0.1f;
-    float falloffSize = 0.04f;
+    float falloffSize = 0.02f;
+    bool alphaBlendOnOverlap = true;
 
     public LightBeam2D(Vector3[] shapePath, int id)
     {
@@ -20,8 +21,9 @@ public class LightBeam2D
         this.beam = this.beamObj.AddComponent(typeof(Light2D)) as Light2D;
         this.beam.lightType = Light2D.LightType.Freeform;
 
+        SetAlphaBlendOnOverlap(beam, alphaBlendOnOverlap);
         SetFalloffSize(beam, falloffSize);
-        SetShapePath(beam, shapePath) ;        
+        SetShapePath(beam, shapePath);        
         //SetFalloffIntensity(beam, falloffInt);
     }    
 
@@ -45,6 +47,11 @@ public class LightBeam2D
     void SetFalloffSize(Light2D light, float falloffSize)
     {
         SetFieldValue<float>(light, "m_ShapeLightFalloffSize", falloffSize);
+    }
+
+    void SetAlphaBlendOnOverlap(Light2D light, bool alphaBlendOnOverlap)
+    {
+        SetFieldValue<bool>(light, "m_AlphaBlendOnOverlap", alphaBlendOnOverlap);
     }
     ////--------------------------------////
 
