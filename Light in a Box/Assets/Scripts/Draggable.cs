@@ -5,6 +5,8 @@ using UnityEngine;
 public class Draggable : MonoBehaviour
 {    
     public int id;
+    public int oRS;
+    public int currentRotation = 0;
     public bool isDragging;
 
     public void SeeWalls()

@@ -9,7 +9,7 @@ public class LightBeam2D
     GameObject beamObj;
     Light2D beam;
     //float falloffInt = 0.1f;
-    float falloffSize = 0.02f;
+    float falloffSize = 0.04f;
     bool alphaBlendOnOverlap = true;
 
     public LightBeam2D(Vector3[] shapePath, int id)

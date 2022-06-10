@@ -27,7 +27,7 @@ public class CastBeam : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 
     public void Relight()
@@ -142,18 +142,9 @@ public class CastBeam : MonoBehaviour
                     prevDir = rayDataSet[count - 1].hits[i] - rayDataSet[count - 2].hits[i];
                     if (Math.Abs(newDir.normalized.x - prevDir.normalized.x) > 0.0001)
                     {
-                        //if (Math.Abs(newDir.normalized.x - prevDir.normalized.x) > 0.95) //temp solution to avoid bug when ray hits corner perfectly
-                        //{
-                        //    reflectionE[i] = count - 1;
-                        //    OrderShapePath(reflectionS[i], reflectionE[i], i);
-                        //    reflectionS[i] = count;
-                        //}
-                        //else
-                        //{
-                            reflectionE[i] = count;
-                            OrderShapePath(reflectionS[i], reflectionE[i], i);
-                            reflectionS[i] = count;
-                        //}
+                        reflectionE[i] = count;
+                        OrderShapePath(reflectionS[i], reflectionE[i], i);
+                        reflectionS[i] = count;
                     }
                 }
             }
@@ -162,10 +153,6 @@ public class CastBeam : MonoBehaviour
 
     void OrderShapePath(int reflectionS, int reflectionE, int depth)
     {
-        //if (reflectionE - reflectionS > 2)//
-        //{
-        //reflectionS++;// temp solution to hitting a corner with one edge being a mirror
-        //reflectionE--;//
         for (int i = reflectionS; i < reflectionE; i++)
         {
             shapePathReuseable.Add(rayDataSet[i].hits[depth]);
@@ -180,6 +167,5 @@ public class CastBeam : MonoBehaviour
             beam2D = new LightBeam2D(shapePathReuseable.ToArray(), beamCount);
         }
         shapePathReuseable.Clear();
-        //}
     }
 }

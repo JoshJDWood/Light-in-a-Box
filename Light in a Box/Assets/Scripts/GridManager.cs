@@ -10,7 +10,7 @@ public class GridManager : MonoBehaviour
 
     [SerializeField] private Tile tilePrefab;
     [SerializeField] private GameObject outerWall;
-    private float wallThickness = 0.2f;
+    private float wallThickness = 4f;
 
     [SerializeField] private Transform cam;
 
@@ -32,17 +32,17 @@ public class GridManager : MonoBehaviour
             }
         }
 
-        SpawnOuterWall(new Vector2(-0.5f + (float)width / 2, -0.5f - wallThickness / 2), new Vector3(width, wallThickness));
-        SpawnOuterWall(new Vector2(-0.5f - wallThickness / 2, -0.5f + (float)height / 2), new Vector3(wallThickness, height));
-        SpawnOuterWall(new Vector2(-0.5f + (float)width / 2, height -0.5f + wallThickness / 2), new Vector3(width, wallThickness));
-        SpawnOuterWall(new Vector2(width -0.5f + wallThickness / 2, -0.5f + (float)height / 2), new Vector3(wallThickness, height));
+        SpawnOuterWall(new Vector2(-0.5f + (float)width / 2, -0.5f - wallThickness / 40), new Vector3(width, wallThickness), 0);
+        SpawnOuterWall(new Vector2(-0.5f - wallThickness / 40, -0.5f + (float)height / 2), new Vector3(height, wallThickness ), 90);
+        SpawnOuterWall(new Vector2(-0.5f + (float)width / 2, height -0.5f + wallThickness / 40), new Vector3(width, wallThickness), 0);
+        SpawnOuterWall(new Vector2(width -0.5f + wallThickness / 40, -0.5f + (float)height / 2), new Vector3(height, wallThickness), 90);
 
         cam.transform.position = new Vector3((float)width / 2 - 0.5f, (float)height / 2 - 0.5f, -10);
     }
 
-    void SpawnOuterWall(Vector2 pos, Vector3 scale)
+    void SpawnOuterWall(Vector2 pos, Vector3 scale, int rotateAmount)
     {
-        GameObject outerWallspawn = Instantiate(outerWall, pos, Quaternion.identity);
+        GameObject outerWallspawn = Instantiate(outerWall, pos, Quaternion.Euler(new Vector3(0, 0, rotateAmount)));
         outerWallspawn.transform.localScale = scale;        
     }
 
