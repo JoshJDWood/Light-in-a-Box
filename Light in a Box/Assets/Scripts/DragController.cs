@@ -29,6 +29,26 @@ public class DragController : MonoBehaviour
 
     void Update()
     {
+        if(MenuManager.gameIsPaused)
+        {
+            return;
+        }
+
+        //testing rotation of blocks
+        if(isDragActive)
+        {
+            if(Input.GetKeyDown(KeyCode.LeftArrow))
+            {
+                lastDragged.transform.Rotate(0, 0, 90);
+                lastDragged.UpdateCR();
+            }
+            else if (Input.GetKeyDown(KeyCode.RightArrow))
+            {
+                lastDragged.transform.Rotate(0, 0, -90);
+                lastDragged.UpdateCR();
+            }
+        }
+
         if(isDragActive && Input.GetMouseButtonUp(0))
         {
             RaycastHit2D hit = Physics2D.Raycast(worldPos, Vector2.zero);
@@ -99,8 +119,7 @@ public class DragController : MonoBehaviour
     {
         lastDragged.IgnoreWalls();
         UpdateDragStatus(true);
-        StartCoroutine(RelightSequencePickUp());
-        
+        StartCoroutine(RelightSequencePickUp());        
     }
 
     void Drag()
