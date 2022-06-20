@@ -22,12 +22,12 @@ public class GridManager : MonoBehaviour
 
     void GenerateGrid()
     {
-        for(int x = 0; x < width; x++)
+        for(int y = 0; y < height; y++)
         {
-            for(int y = 0; y < height; y++)
+            for(int x = 0; x < width; x++)
             {
                 Tile spawnedTile = Instantiate(tilePrefab, new Vector2(x, y), Quaternion.identity);
-                spawnedTile.name = $"Tile {x} {y}";
+                spawnedTile.name = $"Tile {x + width*y}";
                 tiles.Add(spawnedTile);
             }
         }
