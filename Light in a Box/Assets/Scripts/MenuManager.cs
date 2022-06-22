@@ -8,7 +8,6 @@ public class MenuManager : MonoBehaviour
 
     [SerializeField] private GameObject pauseMenuUI;
     [SerializeField] private GameObject LevelsMenuUI;
-    [SerializeField] private GameObject HUD;
 
     // Update is called once per frame
     void Update()
@@ -29,13 +28,11 @@ public class MenuManager : MonoBehaviour
     public void Resume()
     {
         pauseMenuUI.SetActive(false);
-        HUD.SetActive(true);
         gameIsPaused = false;
     }
 
-    public void Pause()
+    void Pause()
     {
-        HUD.SetActive(false);
         pauseMenuUI.SetActive(true);
         gameIsPaused = true;
     }
