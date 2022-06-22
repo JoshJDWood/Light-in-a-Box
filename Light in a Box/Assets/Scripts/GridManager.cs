@@ -22,12 +22,12 @@ public class GridManager : MonoBehaviour
 
     void GenerateGrid()
     {
-        for(int x = 0; x < width; x++)
+        for(int y = 0; y < height; y++)
         {
-            for(int y = 0; y < height; y++)
+            for(int x = 0; x < width; x++)
             {
                 Tile spawnedTile = Instantiate(tilePrefab, new Vector2(x, y), Quaternion.identity);
-                spawnedTile.name = $"Tile {x} {y}";
+                spawnedTile.name = $"Tile {x + width*y}";
                 tiles.Add(spawnedTile);
             }
         }
@@ -43,7 +43,8 @@ public class GridManager : MonoBehaviour
     void SpawnOuterWall(Vector2 pos, Vector3 scale, int rotateAmount)
     {
         GameObject outerWallspawn = Instantiate(outerWall, pos, Quaternion.Euler(new Vector3(0, 0, rotateAmount)));
-        outerWallspawn.transform.localScale = scale;        
+        outerWallspawn.transform.localScale = scale;
+        outerWallspawn.gameObject.layer = Layer.Default;
     }
 
     public void SeeTiles()
