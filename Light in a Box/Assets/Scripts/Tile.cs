@@ -4,15 +4,29 @@ using UnityEngine;
 
 public class Tile : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    public int heldId = 0;
+    public int heldRotation = 0;
+    public Draggable heldBlock = null;
+
+    private void Update()
     {
-        
+        if (heldBlock != null && heldBlock.isDragging)
+        {
+            ExitTile();
+        }
     }
 
-    // Update is called once per frame
-    void Update()
+    public void EnterTile(int id, int rotation, Draggable draggable)
     {
-        
+        heldId = id;
+        heldRotation = rotation;
+        heldBlock = draggable;
+    }
+
+    public void ExitTile()
+    {
+        heldId = 0;
+        heldRotation = 0;
+        heldBlock = null;
     }
 }
