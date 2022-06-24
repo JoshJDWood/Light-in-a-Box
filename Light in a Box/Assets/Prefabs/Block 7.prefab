@@ -76,6 +76,10 @@ PrefabInstance:
       propertyPath: oRS
       value: 4
       objectReference: {fileID: 0}
+    - target: {fileID: 7418764932489443189, guid: 6d2a81ada5c09b84e857b93f94e1353b, type: 3}
+      propertyPath: config.id
+      value: 7
+      objectReference: {fileID: 0}
     - target: {fileID: 7418764932489443190, guid: 6d2a81ada5c09b84e857b93f94e1353b, type: 3}
       propertyPath: m_RootOrder
       value: 0

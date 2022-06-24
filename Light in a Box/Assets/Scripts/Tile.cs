@@ -4,8 +4,7 @@ using UnityEngine;
 
 public class Tile : MonoBehaviour
 {
-    public int heldId = 0;
-    public int heldRotation = 0;
+    public BlockData heldConfig = new BlockData( 0, 0);
     public Draggable heldBlock = null;
 
     private void Update()
@@ -16,17 +15,16 @@ public class Tile : MonoBehaviour
         }
     }
 
-    public void EnterTile(int id, int rotation, Draggable draggable)
+    public void EnterTile(Draggable draggable)
     {
-        heldId = id;
-        heldRotation = rotation;
+        heldConfig = draggable.config;
         heldBlock = draggable;
     }
 
     public void ExitTile()
     {
-        heldId = 0;
-        heldRotation = 0;
+        heldConfig.id = 0;
+        heldConfig.r = 0;
         heldBlock = null;
     }
 }

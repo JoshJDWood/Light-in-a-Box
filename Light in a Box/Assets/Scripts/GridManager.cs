@@ -7,6 +7,7 @@ public class GridManager : MonoBehaviour
     [SerializeField] private int width, height;
     private List<Tile> tiles = new List<Tile>();
     private Draggable[] blocks;
+    private Puzzle puzzle;
 
     [SerializeField] private Tile tilePrefab;
     [SerializeField] private GameObject outerWall;
@@ -17,7 +18,8 @@ public class GridManager : MonoBehaviour
     void Start()
     {
         GenerateGrid();
-        blocks = FindObjectsOfType<Draggable>();        
+        blocks = FindObjectsOfType<Draggable>();
+        puzzle = FindObjectOfType<Puzzle>();
     }
 
     void GenerateGrid()
@@ -45,6 +47,20 @@ public class GridManager : MonoBehaviour
         GameObject outerWallspawn = Instantiate(outerWall, pos, Quaternion.Euler(new Vector3(0, 0, rotateAmount)));
         outerWallspawn.transform.localScale = scale;
         outerWallspawn.gameObject.layer = Layer.Default;
+    }
+
+    public bool CheckSolution()
+    {
+        for(int i = 0; i < tiles.Count; i++)
+        {
+            if (tiles[i].heldConfig.id != puzzle.solution[i].id || tiles[i].heldConfig.r != puzzle.solution[i].r)
+            {
+                Debug.Log("Answer incorrect");
+                return false;
+            }
+        }
+        Debug.Log("Correct Answer, Well Done!");
+        return true;
     }
 
     public void SeeTiles()

@@ -57,7 +57,8 @@ public class DragController : MonoBehaviour
                 Debug.Log("hit had tag of " + hit.collider.tag);
                 lastDragged.transform.position = hit.transform.position;
                 Drop();
-                hit.transform.gameObject.GetComponent<Tile>().EnterTile(lastDragged.id, lastDragged.currentRotation, lastDragged);
+                hit.transform.gameObject.GetComponent<Tile>().EnterTile(lastDragged);
+                gridManager.CheckSolution();
                 lastDragged.SeeWalls();
                 StartCoroutine(RelightSequence());
             }

@@ -4,14 +4,13 @@ using UnityEngine;
 
 public class Draggable : MonoBehaviour
 {
-    public int id;
+    public BlockData config;    
     public int oRS;
-    public int currentRotation = 0;
     public bool isDragging;
 
     public void UpdateCR()
     {
-        currentRotation = (int)(transform.rotation.eulerAngles.z / 90) % oRS;
+        config.r = (int)(transform.rotation.eulerAngles.z / 90) % oRS;
     }
 
     public void SeeWalls()
