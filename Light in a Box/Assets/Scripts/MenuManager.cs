@@ -9,6 +9,7 @@ public class MenuManager : MonoBehaviour
     [SerializeField] private GameObject pauseMenuUI;
     [SerializeField] private GameObject LevelsMenuUI;
     [SerializeField] private GameObject HUD;
+    [SerializeField] private GameObject solvedHUD;
 
     private DragController dragController;
 
@@ -35,7 +36,15 @@ public class MenuManager : MonoBehaviour
     public void Resume()
     {
         pauseMenuUI.SetActive(false);
+        HUD.SetActive(true);
+        gameIsPaused = false;
+    }
+
+    public void ResetResume()
+    {
+        pauseMenuUI.SetActive(false);
         LevelsMenuUI.SetActive(false);
+        solvedHUD.SetActive(false);
         HUD.SetActive(true);
         gameIsPaused = false;
     }

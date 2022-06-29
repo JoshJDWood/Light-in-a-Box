@@ -5,6 +5,7 @@ using UnityEngine;
 public class DragController : MonoBehaviour
 {
     [SerializeField] private Camera cam;
+    [SerializeField] private GameObject solvedHUD;
     private GridManager gridManager;
     private CastBeam lightSource;
     public bool isDragActive = false;
@@ -58,7 +59,7 @@ public class DragController : MonoBehaviour
                 lastDragged.transform.position = hit.transform.position;
                 Drop();
                 hit.transform.gameObject.GetComponent<Tile>().EnterTile(lastDragged);
-                gridManager.CheckSolution();
+                solvedHUD.SetActive(gridManager.CheckSolution());               
                 lastDragged.SeeWalls();
                 StartCoroutine(RelightSequence());
             }
@@ -73,6 +74,7 @@ public class DragController : MonoBehaviour
                     Debug.Log("drop hit nothing");
                 }
                 Drop();
+                solvedHUD.SetActive(gridManager.CheckSolution());
             }
             
             return;
@@ -137,7 +139,10 @@ public class DragController : MonoBehaviour
 
     public void DropForPause()
     {
-        StartCoroutine(DropOnDelay());
+        if (isDragActive)
+        {
+            StartCoroutine(DropOnDelay());
+        }
     }
 
     void UpdateDragStatus(bool isDragging)
