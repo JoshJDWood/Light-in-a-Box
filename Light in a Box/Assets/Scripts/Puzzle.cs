@@ -6,6 +6,7 @@ public class Puzzle : MonoBehaviour
 {
     public int width;
     public int height;
+    public Vector2 lightPos;
 
     public List<BlockData> solution = new List<BlockData>();
 

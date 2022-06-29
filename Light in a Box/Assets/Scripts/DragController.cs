@@ -7,7 +7,7 @@ public class DragController : MonoBehaviour
     [SerializeField] private Camera cam;
     private GridManager gridManager;
     private CastBeam lightSource;
-    private bool isDragActive = false;
+    public bool isDragActive = false;
 
     private Vector2 screenPos;
     private Vector3 worldPos;
@@ -30,7 +30,7 @@ public class DragController : MonoBehaviour
     void Update()
     {
         if(MenuManager.gameIsPaused)
-        {
+        {            
             return;
         }
 
@@ -135,6 +135,11 @@ public class DragController : MonoBehaviour
         UpdateDragStatus(false);
     }
 
+    public void DropForPause()
+    {
+        StartCoroutine(DropOnDelay());
+    }
+
     void UpdateDragStatus(bool isDragging)
     {
         isDragActive = lastDragged.isDragging = isDragging;
@@ -158,5 +163,11 @@ public class DragController : MonoBehaviour
         gridManager.SeeBlocks();
         UpdateDragStatus(true);
         gridManager.SeeTiles();
+    }
+
+    IEnumerator DropOnDelay()
+    {
+        yield return new WaitForFixedUpdate();
+        Drop();
     }
 }

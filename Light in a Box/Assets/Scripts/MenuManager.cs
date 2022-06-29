@@ -10,7 +10,13 @@ public class MenuManager : MonoBehaviour
     [SerializeField] private GameObject LevelsMenuUI;
     [SerializeField] private GameObject HUD;
 
-    // Update is called once per frame
+    private DragController dragController;
+
+    private void Start()
+    {
+        dragController = FindObjectOfType<DragController>();
+    }
+
     void Update()
     {
         if(Input.GetKeyDown(KeyCode.Escape))
@@ -29,12 +35,14 @@ public class MenuManager : MonoBehaviour
     public void Resume()
     {
         pauseMenuUI.SetActive(false);
+        LevelsMenuUI.SetActive(false);
         HUD.SetActive(true);
         gameIsPaused = false;
     }
 
     public void Pause()
     {
+        dragController.DropForPause();
         pauseMenuUI.SetActive(true);
         HUD.SetActive(false);
         gameIsPaused = true;
