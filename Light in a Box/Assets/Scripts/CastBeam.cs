@@ -9,6 +9,7 @@ public class CastBeam : MonoBehaviour
     LightBeam2D beam2D;
     List<RayData> rayDataSet = new List<RayData>();
     List<Vector2> rayIndices = new List<Vector2>();
+    List<Vector2> rayNormals = new List<Vector2>();
     List<Vector3> shapePath = new List<Vector3>();
     List<Vector3> shapePathReuseable = new List<Vector3>();
     int bounces = 0;
@@ -60,11 +61,13 @@ public class CastBeam : MonoBehaviour
             {
                 curRayData.bounces = bounces;
                 curRayData.hits = rayIndices.ToArray();
+                curRayData.normals = rayNormals.ToArray();
                 rayDataSet.Add(curRayData);
             }
 
             bounces = 0;
             rayIndices.Clear();
+            rayNormals.Clear();
         }
 
         FindShapePaths();
@@ -81,6 +84,7 @@ public class CastBeam : MonoBehaviour
         }
 
         rayIndices.Add(hit.point);
+        rayNormals.Add(hit.normal);
         prevRayPos = hit.point;
 
         if (hit.collider.gameObject.CompareTag("Mirror") && bounces < maxBounces)
@@ -99,8 +103,6 @@ public class CastBeam : MonoBehaviour
         int prevDepth = 0;
         int[] reflectionS = new int[maxBounces];
         int[] reflectionE = new int[maxBounces];
-        Vector2 newDir;
-        Vector2 prevDir;
 
         foreach (RayData idx in rayDataSet)
         {
@@ -133,14 +135,12 @@ public class CastBeam : MonoBehaviour
                 OrderShapePath(reflectionS[prevDepth], reflectionE[prevDepth], prevDepth);
                 AssessDepth(bounces);
             }
-            else if (count > 1 && bounces > 0)
+            else if (count > 0 && bounces > 0)
             {
-                int prev2Depths = Math.Min(prevDepth, rayDataSet[count - 2].bounces);
-                for (int i = 0; i < Math.Min(bounces, prev2Depths); i++)
+                for (int i = 0; i < Math.Min(bounces, rayDataSet[count - 1].bounces); i++)
                 {
-                    newDir = rayDataSet[count].hits[i] - rayDataSet[count - 1].hits[i];
-                    prevDir = rayDataSet[count - 1].hits[i] - rayDataSet[count - 2].hits[i];
-                    if (Math.Abs(newDir.normalized.x - prevDir.normalized.x) > 0.0001)
+
+                    if (Math.Abs(rayDataSet[count].normals[i].x - rayDataSet[count - 1].normals[i].x) > 0.001)
                     {
                         reflectionE[i] = count;
                         OrderShapePath(reflectionS[i], reflectionE[i], i);
