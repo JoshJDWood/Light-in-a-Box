@@ -15,7 +15,7 @@ public class CastBeam : MonoBehaviour
     int bounces = 0;
     Vector2 prevRayPos = new Vector2(0, 0);
     bool skipCorner = false;
-    int maxBounces = 3;
+    int maxBounces = 4;
     int beamCount = 0;
 
     // Start is called before the first frame update
@@ -152,20 +152,40 @@ public class CastBeam : MonoBehaviour
     }
 
     void OrderShapePath(int reflectionS, int reflectionE, int depth)
-    {
+    {        
+        if (depth % 2 == 0)
+        {
         for (int i = reflectionS; i < reflectionE; i++)
-        {
-            shapePathReuseable.Add(rayDataSet[i].hits[depth]);
+            {
+                shapePathReuseable.Add(rayDataSet[i].hits[depth]);
+            }
+            for (int i = reflectionE - 1; i >= reflectionS; i--)
+            {
+                shapePathReuseable.Add(rayDataSet[i].hits[depth + 1]);
+            }
+            if (shapePathReuseable.Count > 2)
+            {
+                beamCount++;
+                beam2D = new LightBeam2D(shapePathReuseable.ToArray(), beamCount);
+            }
+            shapePathReuseable.Clear();
         }
-        for (int i = reflectionE - 1; i >= reflectionS; i--)
+        else
         {
-            shapePathReuseable.Add(rayDataSet[i].hits[depth + 1]);
+            for (int i = reflectionE - 1; i >= reflectionS; i--)
+            {
+                shapePathReuseable.Add(rayDataSet[i].hits[depth]);
+            }
+            for (int i = reflectionS; i < reflectionE; i++)
+            {
+                shapePathReuseable.Add(rayDataSet[i].hits[depth + 1]);
+            }
+            if (shapePathReuseable.Count > 2)
+            {
+                beamCount++;
+                beam2D = new LightBeam2D(shapePathReuseable.ToArray(), beamCount);
+            }
+            shapePathReuseable.Clear();
         }
-        if (shapePathReuseable.Count > 2)
-        {
-            beamCount++;
-            beam2D = new LightBeam2D(shapePathReuseable.ToArray(), beamCount);
-        }
-        shapePathReuseable.Clear();
     }
 }
