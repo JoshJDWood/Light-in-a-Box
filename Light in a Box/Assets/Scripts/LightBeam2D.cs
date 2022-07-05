@@ -14,7 +14,6 @@ public class LightBeam2D
 
     public LightBeam2D(Vector3[] shapePath, int id)
     {
-        this.beam = new Light2D();
         this.beamObj = new GameObject();
         this.beamObj.name = "2D Lightbeam " + id;
 

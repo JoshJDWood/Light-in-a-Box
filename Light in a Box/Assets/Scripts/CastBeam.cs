@@ -139,8 +139,8 @@ public class CastBeam : MonoBehaviour
             {
                 for (int i = 0; i < Math.Min(bounces, rayDataSet[count - 1].bounces); i++)
                 {
-
-                    if (Math.Abs(rayDataSet[count].normals[i].x - rayDataSet[count - 1].normals[i].x) > 0.001)
+                    if (Math.Abs(rayDataSet[count].normals[i].x - rayDataSet[count - 1].normals[i].x) > 0.001
+                        || (rayDataSet[count].hits[i] - rayDataSet[count - 1].hits[i]).magnitude > 0.25)
                     {
                         reflectionE[i] = count;
                         OrderShapePath(reflectionS[i], reflectionE[i], i);
