@@ -7,6 +7,7 @@ public class GridManager : MonoBehaviour
     [SerializeField] private int width, height;
     [SerializeField] private Tile tilePrefab;
     [SerializeField] private GameObject outerWall;
+    [SerializeField] private GameObject outerWallCorner;
     [SerializeField] private List<GameObject> blockPrefabs;
 
     private List<Tile> tiles = new List<Tile>();
@@ -14,7 +15,9 @@ public class GridManager : MonoBehaviour
     private Puzzle puzzle;
     private CastBeam lightSource;
 
-    private float wallThickness = 4f;
+    private float wallThickness = 0.1f; //actually half wall thinkness
+    private int outerWallCount = 0;
+    private int outerWallCornerCount = 0;
 
     [SerializeField] private Transform cam;
 
@@ -60,10 +63,16 @@ public class GridManager : MonoBehaviour
         {
             Destroy(puzzle.gameObject);
         }
-        for (int i = 1; i < 5; i++)
+        for (int i = 0; i < outerWallCount; i++)
         {
             Destroy(GameObject.Find("Outer Wall " + i));
         }
+        outerWallCount = 0;
+        for (int i = 0; i < outerWallCornerCount; i++)
+        {
+            Destroy(GameObject.Find("Outer Wall Corner" + i));
+        }
+        outerWallCornerCount = 0;
         foreach (Tile t in tiles)
         {
             Destroy(t.gameObject);
@@ -94,20 +103,38 @@ public class GridManager : MonoBehaviour
             }
         }
 
-        SpawnOuterWall(new Vector2(-0.5f + (float)width / 2, -0.5f - wallThickness / 40), new Vector3(width, wallThickness), 0, 1);
-        SpawnOuterWall(new Vector2(-0.5f - wallThickness / 40, -0.5f + (float)height / 2), new Vector3(height, wallThickness), 90, 2);
-        SpawnOuterWall(new Vector2(-0.5f + (float)width / 2, height - 0.5f + wallThickness / 40), new Vector3(width, wallThickness), 0, 3);
-        SpawnOuterWall(new Vector2(width - 0.5f + wallThickness / 40, -0.5f + (float)height / 2), new Vector3(height, wallThickness), 90, 4);
+        for(int i = 0; i < width; i++)
+        {
+            SpawnOuterWall(new Vector2( i, -0.5f - wallThickness), 0);
+            SpawnOuterWall(new Vector2( i, height - 0.5f + wallThickness), 0);
+        }
+        for(int i = 0; i < height; i++)
+        {
+            SpawnOuterWall(new Vector2(-0.5f - wallThickness, i), 90);
+            SpawnOuterWall(new Vector2(width - 0.5f + wallThickness, i), 90);
+        }
+
+        SpawnOuterWallCorner(new Vector2(-0.5f - wallThickness, -0.5f - wallThickness), 0);
+        SpawnOuterWallCorner(new Vector2(-0.5f - wallThickness, -0.5f + wallThickness + height), 0);
+        SpawnOuterWallCorner(new Vector2(-0.5f + wallThickness + width, - 0.5f - wallThickness), 0);
+        SpawnOuterWallCorner(new Vector2(-0.5f + wallThickness + width, -0.5f + wallThickness + height), 0);
+
 
         cam.transform.position = new Vector3((float)width / 2 - 0.5f, (float)height / 2 - 0.5f, -10);
     }
 
-    void SpawnOuterWall(Vector2 pos, Vector3 scale, int rotateAmount, int id)
+    void SpawnOuterWall(Vector2 pos, int rotateAmount)
     {
         GameObject outerWallspawn = Instantiate(outerWall, pos, Quaternion.Euler(new Vector3(0, 0, rotateAmount)));
-        outerWallspawn.name = $"Outer Wall {id}";
-        outerWallspawn.transform.localScale = scale;
-        outerWallspawn.gameObject.layer = Layer.Default;
+        outerWallspawn.name = $"Outer Wall {outerWallCount}";
+        outerWallCount++;
+    }
+
+    void SpawnOuterWallCorner(Vector2 pos, int rotateAmount)
+    {
+        GameObject outerWallspawn = Instantiate(outerWallCorner, pos, Quaternion.Euler(new Vector3(0, 0, rotateAmount)));
+        outerWallspawn.name = $"Outer Wall Corner {outerWallCount}";
+        outerWallCornerCount++;
     }
 
     public bool CheckSolution()
