@@ -70,7 +70,7 @@ public class GridManager : MonoBehaviour
         outerWallCount = 0;
         for (int i = 0; i < outerWallCornerCount; i++)
         {
-            Destroy(GameObject.Find("Outer Wall Corner" + i));
+            Destroy(GameObject.Find("Outer Wall Corner " + i));
         }
         outerWallCornerCount = 0;
         foreach (Tile t in tiles)
@@ -133,7 +133,7 @@ public class GridManager : MonoBehaviour
     void SpawnOuterWallCorner(Vector2 pos, int rotateAmount)
     {
         GameObject outerWallspawn = Instantiate(outerWallCorner, pos, Quaternion.Euler(new Vector3(0, 0, rotateAmount)));
-        outerWallspawn.name = $"Outer Wall Corner {outerWallCount}";
+        outerWallspawn.name = $"Outer Wall Corner {outerWallCornerCount}";
         outerWallCornerCount++;
     }
 

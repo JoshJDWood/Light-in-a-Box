@@ -19,7 +19,7 @@ public class LightBeam2D
 
         this.beam = this.beamObj.AddComponent(typeof(Light2D)) as Light2D;
         this.beam.lightType = Light2D.LightType.Freeform;
-        //this.beam.color = Color.cyan;
+        this.beam.color = new Color(0.78f,1,1);
 
         SetAlphaBlendOnOverlap(beam, alphaBlendOnOverlap);
         SetFalloffSize(beam, falloffSize);
