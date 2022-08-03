@@ -12,10 +12,12 @@ public class MenuManager : MonoBehaviour
     [SerializeField] private GameObject solvedHUD;
 
     private DragController dragController;
+    private AudioManager audioManager;
 
     private void Start()
     {
         dragController = FindObjectOfType<DragController>();
+        audioManager = FindObjectOfType<AudioManager>();
     }
 
     void Update()
@@ -35,6 +37,7 @@ public class MenuManager : MonoBehaviour
 
     public void Resume()
     {
+        audioManager.Play("resume");
         pauseMenuUI.SetActive(false);
         HUD.SetActive(true);
         gameIsPaused = false;
@@ -42,6 +45,7 @@ public class MenuManager : MonoBehaviour
 
     public void ResetResume()
     {
+        audioManager.Play("resume");
         pauseMenuUI.SetActive(false);
         LevelsMenuUI.SetActive(false);
         solvedHUD.SetActive(false);
@@ -51,6 +55,7 @@ public class MenuManager : MonoBehaviour
 
     public void Pause()
     {
+        audioManager.Play("pause");
         dragController.DropForPause();
         pauseMenuUI.SetActive(true);
         HUD.SetActive(false);
@@ -59,6 +64,7 @@ public class MenuManager : MonoBehaviour
 
     public void OpenLevelSelection()
     {
+        audioManager.Play("swapMenu");
         pauseMenuUI.SetActive(false);
         LevelsMenuUI.SetActive(true);
     }
@@ -71,6 +77,7 @@ public class MenuManager : MonoBehaviour
 
     public void Back()
     {
+        audioManager.Play("swapMenu");
         LevelsMenuUI.SetActive(false);
         pauseMenuUI.SetActive(true);
     }

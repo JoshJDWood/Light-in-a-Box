@@ -7,6 +7,7 @@ public class DragController : MonoBehaviour
     [SerializeField] private Camera cam;
     [SerializeField] private GameObject solvedHUD;
     private GridManager gridManager;
+    private AudioManager audioManager;
     private CastBeam lightSource;
     public bool isDragActive = false;
 
@@ -19,6 +20,7 @@ public class DragController : MonoBehaviour
     {
         cam = Camera.main;
         gridManager = FindObjectOfType<GridManager>();
+        audioManager = FindObjectOfType<AudioManager>();
         lightSource = FindObjectOfType<CastBeam>();
     }
 
@@ -121,6 +123,7 @@ public class DragController : MonoBehaviour
 
     void InitDrag()
     {
+        audioManager.Play("pickUp");
         lastDragged.IgnoreWalls();
         UpdateDragStatus(true);
         StartCoroutine(RelightSequencePickUp());        
@@ -133,6 +136,7 @@ public class DragController : MonoBehaviour
 
     void Drop()
     {
+        audioManager.Play("drop" + UnityEngine.Random.Range(1, 4));
         gridManager.IgnoreTiles();
         UpdateDragStatus(false);
     }
