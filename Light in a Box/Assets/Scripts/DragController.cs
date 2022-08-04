@@ -9,7 +9,9 @@ public class DragController : MonoBehaviour
     private GridManager gridManager;
     private AudioManager audioManager;
     private CastBeam lightSource;
+
     public bool isDragActive = false;
+    public bool hardMode = false;
 
     private Vector2 screenPos;
     private Vector3 worldPos;

@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.UI;
 using UnityEngine;
 
 public class MenuManager : MonoBehaviour
@@ -8,8 +9,12 @@ public class MenuManager : MonoBehaviour
 
     [SerializeField] private GameObject pauseMenuUI;
     [SerializeField] private GameObject LevelsMenuUI;
+    [SerializeField] private GameObject SettingsMenuUI;
     [SerializeField] private GameObject HUD;
     [SerializeField] private GameObject solvedHUD;
+    [SerializeField] private GameObject checkButton;
+    [SerializeField] private Button easyButton;
+    [SerializeField] private Button hardButton;
 
     private DragController dragController;
     private AudioManager audioManager;
@@ -39,15 +44,8 @@ public class MenuManager : MonoBehaviour
     {
         audioManager.Play("resume");
         pauseMenuUI.SetActive(false);
-        HUD.SetActive(true);
-        gameIsPaused = false;
-    }
-
-    public void ResetResume()
-    {
-        audioManager.Play("resume");
-        pauseMenuUI.SetActive(false);
         LevelsMenuUI.SetActive(false);
+        SettingsMenuUI.SetActive(false);
         solvedHUD.SetActive(false);
         HUD.SetActive(true);
         gameIsPaused = false;
@@ -69,6 +67,37 @@ public class MenuManager : MonoBehaviour
         LevelsMenuUI.SetActive(true);
     }
 
+    public void OpenSettings()
+    {
+        audioManager.Play("swapMenu");
+        pauseMenuUI.SetActive(false);
+        SettingsMenuUI.SetActive(true);
+    }
+
+    public void HardMode(bool hardMode)
+    {
+        dragController.hardMode = hardMode;
+        checkButton.SetActive(hardMode);
+        if(hardMode)
+        {
+            ColorBlock newColors = hardButton.colors;
+            newColors.normalColor = new Color(0, 0, 0, 1);
+            hardButton.colors = newColors;
+
+            newColors.normalColor = new Color(0, 0, 0, 0);
+            easyButton.colors = newColors;
+        }
+        else
+        {
+            ColorBlock newColors = easyButton.colors;
+            newColors.normalColor = new Color(0, 0, 0, 1);
+            easyButton.colors = newColors;
+
+            newColors.normalColor = new Color(0, 0, 0, 0);
+            hardButton.colors = newColors;
+        }
+    }
+
     public void QuitGame()
     {
         Debug.Log("Quitting Game...");
@@ -79,6 +108,7 @@ public class MenuManager : MonoBehaviour
     {
         audioManager.Play("swapMenu");
         LevelsMenuUI.SetActive(false);
+        SettingsMenuUI.SetActive(false);
         pauseMenuUI.SetActive(true);
     }
 
