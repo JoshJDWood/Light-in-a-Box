@@ -6,7 +6,6 @@ using UnityEngine.Experimental.Rendering.Universal;
 
 public class CastBeam : MonoBehaviour
 {
-    LightBeam2D beam2D;
     List<RayData> rayDataSet = new List<RayData>();
     List<Vector2> rayIndices = new List<Vector2>();
     List<Vector2> rayNormals = new List<Vector2>();
@@ -33,15 +32,20 @@ public class CastBeam : MonoBehaviour
 
     public void Relight()
     {
-        for (int i = 0; i <= beamCount; i++)
-        {
-            Destroy(GameObject.Find("2D Lightbeam " + i));
-        }
+        LightOff();
         beamCount = 0;
         rayDataSet.Clear();
         shapePath.Clear();
         shapePathReuseable.Clear();
         Shine(gameObject.transform.position);
+    }
+
+    public void LightOff()
+    {
+        for (int i = 0; i < beamCount; i++)
+        {
+            Destroy(GameObject.Find("2D Lightbeam " + i));
+        }
     }
 
     void Shine(Vector2 pos)
@@ -118,7 +122,8 @@ public class CastBeam : MonoBehaviour
             OrderShapePath(reflectionS[i], reflectionE[i], i);
         }
 
-        beam2D = new LightBeam2D(shapePath.ToArray(), 0);
+        new LightBeam2D(shapePath.ToArray(), beamCount);
+        beamCount++;
 
         void AssessDepth(int bounces)
         {
@@ -165,8 +170,8 @@ public class CastBeam : MonoBehaviour
             }
             if (shapePathReuseable.Count > 2)
             {
+                new LightBeam2D(shapePathReuseable.ToArray(), beamCount);
                 beamCount++;
-                beam2D = new LightBeam2D(shapePathReuseable.ToArray(), beamCount);
             }
             shapePathReuseable.Clear();
         }
@@ -182,8 +187,8 @@ public class CastBeam : MonoBehaviour
             }
             if (shapePathReuseable.Count > 2)
             {
+                new LightBeam2D(shapePathReuseable.ToArray(), beamCount);
                 beamCount++;
-                beam2D = new LightBeam2D(shapePathReuseable.ToArray(), beamCount);
             }
             shapePathReuseable.Clear();
         }

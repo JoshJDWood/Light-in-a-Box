@@ -14,6 +14,7 @@ public class GridManager : MonoBehaviour
     private List<Draggable> blocks = new List<Draggable>();
     private Puzzle puzzle;
     private CastBeam lightSource;
+    private DragController dragController;
 
     private float wallThickness = 0.1f; //actually half wall thinkness
     private int outerWallCount = 0;
@@ -25,6 +26,7 @@ public class GridManager : MonoBehaviour
     {
         GenerateGrid(width, height);
         lightSource = FindObjectOfType<CastBeam>();
+        dragController = FindObjectOfType<DragController>();
         foreach(Draggable block in FindObjectsOfType<Draggable>())
         {
             blocks.Add(block);
@@ -42,7 +44,7 @@ public class GridManager : MonoBehaviour
         {
             if (bD.id != 0)
             {
-                GameObject newBlock = Instantiate(blockPrefabs[bD.id], new Vector2(-2.5f + x, 1.5f - y), Quaternion.Euler(new Vector3(0, 0, 90 * bD.r)));
+                GameObject newBlock = Instantiate(blockPrefabs[bD.id], new Vector2(-2.5f + x * 1.1f, 1.5f - y * 1.1f), Quaternion.Euler(new Vector3(0, 0, 90 * bD.r)));
                 newBlock.GetComponent<Draggable>().UpdateCR();
                 blocks.Add(newBlock.GetComponent<Draggable>());
 
@@ -54,7 +56,8 @@ public class GridManager : MonoBehaviour
             }
         }
         this.puzzle = Instantiate(puzzle);
-        StartCoroutine(RelightSequence());
+        if(!dragController.hardMode)
+            StartCoroutine(RelightSequence());
     }
 
     public void DeleteOldPuzzle()

@@ -54,6 +54,11 @@ public class DragController : MonoBehaviour
             }
         }
 
+        if(Input.GetKeyDown(KeyCode.Return) && hardMode)
+        {
+            CheckSolutionHardMode();
+        }
+
         if(isDragActive && Input.GetMouseButtonUp(0))
         {
             RaycastHit2D hit = Physics2D.Raycast(worldPos, Vector2.zero);
@@ -63,9 +68,12 @@ public class DragController : MonoBehaviour
                 lastDragged.transform.position = hit.transform.position;
                 Drop();
                 hit.transform.gameObject.GetComponent<Tile>().EnterTile(lastDragged);
-                solvedHUD.SetActive(gridManager.CheckSolution());               
                 lastDragged.SeeWalls();
-                StartCoroutine(RelightSequence());
+                if (!hardMode)
+                {
+                    solvedHUD.SetActive(gridManager.CheckSolution());                    
+                    StartCoroutine(RelightSequence());
+                }
             }
             else
             {
@@ -128,7 +136,13 @@ public class DragController : MonoBehaviour
         audioManager.Play("pickUp");
         lastDragged.IgnoreWalls();
         UpdateDragStatus(true);
-        StartCoroutine(RelightSequencePickUp());        
+        if (!hardMode)
+            StartCoroutine(RelightSequencePickUp());
+        else
+        {
+            lightSource.LightOff();
+            gridManager.SeeTiles();
+        }
     }
 
     void Drag()
@@ -157,11 +171,19 @@ public class DragController : MonoBehaviour
         lastDragged.gameObject.layer = isDragging ? Layer.Ignore : Layer.Default;
     }
 
+    public void CheckSolutionHardMode()
+    {
+        if (!isDragActive)
+        {
+            solvedHUD.SetActive(gridManager.CheckSolution());
+            StartCoroutine(RelightSequence());
+        }
+    }
+
     IEnumerator RelightSequence()
     {
         yield return new WaitForFixedUpdate();
         gridManager.IgnoreBlocks();
-        //yield return new WaitForFixedUpdate();
         lightSource.Relight();
         gridManager.SeeBlocks();            
     }
