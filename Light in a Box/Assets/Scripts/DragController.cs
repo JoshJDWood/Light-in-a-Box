@@ -18,6 +18,10 @@ public class DragController : MonoBehaviour
     private Draggable lastDragged;
     private Vector2 dragOffset;
 
+    Vector2 dragSize = new Vector2(1.1f, 1.1f);
+    Vector2 defaultSize = new Vector2(1f, 1f);
+    Coroutine grow;
+
     void Awake()
     {
         cam = Camera.main;
@@ -134,6 +138,8 @@ public class DragController : MonoBehaviour
     void InitDrag()
     {
         audioManager.Play("pickUp");
+        grow = StartCoroutine(ResizeDraggable(defaultSize, dragSize, 0.01f));
+        lastDragged.DraggingSortingOrder();
         lastDragged.IgnoreWalls();
         UpdateDragStatus(true);
         if (!hardMode)
@@ -153,6 +159,9 @@ public class DragController : MonoBehaviour
     void Drop()
     {
         audioManager.Play("drop" + UnityEngine.Random.Range(1, 4));
+        StopCoroutine(grow);
+        lastDragged.transform.localScale = defaultSize;
+        lastDragged.DroppedSortingOrder();
         gridManager.IgnoreTiles();
         UpdateDragStatus(false);
     }
@@ -177,6 +186,16 @@ public class DragController : MonoBehaviour
         {
             solvedHUD.SetActive(gridManager.CheckSolution());
             StartCoroutine(RelightSequence());
+        }
+    }
+
+    //*****//for resizing while dragging//*****//
+    IEnumerator ResizeDraggable(Vector2 startSize, Vector2 endSize, float rate)
+    {
+        for (float i = 0; i <= 1; i+=0.1f)
+        {        
+            lastDragged.transform.localScale = Vector2.Lerp(startSize, endSize, i);
+            yield return new WaitForSeconds(rate);
         }
     }
 
