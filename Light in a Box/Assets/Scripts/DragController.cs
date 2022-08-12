@@ -16,11 +16,13 @@ public class DragController : MonoBehaviour
     private Vector2 screenPos;
     private Vector3 worldPos;
     private Draggable lastDragged;
+    private int draggedIndex = 2;
     private Vector2 dragOffset;
+    private List<RaycastHit2D> hits = new List<RaycastHit2D>();
 
-    Vector2 dragSize = new Vector2(1.1f, 1.1f);
-    Vector2 defaultSize = new Vector2(1f, 1f);
-    Coroutine grow;
+    private Vector2 dragSize = new Vector2(1.1f, 1.1f);
+    private Vector2 defaultSize = new Vector2(1f, 1f);
+    private Coroutine grow;
 
     void Awake()
     {
@@ -38,15 +40,15 @@ public class DragController : MonoBehaviour
 
     void Update()
     {
-        if(MenuManager.gameIsPaused)
-        {            
+        if (MenuManager.gameIsPaused)
+        {
             return;
         }
 
         //testing rotation of blocks
-        if(isDragActive)
+        if (isDragActive)
         {
-            if(Input.GetKeyDown(KeyCode.LeftArrow))
+            if (Input.GetKeyDown(KeyCode.LeftArrow))
             {
                 lastDragged.transform.Rotate(0, 0, 90);
                 lastDragged.UpdateCR();
@@ -58,44 +60,53 @@ public class DragController : MonoBehaviour
             }
         }
 
-        if(Input.GetKeyDown(KeyCode.Return) && hardMode)
+        if (Input.GetKeyDown(KeyCode.Return) && hardMode)
         {
             CheckSolutionHardMode();
         }
 
-        if(isDragActive && Input.GetMouseButtonUp(0))
+        if (isDragActive && Input.GetMouseButtonUp(0))
         {
-            RaycastHit2D hit = Physics2D.Raycast(worldPos, Vector2.zero);
-            if (hit.collider != null && hit.collider.CompareTag("ValidTile"))
+            int hitsLength = Physics2D.Raycast(worldPos, Vector2.zero, new ContactFilter2D().NoFilter(), hits, 5.0f);
+            for (int i = 0; i < hitsLength; i++)
             {
-                Debug.Log("hit had tag of " + hit.collider.tag);
-                lastDragged.transform.position = hit.transform.position;
+                if (hits[i].transform.gameObject.GetComponent<Draggable>() == lastDragged)
+                {
+                    hits.RemoveAt(i);
+                    hitsLength--;
+                }
+            }
+            if (hitsLength == 1 && hits[0].collider.CompareTag("ValidTile"))
+            {
+                Debug.Log("hit had tag of " + hits[0].collider.tag);
+                lastDragged.transform.position = hits[0].transform.position;
                 Drop();
-                hit.transform.gameObject.GetComponent<Tile>().EnterTile(lastDragged);
+                hits[0].transform.gameObject.GetComponent<Tile>().EnterTile(lastDragged);
                 lastDragged.SeeWalls();
                 if (!hardMode)
                 {
-                    solvedHUD.SetActive(gridManager.CheckSolution());                    
+                    solvedHUD.SetActive(gridManager.CheckSolution());
                     StartCoroutine(RelightSequence());
                 }
             }
             else
             {
-                if (hit.collider != null)
+                if (hitsLength > 0)
                 {
-                    Debug.Log("drop and hit the " + hit.transform.gameObject.name);
+                    Debug.Log("number of hits " + hitsLength);
+                    for (int i = 0; i < hitsLength; i++)
+                        Debug.Log("drop and hit the " + hits[i].transform.gameObject.name);
                 }
                 else
                 {
                     Debug.Log("drop hit nothing");
                 }
                 Drop();
-                solvedHUD.SetActive(gridManager.CheckSolution());
             }
-            
+            hits.Clear();
             return;
         }
-        
+
         if (Input.GetMouseButton(0))
         {
             screenPos = Input.mousePosition;
@@ -112,26 +123,37 @@ public class DragController : MonoBehaviour
             Drag();
         }
         else
-        {            
-            RaycastHit2D hit = Physics2D.Raycast(worldPos, Vector2.zero);
-            if (hit.collider != null)
+        {
+            int hitsLength = Physics2D.Raycast(worldPos, Vector2.zero, new ContactFilter2D().NoFilter(), hits, 5.0f);
+            Draggable draggable = null;
+            int topDraggable = 0;
+            for (int i = 0; i < hitsLength; i++)
             {
-                Debug.Log("pick up and hit the " + hit.transform.gameObject.name);
+                Draggable tempDraggable = hits[i].transform.gameObject.GetComponent<Draggable>();
+                if (tempDraggable != null && tempDraggable.orderInLayer > topDraggable)
+                {
+                    draggable = tempDraggable;
+                    topDraggable = tempDraggable.orderInLayer;
+                }
+            }
+            if (hitsLength > 0)
+            {
+                Debug.Log("number of hits " + hitsLength);
+                for (int i = 0; i < hitsLength; i++)
+                    Debug.Log("drop and hit the " + hits[i].transform.gameObject.name);
             }
             else
             {
                 Debug.Log("pick up hit nothing");
             }
-            if (hit.collider != null)
+
+            if (draggable != null)
             {
-                Draggable draggable = hit.transform.gameObject.GetComponent<Draggable>();
-                if (draggable != null)
-                {
-                    lastDragged = draggable;
-                    dragOffset = lastDragged.transform.position - worldPos;                    
-                    InitDrag();
-                }
+                lastDragged = draggable;
+                dragOffset = lastDragged.transform.position - worldPos;
+                InitDrag();
             }
+
         }
     }
 
@@ -139,7 +161,8 @@ public class DragController : MonoBehaviour
     {
         audioManager.Play("pickUp");
         grow = StartCoroutine(ResizeDraggable(defaultSize, dragSize, 0.01f));
-        lastDragged.DraggingSortingOrder();
+        lastDragged.UpdateSortingOrder(draggedIndex);
+        draggedIndex++;
         lastDragged.IgnoreWalls();
         UpdateDragStatus(true);
         if (!hardMode)
@@ -161,7 +184,6 @@ public class DragController : MonoBehaviour
         audioManager.Play("drop" + UnityEngine.Random.Range(1, 4));
         StopCoroutine(grow);
         lastDragged.transform.localScale = defaultSize;
-        lastDragged.DroppedSortingOrder();
         gridManager.IgnoreTiles();
         UpdateDragStatus(false);
     }
@@ -192,8 +214,8 @@ public class DragController : MonoBehaviour
     //*****//for resizing while dragging//*****//
     IEnumerator ResizeDraggable(Vector2 startSize, Vector2 endSize, float rate)
     {
-        for (float i = 0; i <= 1; i+=0.1f)
-        {        
+        for (float i = 0; i <= 1; i += 0.1f)
+        {
             lastDragged.transform.localScale = Vector2.Lerp(startSize, endSize, i);
             yield return new WaitForSeconds(rate);
         }
@@ -204,7 +226,7 @@ public class DragController : MonoBehaviour
         yield return new WaitForFixedUpdate();
         gridManager.IgnoreBlocks();
         lightSource.Relight();
-        gridManager.SeeBlocks();            
+        gridManager.SeeBlocks();
     }
 
     IEnumerator RelightSequencePickUp()

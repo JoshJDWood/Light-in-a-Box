@@ -6,27 +6,17 @@ public class Draggable : MonoBehaviour
 {
     public BlockData config;    
     public int oRS;
+    public int orderInLayer = 1;
     public bool isDragging;
 
-    private void Awake()
-    {
-        DroppedSortingOrder();
-    }
 
-    public void DraggingSortingOrder()
+    public void UpdateSortingOrder(int order)
     {
         foreach (Transform child in transform)
         {
-            child.GetComponent<SpriteRenderer>().sortingOrder = 24;
+            child.GetComponent<SpriteRenderer>().sortingOrder = order;
         }
-    }
-
-    public void DroppedSortingOrder()
-    {
-        foreach (Transform child in transform)
-        {
-            child.GetComponent<SpriteRenderer>().sortingOrder = config.id;
-        }        
+        orderInLayer = order;
     }    
 
     public void UpdateCR()
