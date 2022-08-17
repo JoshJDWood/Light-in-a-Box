@@ -9,6 +9,7 @@ public class GridManager : MonoBehaviour
     [SerializeField] private GameObject outerWall;
     [SerializeField] private GameObject outerWallCorner;
     [SerializeField] private List<GameObject> blockPrefabs;
+    [SerializeField] private List<Puzzle> puzzlePrefabs;
 
     private List<Tile> tiles = new List<Tile>();
     private List<Draggable> blocks = new List<Draggable>();
@@ -34,9 +35,10 @@ public class GridManager : MonoBehaviour
         puzzle = FindObjectOfType<Puzzle>();
     }
 
-    public void SpawnNewPuzzle(Puzzle puzzle)
+    public void SpawnNewPuzzle(int i)
     {
         DeleteOldPuzzle();
+        this.puzzle = Instantiate(puzzlePrefabs[i]);
         GenerateGrid(puzzle.width, puzzle.height);
         lightSource.transform.position = puzzle.lightPos;
         float x = 0, y = 0;
@@ -55,7 +57,7 @@ public class GridManager : MonoBehaviour
                 }
             }
         }
-        this.puzzle = Instantiate(puzzle);
+        
         if(!dragController.hardMode)
             StartCoroutine(RelightSequence());
     }
@@ -138,6 +140,16 @@ public class GridManager : MonoBehaviour
         GameObject outerWallspawn = Instantiate(outerWallCorner, pos, Quaternion.Euler(new Vector3(0, 0, rotateAmount)));
         outerWallspawn.name = $"Outer Wall Corner {outerWallCornerCount}";
         outerWallCornerCount++;
+    }
+
+    public int[] GetPuzzleSolvedValues()
+    {
+        int[] solvedValues = new int[puzzlePrefabs.Count];
+        for (int i = 0; i < puzzlePrefabs.Count; i++)
+        {
+            solvedValues[i] = puzzlePrefabs[i].solvedValue;
+        }
+        return solvedValues;
     }
 
     public bool CheckSolution()

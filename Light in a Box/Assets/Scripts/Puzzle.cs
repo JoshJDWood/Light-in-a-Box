@@ -8,18 +8,7 @@ public class Puzzle : MonoBehaviour
     public int height;
     public Vector2 lightPos;
 
+    public int solvedValue = 0;
+
     public List<BlockData> solution = new List<BlockData>();
-
-
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 }

@@ -15,14 +15,19 @@ public class MenuManager : MonoBehaviour
     [SerializeField] private GameObject checkButton;
     [SerializeField] private Button easyButton;
     [SerializeField] private Button hardButton;
+    [SerializeField] private string saveFileName;
 
     private DragController dragController;
     private AudioManager audioManager;
+    private GridManager gridManager;
 
     private void Start()
     {
         dragController = FindObjectOfType<DragController>();
         audioManager = FindObjectOfType<AudioManager>();
+        gridManager = FindObjectOfType<GridManager>();
+
+        LoadSaveData();
     }
 
     void Update()
@@ -98,12 +103,11 @@ public class MenuManager : MonoBehaviour
         }
     }
 
-    public void QuitGame()
+    public void LoadSaveData()
     {
-        Debug.Log("Quitting Game...");
-        Application.Quit();
+        SaveManager.SaveData data = SaveManager.LoadFile(saveFileName);
+        HardMode(data.hardMode);
     }
-
     public void Back()
     {
         audioManager.Play("swapMenu");
@@ -112,4 +116,10 @@ public class MenuManager : MonoBehaviour
         pauseMenuUI.SetActive(true);
     }
 
+    public void QuitGame()
+    {
+        SaveManager.SaveFile(gridManager.GetPuzzleSolvedValues(), dragController.hardMode, saveFileName);
+        Debug.Log("Quitting Game...");
+        Application.Quit();
+    }
 }
