@@ -5,6 +5,8 @@ using UnityEngine;
 
 public static class SaveManager
 {
+    public static int unsolvedVal = 1000;
+    public static int solvedEasy = 999;
 
     public static void SaveFile(int[] solvedValues, bool hardMode, string fileName)
     {
@@ -27,7 +29,7 @@ public static class SaveManager
             string contents = File.ReadAllText(path);
             return JsonUtility.FromJson<SaveData>(contents);
         }
-
+        Debug.Log("save file not found");
         return null;
     }
     

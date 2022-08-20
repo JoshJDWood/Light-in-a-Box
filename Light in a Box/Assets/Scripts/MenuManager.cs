@@ -15,19 +15,21 @@ public class MenuManager : MonoBehaviour
     [SerializeField] private GameObject checkButton;
     [SerializeField] private Button easyButton;
     [SerializeField] private Button hardButton;
+    [SerializeField] private Button levelButtonPrefab;
     [SerializeField] private string saveFileName;
 
     private DragController dragController;
     private AudioManager audioManager;
     private GridManager gridManager;
 
-    private void Start()
+    private void Awake()
     {
         dragController = FindObjectOfType<DragController>();
         audioManager = FindObjectOfType<AudioManager>();
         gridManager = FindObjectOfType<GridManager>();
 
         LoadSaveData();
+        formatLevelButtons();
     }
 
     void Update()
@@ -103,10 +105,72 @@ public class MenuManager : MonoBehaviour
         }
     }
 
+    private void formatLevelButtons()
+    {
+        int[] solvedValues = gridManager.GetPuzzleSolvedValues();
+        int x = 0, y = 0;
+        for (int i = 0; i < solvedValues.Length; i++)
+        {
+            int j = i;
+            Button levelButton = Instantiate(levelButtonPrefab, LevelsMenuUI.gameObject.transform);
+            levelButton.name = "Level Button " + (i + 1); //so that levels start at number 1 not 0
+            levelButton.GetComponentInChildren<Text>().text = "" + (i + 1);
+            levelButton.transform.Translate(new Vector2(150 * x, -150 * y));
+            levelButton.onClick.AddListener(() => { gridManager.SpawnNewPuzzle(j); });
+            levelButton.onClick.AddListener(() => { Resume(); });
+
+            Text solvedText = levelButton.gameObject.transform.Find("Solved Text").GetComponent<Text>();
+            solvedText.text = "" + solvedValues[i];
+            if (solvedValues[i] == SaveManager.unsolvedVal)
+            {
+                solvedText.gameObject.SetActive(false);
+            }
+            else
+            {
+                levelButton.image.color = Color.white;
+                if (solvedValues[i] == SaveManager.solvedEasy)
+                    solvedText.gameObject.SetActive(false);
+            }
+
+            x = (x + 1) % 5;
+            if (x == 0)
+            {
+                y++;
+            }
+        }
+    }
+
     public void LoadSaveData()
     {
         SaveManager.SaveData data = SaveManager.LoadFile(saveFileName);
-        HardMode(data.hardMode);
+        if (data != null)
+        {
+            HardMode(data.hardMode);
+            gridManager.SetPuzzleSolvedValues(data.solvedValues);
+        }
+    }
+
+    public void UpdateSaveScores(int solvedValue)
+    {
+        if (gridManager.NewBestScore(solvedValue))
+        {
+            SaveManager.SaveFile(gridManager.GetPuzzleSolvedValues(), dragController.hardMode, saveFileName);
+            Transform buttonTransform = LevelsMenuUI.gameObject.transform.Find("Level Button " + (gridManager.currentPuzzleIndex + 1));
+            Text solvedText = buttonTransform.Find("Solved Text").GetComponent<Text>();
+            solvedText.text = "" + solvedValue;
+            if (solvedValue == SaveManager.unsolvedVal)
+            {
+                solvedText.gameObject.SetActive(false);
+            }
+            else
+            {
+                buttonTransform.GetComponent<Button>().image.color = Color.white;
+                if (solvedValue == SaveManager.solvedEasy)
+                    solvedText.gameObject.SetActive(false);
+                else
+                    solvedText.gameObject.SetActive(true);
+            }
+        }        
     }
     public void Back()
     {

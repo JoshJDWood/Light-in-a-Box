@@ -8,10 +8,12 @@ public class DragController : MonoBehaviour
     [SerializeField] private GameObject solvedHUD;
     private GridManager gridManager;
     private AudioManager audioManager;
+    private MenuManager menuManager;
     private CastBeam lightSource;
 
     public bool isDragActive = false;
     public bool hardMode = false;
+    private int guesses = 0;
 
     private Vector2 screenPos;
     private Vector3 worldPos;
@@ -29,12 +31,14 @@ public class DragController : MonoBehaviour
         cam = Camera.main;
         gridManager = FindObjectOfType<GridManager>();
         audioManager = FindObjectOfType<AudioManager>();
+        menuManager = FindObjectOfType<MenuManager>();
         lightSource = FindObjectOfType<CastBeam>();
     }
 
     private void Start()
     {
-        StartCoroutine(RelightSequence());
+        if (!hardMode)
+            StartCoroutine(RelightSequence());
     }
 
 
@@ -85,7 +89,11 @@ public class DragController : MonoBehaviour
                 lastDragged.SeeWalls();
                 if (!hardMode)
                 {
-                    solvedHUD.SetActive(gridManager.CheckSolution());
+                    if (gridManager.CheckSolution())
+                    {                        
+                        solvedHUD.SetActive(true);
+                        menuManager.UpdateSaveScores(SaveManager.solvedEasy);
+                    }
                     StartCoroutine(RelightSequence());
                 }
             }
@@ -206,7 +214,13 @@ public class DragController : MonoBehaviour
     {
         if (!isDragActive)
         {
-            solvedHUD.SetActive(gridManager.CheckSolution());
+            guesses++;
+            if (gridManager.CheckSolution())
+            {
+                solvedHUD.SetActive(true);
+                menuManager.UpdateSaveScores(guesses);
+                guesses = 0;
+            }
             StartCoroutine(RelightSequence());
         }
     }

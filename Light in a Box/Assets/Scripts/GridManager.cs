@@ -14,6 +14,7 @@ public class GridManager : MonoBehaviour
     private List<Tile> tiles = new List<Tile>();
     private List<Draggable> blocks = new List<Draggable>();
     private Puzzle puzzle;
+    public int currentPuzzleIndex;
     private CastBeam lightSource;
     private DragController dragController;
 
@@ -38,6 +39,7 @@ public class GridManager : MonoBehaviour
     public void SpawnNewPuzzle(int i)
     {
         DeleteOldPuzzle();
+        currentPuzzleIndex = i;
         this.puzzle = Instantiate(puzzlePrefabs[i]);
         GenerateGrid(puzzle.width, puzzle.height);
         lightSource.transform.position = puzzle.lightPos;
@@ -57,9 +59,11 @@ public class GridManager : MonoBehaviour
                 }
             }
         }
-        
-        if(!dragController.hardMode)
+
+        if (!dragController.hardMode)
             StartCoroutine(RelightSequence());
+        else
+            lightSource.LightOff();
     }
 
     public void DeleteOldPuzzle()
@@ -150,6 +154,27 @@ public class GridManager : MonoBehaviour
             solvedValues[i] = puzzlePrefabs[i].solvedValue;
         }
         return solvedValues;
+    }
+
+    public bool NewBestScore(int solvedValue)
+    {
+        if (solvedValue < puzzlePrefabs[currentPuzzleIndex].solvedValue)
+        {
+            puzzlePrefabs[currentPuzzleIndex].solvedValue = solvedValue;
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    public void SetPuzzleSolvedValues(int[] solvedValues)
+    {
+        for (int i = 0; i < solvedValues.Length; i++)
+        {
+            puzzlePrefabs[i].solvedValue = solvedValues[i];
+        }
     }
 
     public bool CheckSolution()
