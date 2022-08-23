@@ -13,6 +13,7 @@ public class DragController : MonoBehaviour
 
     public bool isDragActive = false;
     public bool hardMode = false;
+    public int hintsRemaining = 100;
     private int guesses = 0;
 
     private Vector2 screenPos;
@@ -69,6 +70,11 @@ public class DragController : MonoBehaviour
             CheckSolutionHardMode();
         }
 
+        if (Input.GetKeyDown(KeyCode.H))
+        {
+            GiveHint();
+        }
+
         if (isDragActive && Input.GetMouseButtonUp(0))
         {
             int hitsLength = Physics2D.Raycast(worldPos, Vector2.zero, new ContactFilter2D().NoFilter(), hits, 5.0f);
@@ -90,10 +96,13 @@ public class DragController : MonoBehaviour
                 if (!hardMode)
                 {
                     if (gridManager.CheckSolution())
-                    {                        
+                    {
                         solvedHUD.SetActive(true);
                         menuManager.UpdateSaveScores(SaveManager.solvedEasy);
                     }
+                    else
+                        solvedHUD.SetActive(false);
+                    
                     StartCoroutine(RelightSequence());
                 }
             }
@@ -110,6 +119,7 @@ public class DragController : MonoBehaviour
                     Debug.Log("drop hit nothing");
                 }
                 Drop();
+                solvedHUD.SetActive(false);
             }
             hits.Clear();
             return;
@@ -168,6 +178,7 @@ public class DragController : MonoBehaviour
     void InitDrag()
     {
         audioManager.Play("pickUp");
+        gridManager.RemoveHint();
         grow = StartCoroutine(ResizeDraggable(defaultSize, dragSize, 0.01f));
         lastDragged.UpdateSortingOrder(draggedIndex);
         draggedIndex++;
@@ -222,6 +233,14 @@ public class DragController : MonoBehaviour
                 guesses = 0;
             }
             StartCoroutine(RelightSequence());
+        }
+    }
+
+    public void GiveHint()
+    {
+        if (hintsRemaining > 0 && !isDragActive)
+        {
+            gridManager.GiveHint();
         }
     }
 

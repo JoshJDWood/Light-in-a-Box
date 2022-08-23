@@ -13,4 +13,14 @@ public struct BlockData
         id = idIn;
         r = rIn;
     }
+
+    public static bool operator ==(BlockData lhs, BlockData rhs)
+    {
+        return (lhs.id == rhs.id && lhs.r == rhs.r);
+    }
+    public static bool operator !=(BlockData lhs, BlockData rhs)
+    {
+        return !(lhs == rhs);
+    }
+
 }

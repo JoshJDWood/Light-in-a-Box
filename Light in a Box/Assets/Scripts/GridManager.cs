@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.UI;
 using UnityEngine;
 
 public class GridManager : MonoBehaviour
@@ -8,11 +9,13 @@ public class GridManager : MonoBehaviour
     [SerializeField] private Tile tilePrefab;
     [SerializeField] private GameObject outerWall;
     [SerializeField] private GameObject outerWallCorner;
+    [SerializeField] private Text hintsRemainingText;
     [SerializeField] private List<GameObject> blockPrefabs;
     [SerializeField] private List<Puzzle> puzzlePrefabs;
 
     private List<Tile> tiles = new List<Tile>();
     private List<Draggable> blocks = new List<Draggable>();
+    private List<GameObject> hintsOnDisplay = new List<GameObject>();
     private Puzzle puzzle;
     public int currentPuzzleIndex;
     private CastBeam lightSource;
@@ -156,6 +159,15 @@ public class GridManager : MonoBehaviour
         return solvedValues;
     }
 
+
+    public void SetPuzzleSolvedValues(int[] solvedValues)
+    {
+        for (int i = 0; i < solvedValues.Length; i++)
+        {
+            puzzlePrefabs[i].solvedValue = solvedValues[i];
+        }
+    }
+
     public bool NewBestScore(int solvedValue)
     {
         if (solvedValue < puzzlePrefabs[currentPuzzleIndex].solvedValue)
@@ -169,14 +181,6 @@ public class GridManager : MonoBehaviour
         }
     }
 
-    public void SetPuzzleSolvedValues(int[] solvedValues)
-    {
-        for (int i = 0; i < solvedValues.Length; i++)
-        {
-            puzzlePrefabs[i].solvedValue = solvedValues[i];
-        }
-    }
-
     public bool CheckSolution()
     {
         if (puzzle == null)
@@ -186,7 +190,7 @@ public class GridManager : MonoBehaviour
 
         for (int i = 0; i < tiles.Count; i++)
         {
-            if (tiles[i].heldConfig.id != puzzle.solution[i].id || tiles[i].heldConfig.r != puzzle.solution[i].r)
+            if (tiles[i].heldConfig != puzzle.solution[i])
             {
                 Debug.Log("Answer incorrect");
                 return false;
@@ -194,6 +198,42 @@ public class GridManager : MonoBehaviour
         }
         Debug.Log("Correct Answer, Well Done!");
         return true;
+    }
+
+    public void GiveHint()
+    {
+        if (puzzle == null)
+        {
+            return;
+        }
+    
+        for (int i = 0; i < tiles.Count; i++)
+        {
+            if (tiles[i].heldBlock == null)
+            {
+                continue;
+            }
+
+            GameObject currentHint = tiles[i].heldBlock.gameObject.transform.GetChild(0).gameObject;
+            hintsOnDisplay.Add(currentHint);
+            currentHint.SetActive(true);
+
+            if (tiles[i].heldConfig == puzzle.solution[i])            
+                currentHint.GetComponent<SpriteRenderer>().color = Color.cyan;            
+            else                            
+                currentHint.GetComponent<SpriteRenderer>().color = Color.red;            
+        }
+
+        dragController.hintsRemaining--;
+        hintsRemainingText.text = "" + dragController.hintsRemaining;
+    }
+
+    public void RemoveHint()
+    {
+        foreach (GameObject hint in hintsOnDisplay)
+            hint.SetActive(false);
+
+        hintsOnDisplay.Clear();
     }
 
     public void SeeTiles()

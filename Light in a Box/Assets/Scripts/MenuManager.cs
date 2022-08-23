@@ -16,6 +16,7 @@ public class MenuManager : MonoBehaviour
     [SerializeField] private Button easyButton;
     [SerializeField] private Button hardButton;
     [SerializeField] private Button levelButtonPrefab;
+    [SerializeField] private Text hintsRemainingText;
     [SerializeField] private string saveFileName;
 
     private DragController dragController;
@@ -146,6 +147,8 @@ public class MenuManager : MonoBehaviour
         if (data != null)
         {
             HardMode(data.hardMode);
+            dragController.hintsRemaining = data.hintsRemaining;
+            hintsRemainingText.text = "" + dragController.hintsRemaining;
             gridManager.SetPuzzleSolvedValues(data.solvedValues);
         }
     }
@@ -154,7 +157,7 @@ public class MenuManager : MonoBehaviour
     {
         if (gridManager.NewBestScore(solvedValue))
         {
-            SaveManager.SaveFile(gridManager.GetPuzzleSolvedValues(), dragController.hardMode, saveFileName);
+            SaveManager.SaveFile(gridManager.GetPuzzleSolvedValues(), dragController.hardMode, dragController.hintsRemaining, saveFileName);
             Transform buttonTransform = LevelsMenuUI.gameObject.transform.Find("Level Button " + (gridManager.currentPuzzleIndex + 1));
             Text solvedText = buttonTransform.Find("Solved Text").GetComponent<Text>();
             solvedText.text = "" + solvedValue;
@@ -182,7 +185,7 @@ public class MenuManager : MonoBehaviour
 
     public void QuitGame()
     {
-        SaveManager.SaveFile(gridManager.GetPuzzleSolvedValues(), dragController.hardMode, saveFileName);
+        SaveManager.SaveFile(gridManager.GetPuzzleSolvedValues(), dragController.hardMode, dragController.hintsRemaining, saveFileName);
         Debug.Log("Quitting Game...");
         Application.Quit();
     }
