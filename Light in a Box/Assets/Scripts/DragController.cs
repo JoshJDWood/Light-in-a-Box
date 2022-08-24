@@ -23,7 +23,7 @@ public class DragController : MonoBehaviour
     private Vector2 dragOffset;
     private List<RaycastHit2D> hits = new List<RaycastHit2D>();
 
-    private Vector2 dragSize = new Vector2(1.1f, 1.1f);
+    private Vector2 dragSize = new Vector2(1.2f, 1.2f);
     private Vector2 defaultSize = new Vector2(1f, 1f);
     private Coroutine grow;
 

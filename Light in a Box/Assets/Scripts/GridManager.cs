@@ -95,6 +95,7 @@ public class GridManager : MonoBehaviour
             Destroy(b.gameObject);
         }
         blocks.Clear();
+        hintsOnDisplay.Clear();
     }
 
     IEnumerator RelightSequence()
