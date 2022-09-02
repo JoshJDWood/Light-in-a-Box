@@ -35,9 +35,9 @@ public class MenuManager : MonoBehaviour
 
     void Update()
     {
-        if(Input.GetKeyDown(KeyCode.Escape))
+        if (Input.GetKeyDown(KeyCode.Escape))
         {
-            if(gameIsPaused)
+            if (gameIsPaused)
             {
                 Resume();
             }
@@ -86,7 +86,7 @@ public class MenuManager : MonoBehaviour
     {
         dragController.hardMode = hardMode;
         checkButton.SetActive(hardMode);
-        if(hardMode)
+        if (hardMode)
         {
             ColorBlock newColors = hardButton.colors;
             newColors.normalColor = new Color(0, 0, 0, 1);
@@ -114,8 +114,16 @@ public class MenuManager : MonoBehaviour
         {
             int j = i;
             Button levelButton = Instantiate(levelButtonPrefab, LevelsMenuUI.gameObject.transform);
-            levelButton.name = "Level Button " + (i + 1); //so that levels start at number 1 not 0
-            levelButton.GetComponentInChildren<Text>().text = "" + (i + 1);
+            if (i == 0)
+            {
+                levelButton.name = "Level Button " + (i); //for the tutorial level
+                levelButton.GetComponentInChildren<Text>().text = "T";
+            }
+            else
+            {
+                levelButton.name = "Level Button " + (i); //so that levels start at number 1 not 0
+                levelButton.GetComponentInChildren<Text>().text = "" + (i);
+            }
             levelButton.transform.Translate(new Vector2(150 * x, -150 * y));
             levelButton.onClick.AddListener(() => { gridManager.SpawnNewPuzzle(j); });
             levelButton.onClick.AddListener(() => { Resume(); });
@@ -158,7 +166,7 @@ public class MenuManager : MonoBehaviour
         if (gridManager.NewBestScore(solvedValue))
         {
             SaveManager.SaveFile(gridManager.GetPuzzleSolvedValues(), dragController.hardMode, dragController.hintsRemaining, saveFileName);
-            Transform buttonTransform = LevelsMenuUI.gameObject.transform.Find("Level Button " + (gridManager.currentPuzzleIndex + 1));
+            Transform buttonTransform = LevelsMenuUI.gameObject.transform.Find("Level Button " + (gridManager.currentPuzzleIndex));
             Text solvedText = buttonTransform.Find("Solved Text").GetComponent<Text>();
             solvedText.text = "" + solvedValue;
             if (solvedValue == SaveManager.unsolvedVal)
@@ -173,7 +181,7 @@ public class MenuManager : MonoBehaviour
                 else
                     solvedText.gameObject.SetActive(true);
             }
-        }        
+        }
     }
     public void Back()
     {

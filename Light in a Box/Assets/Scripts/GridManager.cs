@@ -12,6 +12,7 @@ public class GridManager : MonoBehaviour
     [SerializeField] private Text hintsRemainingText;
     [SerializeField] private List<GameObject> blockPrefabs;
     [SerializeField] private List<Puzzle> puzzlePrefabs;
+    [SerializeField] private GameObject tutorialCanvas;
 
     private List<Tile> tiles = new List<Tile>();
     private List<Draggable> blocks = new List<Draggable>();
@@ -20,6 +21,7 @@ public class GridManager : MonoBehaviour
     public int currentPuzzleIndex;
     private CastBeam lightSource;
     private DragController dragController;
+    private TutorialManager tutorialManager;
 
     private float wallThickness = 0.1f; //actually half wall thinkness
     private int outerWallCount = 0;
@@ -32,6 +34,7 @@ public class GridManager : MonoBehaviour
         GenerateGrid(width, height);
         lightSource = FindObjectOfType<CastBeam>();
         dragController = FindObjectOfType<DragController>();
+        tutorialManager = FindObjectOfType<TutorialManager>();
         foreach(Draggable block in FindObjectsOfType<Draggable>())
         {
             blocks.Add(block);
@@ -41,6 +44,8 @@ public class GridManager : MonoBehaviour
 
     public void SpawnNewPuzzle(int i)
     {
+        tutorialCanvas.SetActive(false);        
+
         DeleteOldPuzzle();
         currentPuzzleIndex = i;
         this.puzzle = Instantiate(puzzlePrefabs[i]);
@@ -61,6 +66,15 @@ public class GridManager : MonoBehaviour
                     y++;
                 }
             }
+        }
+
+        if (i == 0)
+        {
+            dragController.hardMode = false;
+            tutorialManager.ResetTutorialIndex();
+            tutorialCanvas.SetActive(true);
+            blocks[1].gameObject.SetActive(false);
+            puzzle.gameObject.SetActive(false);
         }
 
         if (!dragController.hardMode)
@@ -187,6 +201,29 @@ public class GridManager : MonoBehaviour
         if (puzzle == null)
         {
             return false;
+        }
+        else if (currentPuzzleIndex == 0)
+        {
+            if (tutorialManager.promptIndex == 0 && tiles[1].heldConfig == new BlockData(6,3))
+            {
+                tutorialManager.promptIndex = 1;
+                tutorialManager.UpdateDisplayedPrompt();
+                blocks[1].gameObject.SetActive(true);
+            }
+            else if (tutorialManager.promptIndex == 1 && tiles[4].heldConfig == new BlockData(1, 2))
+            {
+                tutorialManager.promptIndex = 2;
+                tutorialManager.UpdateDisplayedPrompt();
+                puzzle.gameObject.SetActive(true);
+            }
+            else if (tutorialManager.promptIndex == 2 && tiles[1].heldConfig == new BlockData(6, 3) && tiles[3].heldConfig == new BlockData(1, 2))
+            {
+                tutorialManager.promptIndex = 3;
+                tutorialManager.UpdateDisplayedPrompt();
+            }
+
+            if (tutorialManager.promptIndex != 3)
+                return false;
         }
 
         for (int i = 0; i < tiles.Count; i++)

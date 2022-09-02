@@ -23,4 +23,18 @@ public struct BlockData
         return !(lhs == rhs);
     }
 
+    public override bool Equals(object obj)
+    {
+        return obj is BlockData data &&
+               id == data.id &&
+               r == data.r;
+    }
+
+    public override int GetHashCode()
+    {
+        int hashCode = 1727120629;
+        hashCode = hashCode * -1521134295 + id.GetHashCode();
+        hashCode = hashCode * -1521134295 + r.GetHashCode();
+        return hashCode;
+    }
 }
