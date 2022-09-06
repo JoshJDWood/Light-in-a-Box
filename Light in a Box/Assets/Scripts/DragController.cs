@@ -98,6 +98,7 @@ public class DragController : MonoBehaviour
                     if (gridManager.CheckSolution())
                     {
                         solvedHUD.SetActive(true);
+                        audioManager.Play("win");
                         menuManager.UpdateSaveScores(SaveManager.solvedEasy);
                     }
                     else
@@ -229,6 +230,7 @@ public class DragController : MonoBehaviour
             if (gridManager.CheckSolution())
             {
                 solvedHUD.SetActive(true);
+                audioManager.Play("win");
                 menuManager.UpdateSaveScores(guesses);
                 guesses = 0;
             }
@@ -254,7 +256,7 @@ public class DragController : MonoBehaviour
         }
     }
 
-    IEnumerator RelightSequence()
+    public IEnumerator RelightSequence()
     {
         yield return new WaitForFixedUpdate();
         gridManager.IgnoreBlocks();

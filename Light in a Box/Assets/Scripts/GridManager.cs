@@ -22,10 +22,14 @@ public class GridManager : MonoBehaviour
     private CastBeam lightSource;
     private DragController dragController;
     private TutorialManager tutorialManager;
+    private AudioManager audioManager;
 
     private float wallThickness = 0.1f; //actually half wall thinkness
     private int outerWallCount = 0;
     private int outerWallCornerCount = 0;
+    private float spawnX = -2.5f;
+    private float spawnY = 1.5f;
+    private float spawnGap = 1.1f;
 
     [SerializeField] private Transform cam;
 
@@ -35,7 +39,8 @@ public class GridManager : MonoBehaviour
         lightSource = FindObjectOfType<CastBeam>();
         dragController = FindObjectOfType<DragController>();
         tutorialManager = FindObjectOfType<TutorialManager>();
-        foreach(Draggable block in FindObjectsOfType<Draggable>())
+        audioManager = FindObjectOfType<AudioManager>();
+        foreach (Draggable block in FindObjectsOfType<Draggable>())
         {
             blocks.Add(block);
         }
@@ -56,7 +61,7 @@ public class GridManager : MonoBehaviour
         {
             if (bD.id != 0)
             {
-                GameObject newBlock = Instantiate(blockPrefabs[bD.id], new Vector2(-2.5f + x * 1.1f, 1.5f - y * 1.1f), Quaternion.Euler(new Vector3(0, 0, 90 * bD.r)));
+                GameObject newBlock = Instantiate(blockPrefabs[bD.id], new Vector2(spawnX + x * spawnGap, spawnY - y * spawnGap), Quaternion.Euler(new Vector3(0, 0, 90 * bD.r)));
                 newBlock.GetComponent<Draggable>().UpdateCR();
                 blocks.Add(newBlock.GetComponent<Draggable>());
 
@@ -206,15 +211,13 @@ public class GridManager : MonoBehaviour
         {
             if (tutorialManager.promptIndex == 0 && tiles[1].heldConfig == new BlockData(6,3))
             {
-                tutorialManager.promptIndex = 1;
-                tutorialManager.UpdateDisplayedPrompt();
-                blocks[1].gameObject.SetActive(true);
+                audioManager.Play("win");
+                StartCoroutine(TutorialPhase1());
             }
             else if (tutorialManager.promptIndex == 1 && tiles[4].heldConfig == new BlockData(1, 2))
             {
-                tutorialManager.promptIndex = 2;
-                tutorialManager.UpdateDisplayedPrompt();
-                puzzle.gameObject.SetActive(true);
+                audioManager.Play("win");
+                StartCoroutine(TutorialPhase2());
             }
             else if (tutorialManager.promptIndex == 2 && tiles[1].heldConfig == new BlockData(6, 3) && tiles[3].heldConfig == new BlockData(1, 2))
             {
@@ -236,6 +239,33 @@ public class GridManager : MonoBehaviour
         }
         Debug.Log("Correct Answer, Well Done!");
         return true;
+
+        IEnumerator TutorialPhase1()
+        {
+            yield return new WaitForSeconds(1.5f);
+            tutorialManager.promptIndex = 1;
+            tutorialManager.UpdateDisplayedPrompt();
+            blocks[1].gameObject.SetActive(true);
+        }
+
+        IEnumerator TutorialPhase2()
+        {
+            yield return new WaitForSeconds(1.5f);
+            tutorialManager.promptIndex = 2;
+            tutorialManager.UpdateDisplayedPrompt();
+            puzzle.gameObject.SetActive(true);
+            foreach (Tile t in tiles)
+            {
+                t.ExitTile();
+            }
+            int x = 0, y = 0;
+            foreach (Draggable block in blocks)
+            {
+                block.transform.position = new Vector2(spawnX + x * spawnGap, spawnY - y * spawnGap);
+                x++;
+            }
+            StartCoroutine(dragController.RelightSequence());
+        }
     }
 
     public void GiveHint()
