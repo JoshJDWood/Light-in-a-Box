@@ -519,7 +519,12 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Blue Mirrors reflect light
+  m_Text: 'Blue Mirrors block light
+
+    from passing through aswell
+
+    but also
+    reflect light'
 --- !u!222 &160294114
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1388,7 +1393,7 @@ MonoBehaviour:
   m_BlendStyleIndex: 0
   m_FalloffIntensity: 0.5
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_Intensity: 0.3
+  m_Intensity: 0.4
   m_LightVolumeOpacity: 0
   m_ApplyToSortingLayers: 000000003f2e23c749890b71
   m_LightCookieSprite: {fileID: 0}
@@ -2435,7 +2440,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 1
   m_Sprite: {fileID: 21300000, guid: 78481be933bad7f4cb4d639c5a50b06e, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -2655,12 +2660,12 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'The objective is to place blocks so that:
+  m_Text: 'Your objective is to place blocks so that:
 
     White sections remain
     lit.
 
-    Grey sections are cast in shadow.
+    Dark sections are cast in shadow.
 
     You must use all blocks available.
 
@@ -4278,7 +4283,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "Red Walls block light \nfrom passing through"
+  m_Text: "Red Walls block light \nfrom passing through\nand cast a shadow"
 --- !u!222 &1313656761
 CanvasRenderer:
   m_ObjectHideFlags: 0
