@@ -6,10 +6,10 @@ public class DragController : MonoBehaviour
 {
     [SerializeField] private Camera cam;
     [SerializeField] private GameObject solvedHUD;
-    private GridManager gridManager;
-    private AudioManager audioManager;
-    private MenuManager menuManager;
-    private CastBeam lightSource;
+    [SerializeField] private GridManager gridManager;
+    [SerializeField] private AudioManager audioManager;
+    [SerializeField] private MenuManager menuManager;
+    [SerializeField] private CastBeam lightSource;
 
     public bool isDragActive = false;
     public bool hardMode = false;
@@ -30,10 +30,6 @@ public class DragController : MonoBehaviour
     void Awake()
     {
         cam = Camera.main;
-        gridManager = FindObjectOfType<GridManager>();
-        audioManager = FindObjectOfType<AudioManager>();
-        menuManager = FindObjectOfType<MenuManager>();
-        lightSource = FindObjectOfType<CastBeam>();
     }
 
     private void Start()
@@ -100,6 +96,7 @@ public class DragController : MonoBehaviour
                         solvedHUD.SetActive(true);
                         audioManager.Play("win");
                         menuManager.UpdateSaveScores(SaveManager.solvedEasy);
+                        MenuManager.gameIsPaused = true;
                     }
                     else
                         solvedHUD.SetActive(false);
@@ -233,6 +230,7 @@ public class DragController : MonoBehaviour
                 audioManager.Play("win");
                 menuManager.UpdateSaveScores(guesses);
                 guesses = 0;
+                MenuManager.gameIsPaused = true;
             }
             StartCoroutine(RelightSequence());
         }

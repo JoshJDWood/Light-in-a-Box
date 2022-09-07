@@ -19,16 +19,12 @@ public class MenuManager : MonoBehaviour
     [SerializeField] private Text hintsRemainingText;
     [SerializeField] private string saveFileName;
 
-    private DragController dragController;
-    private AudioManager audioManager;
-    private GridManager gridManager;
+    [SerializeField] private DragController dragController;
+    [SerializeField] private AudioManager audioManager;
+    [SerializeField] private GridManager gridManager;
 
     private void Awake()
     {
-        dragController = FindObjectOfType<DragController>();
-        audioManager = FindObjectOfType<AudioManager>();
-        gridManager = FindObjectOfType<GridManager>();
-
         LoadSaveData();
         formatLevelButtons();
     }
@@ -63,8 +59,11 @@ public class MenuManager : MonoBehaviour
     {
         audioManager.Play("pause");
         dragController.DropForPause();
-        pauseMenuUI.SetActive(true);
+        LevelsMenuUI.SetActive(false);
+        SettingsMenuUI.SetActive(false);
+        solvedHUD.SetActive(false);
         HUD.SetActive(false);
+        pauseMenuUI.SetActive(true);        
         gameIsPaused = true;
     }
 
@@ -72,6 +71,9 @@ public class MenuManager : MonoBehaviour
     {
         audioManager.Play("swapMenu");
         pauseMenuUI.SetActive(false);
+        SettingsMenuUI.SetActive(false);
+        solvedHUD.SetActive(false);
+        HUD.SetActive(false);
         LevelsMenuUI.SetActive(true);
     }
 
@@ -79,6 +81,9 @@ public class MenuManager : MonoBehaviour
     {
         audioManager.Play("swapMenu");
         pauseMenuUI.SetActive(false);
+        LevelsMenuUI.SetActive(false);
+        solvedHUD.SetActive(false);
+        HUD.SetActive(false);
         SettingsMenuUI.SetActive(true);
     }
 
@@ -188,6 +193,8 @@ public class MenuManager : MonoBehaviour
         audioManager.Play("swapMenu");
         LevelsMenuUI.SetActive(false);
         SettingsMenuUI.SetActive(false);
+        solvedHUD.SetActive(false);
+        HUD.SetActive(false);
         pauseMenuUI.SetActive(true);
     }
 

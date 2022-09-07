@@ -19,10 +19,12 @@ public class GridManager : MonoBehaviour
     private List<GameObject> hintsOnDisplay = new List<GameObject>();
     private Puzzle puzzle;
     public int currentPuzzleIndex;
-    private CastBeam lightSource;
-    private DragController dragController;
-    private TutorialManager tutorialManager;
-    private AudioManager audioManager;
+
+    [SerializeField] private CastBeam lightSource;
+    [SerializeField] private DragController dragController;
+    [SerializeField] private TutorialManager tutorialManager;
+    [SerializeField] private AudioManager audioManager;
+    [SerializeField] private MenuManager menuManager;
 
     private float wallThickness = 0.1f; //actually half wall thinkness
     private int outerWallCount = 0;
@@ -36,10 +38,6 @@ public class GridManager : MonoBehaviour
     void Start()
     {
         GenerateGrid(width, height);
-        lightSource = FindObjectOfType<CastBeam>();
-        dragController = FindObjectOfType<DragController>();
-        tutorialManager = FindObjectOfType<TutorialManager>();
-        audioManager = FindObjectOfType<AudioManager>();
         foreach (Draggable block in FindObjectsOfType<Draggable>())
         {
             blocks.Add(block);
@@ -83,7 +81,7 @@ public class GridManager : MonoBehaviour
         }
 
         if (!dragController.hardMode)
-            StartCoroutine(RelightSequence());
+            StartCoroutine(dragController.RelightSequence());
         else
             lightSource.LightOff();
     }
@@ -117,10 +115,22 @@ public class GridManager : MonoBehaviour
         hintsOnDisplay.Clear();
     }
 
-    IEnumerator RelightSequence()
+    public void SpawnNextPuzzle()
     {
-        yield return new WaitForFixedUpdate();
-        lightSource.Relight();
+        if (currentPuzzleIndex < puzzlePrefabs.Count - 1)
+        {
+            SpawnNewPuzzle(currentPuzzleIndex + 1);
+        }
+        else
+        {
+            StartCoroutine(OpenLevelSelectionDelayed());
+        }
+
+        IEnumerator OpenLevelSelectionDelayed()
+        {
+            yield return new WaitForFixedUpdate();
+            menuManager.OpenLevelSelection();
+        }
     }
 
     void GenerateGrid(int width, int height)
