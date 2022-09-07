@@ -14,6 +14,7 @@ public class CastBeam : MonoBehaviour
     int bounces = 0;
     Vector2 prevRayPos = new Vector2(0, 0);
     bool skipCorner = false;
+    bool winColor = false;
     int maxBounces = 4;
     int beamCount = 0;
 
@@ -30,10 +31,11 @@ public class CastBeam : MonoBehaviour
 
     }
 
-    public void Relight()
+    public void Relight(bool beatPuzzle)
     {
         LightOff();
         beamCount = 0;
+        winColor = beatPuzzle;
         rayDataSet.Clear();
         shapePath.Clear();
         shapePathReuseable.Clear();
@@ -122,7 +124,7 @@ public class CastBeam : MonoBehaviour
             OrderShapePath(reflectionS[i], reflectionE[i], i);
         }
 
-        new LightBeam2D(shapePath.ToArray(), beamCount);
+        new LightBeam2D(shapePath.ToArray(), beamCount, winColor);
         beamCount++;
 
         void AssessDepth(int bounces)
@@ -170,7 +172,7 @@ public class CastBeam : MonoBehaviour
             }
             if (shapePathReuseable.Count > 2)
             {
-                new LightBeam2D(shapePathReuseable.ToArray(), beamCount);
+                new LightBeam2D(shapePathReuseable.ToArray(), beamCount, winColor);
                 beamCount++;
             }
             shapePathReuseable.Clear();
@@ -187,7 +189,7 @@ public class CastBeam : MonoBehaviour
             }
             if (shapePathReuseable.Count > 2)
             {
-                new LightBeam2D(shapePathReuseable.ToArray(), beamCount);
+                new LightBeam2D(shapePathReuseable.ToArray(), beamCount, winColor);
                 beamCount++;
             }
             shapePathReuseable.Clear();

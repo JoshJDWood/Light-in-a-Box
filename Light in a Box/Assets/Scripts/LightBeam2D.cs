@@ -11,15 +11,24 @@ public class LightBeam2D
     //float falloffInt = 0.1f;
     float falloffSize = 0.04f;
     bool alphaBlendOnOverlap = true;
+    private Color defualtColor = new Color(0.78f, 1, 1);
+    private Color winColor = new Color(0.5f, 1, 1);
 
-    public LightBeam2D(Vector3[] shapePath, int id)
+    public LightBeam2D(Vector3[] shapePath, int id, bool isWinColor)
     {
         this.beamObj = new GameObject();
         this.beamObj.name = "2D Lightbeam " + id;
 
         this.beam = this.beamObj.AddComponent(typeof(Light2D)) as Light2D;
         this.beam.lightType = Light2D.LightType.Freeform;
-        this.beam.color = new Color(0.78f,1,1);
+        if (isWinColor)
+        {
+            this.beam.color = winColor;
+        }
+        else
+        {
+            this.beam.color = defualtColor;
+        }
 
         SetAlphaBlendOnOverlap(beam, alphaBlendOnOverlap);
         SetFalloffSize(beam, falloffSize);

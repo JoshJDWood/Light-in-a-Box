@@ -81,7 +81,7 @@ public class GridManager : MonoBehaviour
         }
 
         if (!dragController.hardMode)
-            StartCoroutine(dragController.RelightSequence());
+            StartCoroutine(dragController.RelightSequence(false));
         else
             lightSource.LightOff();
     }
@@ -274,7 +274,7 @@ public class GridManager : MonoBehaviour
                 block.transform.position = new Vector2(spawnX + x * spawnGap, spawnY - y * spawnGap);
                 x++;
             }
-            StartCoroutine(dragController.RelightSequence());
+            StartCoroutine(dragController.RelightSequence(false));
         }
     }
 

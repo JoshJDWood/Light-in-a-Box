@@ -35,7 +35,7 @@ public class DragController : MonoBehaviour
     private void Start()
     {
         if (!hardMode)
-            StartCoroutine(RelightSequence());
+            StartCoroutine(RelightSequence(false));
     }
 
 
@@ -93,15 +93,18 @@ public class DragController : MonoBehaviour
                 {
                     if (gridManager.CheckSolution())
                     {
-                        solvedHUD.SetActive(true);
+                        StartCoroutine(DelayShowSolvedHUD());
                         audioManager.Play("win");
                         menuManager.UpdateSaveScores(SaveManager.solvedEasy);
                         MenuManager.gameIsPaused = true;
+                        StartCoroutine(RelightSequence(true));
                     }
                     else
+                    {
                         solvedHUD.SetActive(false);
+                        StartCoroutine(RelightSequence(false));
+                    }
                     
-                    StartCoroutine(RelightSequence());
                 }
             }
             else
@@ -226,13 +229,17 @@ public class DragController : MonoBehaviour
             guesses++;
             if (gridManager.CheckSolution())
             {
-                solvedHUD.SetActive(true);
+                StartCoroutine(DelayShowSolvedHUD());
                 audioManager.Play("win");
                 menuManager.UpdateSaveScores(guesses);
                 guesses = 0;
                 MenuManager.gameIsPaused = true;
+                StartCoroutine(RelightSequence(true));
             }
-            StartCoroutine(RelightSequence());
+            else
+            {
+                StartCoroutine(RelightSequence(false));
+            }
         }
     }
 
@@ -254,11 +261,11 @@ public class DragController : MonoBehaviour
         }
     }
 
-    public IEnumerator RelightSequence()
+    public IEnumerator RelightSequence(bool beatPuzzle)
     {
         yield return new WaitForFixedUpdate();
         gridManager.IgnoreBlocks();
-        lightSource.Relight();
+        lightSource.Relight(beatPuzzle);
         gridManager.SeeBlocks();
     }
 
@@ -266,10 +273,16 @@ public class DragController : MonoBehaviour
     {
         yield return new WaitForFixedUpdate();
         gridManager.IgnoreBlocks();
-        lightSource.Relight();
+        lightSource.Relight(false);
         gridManager.SeeBlocks();
         UpdateDragStatus(true);
         gridManager.SeeTiles();
+    }
+
+    IEnumerator DelayShowSolvedHUD()
+    {
+        yield return new WaitForSeconds(2f);
+        solvedHUD.SetActive(true);
     }
 
     IEnumerator DropOnDelay()
