@@ -45,14 +45,15 @@ public class MenuManager : MonoBehaviour
     }
 
     public void Resume()
-    {
+    {        
         audioManager.Play("resume");
         pauseMenuUI.SetActive(false);
         LevelsMenuUI.SetActive(false);
         SettingsMenuUI.SetActive(false);
         solvedHUD.SetActive(false);
         HUD.SetActive(true);
-        gameIsPaused = false;
+        if (gridManager.currentPuzzleIndex != 0) //to prevent unpausing when entering the tutorial
+            gameIsPaused = false;
     }
 
     public void Pause()

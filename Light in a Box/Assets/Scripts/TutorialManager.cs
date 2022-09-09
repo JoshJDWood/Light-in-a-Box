@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class TutorialManager : MonoBehaviour
 {
-    [SerializeField] private GameObject[] tutorialPrompts;
+    [SerializeField] public GameObject[] tutorialPrompts;
     public int promptIndex;
 
     public void UpdateDisplayedPrompt()
@@ -16,6 +16,9 @@ public class TutorialManager : MonoBehaviour
             else
                 tutorialPrompts[i].SetActive(false);
         }
+
+        tutorialPrompts[2].transform.GetChild(0).gameObject.SetActive(true);
+        tutorialPrompts[3].transform.GetChild(0).gameObject.SetActive(true);
     }
 
     public void ResetTutorialIndex()

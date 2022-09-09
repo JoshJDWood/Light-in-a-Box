@@ -13,12 +13,14 @@ public class GridManager : MonoBehaviour
     [SerializeField] private List<GameObject> blockPrefabs;
     [SerializeField] private List<Puzzle> puzzlePrefabs;
     [SerializeField] private GameObject tutorialCanvas;
+    [SerializeField] private Button tutorialNextPromptButton;
+    [SerializeField] private GameObject solvedHUD;
 
     private List<Tile> tiles = new List<Tile>();
     private List<Draggable> blocks = new List<Draggable>();
     private List<GameObject> hintsOnDisplay = new List<GameObject>();
     private Puzzle puzzle;
-    public int currentPuzzleIndex;
+    public int currentPuzzleIndex = -1;
 
     [SerializeField] private CastBeam lightSource;
     [SerializeField] private DragController dragController;
@@ -30,7 +32,7 @@ public class GridManager : MonoBehaviour
     private int outerWallCount = 0;
     private int outerWallCornerCount = 0;
     private float spawnX = -2.5f;
-    private float spawnY = 1.5f;
+    private float spawnY = 0.5f;
     private float spawnGap = 1.1f;
 
     [SerializeField] private Transform cam;
@@ -59,7 +61,8 @@ public class GridManager : MonoBehaviour
         {
             if (bD.id != 0)
             {
-                GameObject newBlock = Instantiate(blockPrefabs[bD.id], new Vector2(spawnX + x * spawnGap, spawnY - y * spawnGap), Quaternion.Euler(new Vector3(0, 0, 90 * bD.r)));
+                GameObject newBlock = Instantiate(blockPrefabs[bD.id], new Vector2(spawnX + x * spawnGap, spawnY + ((float)puzzle.height / 2) - y * spawnGap),
+                    Quaternion.Euler(new Vector3(0, 0, 90 * bD.r)));
                 newBlock.GetComponent<Draggable>().UpdateCR();
                 blocks.Add(newBlock.GetComponent<Draggable>());
 
@@ -76,7 +79,7 @@ public class GridManager : MonoBehaviour
             dragController.hardMode = false;
             tutorialManager.ResetTutorialIndex();
             tutorialCanvas.SetActive(true);
-            blocks[1].gameObject.SetActive(false);
+            MenuManager.gameIsPaused = true; 
             puzzle.gameObject.SetActive(false);
         }
 
@@ -161,8 +164,10 @@ public class GridManager : MonoBehaviour
         SpawnOuterWallCorner(new Vector2(-0.5f + wallThickness + width, - 0.5f - wallThickness), 0);
         SpawnOuterWallCorner(new Vector2(-0.5f + wallThickness + width, -0.5f + wallThickness + height), 0);
 
-
-        cam.transform.position = new Vector3((float)width / 2 - 0.5f, (float)height / 2 - 0.5f, -10);
+        if (currentPuzzleIndex != 0)
+            cam.transform.position = new Vector3((float)width / 2 - 0.5f, (float)height / 2 - 0.5f, -10);
+        else
+            cam.transform.position = new Vector3((float)width / 2 - 0.5f, (float)height / 2 - 0.9f, -10);
     }
 
     void SpawnOuterWall(Vector2 pos, int rotateAmount)
@@ -219,23 +224,9 @@ public class GridManager : MonoBehaviour
         }
         else if (currentPuzzleIndex == 0)
         {
-            if (tutorialManager.promptIndex == 0 && tiles[1].heldConfig == new BlockData(6,3))
-            {
-                audioManager.Play("win");
-                StartCoroutine(TutorialPhase1());
-            }
-            else if (tutorialManager.promptIndex == 1 && tiles[4].heldConfig == new BlockData(1, 2))
-            {
-                audioManager.Play("win");
-                StartCoroutine(TutorialPhase2());
-            }
-            else if (tutorialManager.promptIndex == 2 && tiles[1].heldConfig == new BlockData(6, 3) && tiles[3].heldConfig == new BlockData(1, 2))
-            {
-                tutorialManager.promptIndex = 3;
-                tutorialManager.UpdateDisplayedPrompt();
-            }
-
-            if (tutorialManager.promptIndex != 3)
+            TutorialController(0);
+            
+            if (tutorialManager.promptIndex != 7)
                 return false;
         }
 
@@ -248,20 +239,82 @@ public class GridManager : MonoBehaviour
             }
         }
         Debug.Log("Correct Answer, Well Done!");
-        return true;
+        return true;        
+    }
 
-        IEnumerator TutorialPhase1()
+    public void TutorialController(int skipValue)
+    {
+
+
+        if (tutorialManager.promptIndex == 0)
         {
+            foreach (Draggable block in blocks)
+            {
+                GameObject currentHint = block.gameObject.transform.GetChild(0).gameObject;
+                currentHint.SetActive(true);
+                currentHint.GetComponent<SpriteRenderer>().color = Color.yellow;
+            }
+        }
+        else if (tutorialManager.promptIndex == 1)
+        {
+            foreach (Draggable block in blocks)
+            {
+                GameObject currentHint = block.gameObject.transform.GetChild(0).gameObject;
+                currentHint.SetActive(false);
+                blocks[1].gameObject.SetActive(false);
+                MenuManager.gameIsPaused = false;
+                tutorialNextPromptButton.interactable = false;
+            }
+        }
+        else if (tutorialManager.promptIndex == 2 && tiles[1].heldConfig == new BlockData(6, 3))
+        {
+            audioManager.Play("win");
+            StartCoroutine(TutorialPhase3());
+        }
+        else if (tutorialManager.promptIndex == 3 && tiles[4].heldConfig == new BlockData(1, 2))
+        {
+            audioManager.Play("win");
+            StartCoroutine(TutorialPhase4());
+        }
+        else if (tutorialManager.promptIndex == 4 && tiles[1].heldConfig == new BlockData(6, 3) && tiles[3].heldConfig == new BlockData(1, 2))
+        {
+            tutorialManager.promptIndex = 5;
+            tutorialNextPromptButton.interactable = true;
+        }
+        else if (tutorialManager.promptIndex == 5)
+        {
+            foreach (Draggable block in blocks)
+            {
+                GameObject currentHint = block.gameObject.transform.GetChild(0).gameObject;
+                currentHint.SetActive(false);
+            }
+        }
+        else if (tutorialManager.promptIndex == 6)
+        {
+            solvedHUD.SetActive(true);
+            menuManager.UpdateSaveScores(SaveManager.solvedEasy);
+            return;
+        }
+
+        tutorialManager.promptIndex += skipValue;
+        tutorialManager.UpdateDisplayedPrompt();
+
+        IEnumerator TutorialPhase3()
+        {
+            yield return new WaitForFixedUpdate();
+            tutorialManager.tutorialPrompts[2].transform.GetChild(0).gameObject.SetActive(false);
             yield return new WaitForSeconds(1.5f);
-            tutorialManager.promptIndex = 1;
+            tutorialManager.promptIndex = 3;
             tutorialManager.UpdateDisplayedPrompt();
             blocks[1].gameObject.SetActive(true);
         }
 
-        IEnumerator TutorialPhase2()
+        IEnumerator TutorialPhase4()
         {
+            yield return new WaitForFixedUpdate();
+            tutorialManager.tutorialPrompts[3].transform.GetChild(0).gameObject.SetActive(false);
             yield return new WaitForSeconds(1.5f);
-            tutorialManager.promptIndex = 2;
+            tutorialManager.promptIndex = 4;
             tutorialManager.UpdateDisplayedPrompt();
             puzzle.gameObject.SetActive(true);
             foreach (Tile t in tiles)
@@ -271,7 +324,7 @@ public class GridManager : MonoBehaviour
             int x = 0, y = 0;
             foreach (Draggable block in blocks)
             {
-                block.transform.position = new Vector2(spawnX + x * spawnGap, spawnY - y * spawnGap);
+                block.transform.position = new Vector2(spawnX + x * spawnGap, spawnY + (puzzle.height / 2) - y * spawnGap);
                 x++;
             }
             StartCoroutine(dragController.RelightSequence(false));
