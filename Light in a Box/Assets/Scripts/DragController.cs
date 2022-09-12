@@ -204,6 +204,7 @@ public class DragController : MonoBehaviour
         audioManager.Play("drop" + UnityEngine.Random.Range(1, 4));
         StopCoroutine(grow);
         lastDragged.transform.localScale = defaultSize;
+        lastDragged.gameObject.GetComponent<SpriteRenderer>().sortingOrder = -2;
         gridManager.IgnoreTiles();
         UpdateDragStatus(false);
     }

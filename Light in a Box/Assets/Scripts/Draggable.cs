@@ -12,6 +12,7 @@ public class Draggable : MonoBehaviour
 
     public void UpdateSortingOrder(int order)
     {
+        gameObject.GetComponent<SpriteRenderer>().sortingOrder = order - 1;
         foreach (Transform child in transform)
         {
             child.GetComponent<SpriteRenderer>().sortingOrder = order;

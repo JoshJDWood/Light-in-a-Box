@@ -94,21 +94,17 @@ public class MenuManager : MonoBehaviour
         checkButton.SetActive(hardMode);
         if (hardMode)
         {
-            ColorBlock newColors = hardButton.colors;
-            newColors.normalColor = new Color(0, 0, 0, 1);
-            hardButton.colors = newColors;
-
-            newColors.normalColor = new Color(0, 0, 0, 0);
-            easyButton.colors = newColors;
+            hardButton.interactable = false;            
+            easyButton.interactable = true;
         }
         else
         {
-            ColorBlock newColors = easyButton.colors;
-            newColors.normalColor = new Color(0, 0, 0, 1);
-            easyButton.colors = newColors;
-
-            newColors.normalColor = new Color(0, 0, 0, 0);
-            hardButton.colors = newColors;
+            hardButton.interactable = true;
+            easyButton.interactable = false;
+        }
+        if (gridManager.currentPuzzleIndex != -1)
+        {
+            gridManager.SpawnNewPuzzle(gridManager.currentPuzzleIndex);
         }
     }
 

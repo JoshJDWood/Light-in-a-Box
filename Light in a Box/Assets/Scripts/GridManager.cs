@@ -79,6 +79,7 @@ public class GridManager : MonoBehaviour
             dragController.hardMode = false;
             tutorialManager.ResetTutorialIndex();
             tutorialCanvas.SetActive(true);
+            tutorialNextPromptButton.interactable = true;
             MenuManager.gameIsPaused = true; 
             puzzle.gameObject.SetActive(false);
         }
@@ -278,8 +279,8 @@ public class GridManager : MonoBehaviour
         }
         else if (tutorialManager.promptIndex == 4 && tiles[1].heldConfig == new BlockData(6, 3) && tiles[3].heldConfig == new BlockData(1, 2))
         {
-            tutorialManager.promptIndex = 5;
-            tutorialNextPromptButton.interactable = true;
+            audioManager.Play("win");
+            StartCoroutine(TutorialPhase5());
         }
         else if (tutorialManager.promptIndex == 5)
         {
@@ -328,6 +329,14 @@ public class GridManager : MonoBehaviour
                 x++;
             }
             StartCoroutine(dragController.RelightSequence(false));
+        }
+
+        IEnumerator TutorialPhase5()
+        {
+            yield return new WaitForSeconds(1f);
+            tutorialManager.promptIndex = 5;
+            tutorialNextPromptButton.interactable = true;
+            tutorialManager.UpdateDisplayedPrompt();
         }
     }
 
