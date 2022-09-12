@@ -49,7 +49,7 @@ public class GridManager : MonoBehaviour
 
     public void SpawnNewPuzzle(int i)
     {
-        tutorialCanvas.SetActive(false);        
+        tutorialCanvas.SetActive(false);
 
         DeleteOldPuzzle();
         currentPuzzleIndex = i;
@@ -57,7 +57,19 @@ public class GridManager : MonoBehaviour
         GenerateGrid(puzzle.width, puzzle.height);
         lightSource.transform.position = puzzle.lightPos;
         float x = 0, y = 0;
-        foreach(BlockData bD in puzzle.solution)
+        List<BlockData> newBlocks = new List<BlockData>();
+        foreach (BlockData bD in puzzle.solution)
+        {
+            if (bD.id != 0)
+            {
+                newBlocks.Add(bD);
+            }
+        }
+
+        if (i > 0)
+            newBlocks = Shuffle<BlockData>(newBlocks);
+
+        foreach (BlockData bD in newBlocks)
         {
             if (bD.id != 0)
             {
@@ -67,12 +79,12 @@ public class GridManager : MonoBehaviour
                 blocks.Add(newBlock.GetComponent<Draggable>());
 
                 x = (x + 1) % 2;
-                if ( x == 0)
+                if (x == 0)
                 {
                     y++;
                 }
             }
-        }
+        }        
 
         if (i == 0)
         {
@@ -80,7 +92,7 @@ public class GridManager : MonoBehaviour
             tutorialManager.ResetTutorialIndex();
             tutorialCanvas.SetActive(true);
             tutorialNextPromptButton.interactable = true;
-            MenuManager.gameIsPaused = true; 
+            MenuManager.gameIsPaused = true;
             puzzle.gameObject.SetActive(false);
         }
 
@@ -119,6 +131,21 @@ public class GridManager : MonoBehaviour
         hintsOnDisplay.Clear();
     }
 
+    public static List<T> Shuffle<T>(List<T> ts)
+    {
+        int count = ts.Count;
+        int last = count - 1;
+        for (int i = 0; i < last; ++i)
+        {
+            int r = UnityEngine.Random.Range(i, count);
+            var tmp = ts[i];
+            ts[i] = ts[r];
+            ts[r] = tmp;
+        }
+        return ts;
+    }
+
+
     public void SpawnNextPuzzle()
     {
         if (currentPuzzleIndex < puzzlePrefabs.Count - 1)
@@ -149,12 +176,12 @@ public class GridManager : MonoBehaviour
             }
         }
 
-        for(int i = 0; i < width; i++)
+        for (int i = 0; i < width; i++)
         {
-            SpawnOuterWall(new Vector2( i, -0.5f - wallThickness), 0);
-            SpawnOuterWall(new Vector2( i, height - 0.5f + wallThickness), 0);
+            SpawnOuterWall(new Vector2(i, -0.5f - wallThickness), 0);
+            SpawnOuterWall(new Vector2(i, height - 0.5f + wallThickness), 0);
         }
-        for(int i = 0; i < height; i++)
+        for (int i = 0; i < height; i++)
         {
             SpawnOuterWall(new Vector2(-0.5f - wallThickness, i), 90);
             SpawnOuterWall(new Vector2(width - 0.5f + wallThickness, i), 90);
@@ -162,7 +189,7 @@ public class GridManager : MonoBehaviour
 
         SpawnOuterWallCorner(new Vector2(-0.5f - wallThickness, -0.5f - wallThickness), 0);
         SpawnOuterWallCorner(new Vector2(-0.5f - wallThickness, -0.5f + wallThickness + height), 0);
-        SpawnOuterWallCorner(new Vector2(-0.5f + wallThickness + width, - 0.5f - wallThickness), 0);
+        SpawnOuterWallCorner(new Vector2(-0.5f + wallThickness + width, -0.5f - wallThickness), 0);
         SpawnOuterWallCorner(new Vector2(-0.5f + wallThickness + width, -0.5f + wallThickness + height), 0);
 
         if (currentPuzzleIndex != 0)
@@ -226,7 +253,7 @@ public class GridManager : MonoBehaviour
         else if (currentPuzzleIndex == 0)
         {
             TutorialController(0);
-            
+
             if (tutorialManager.promptIndex != 7)
                 return false;
         }
@@ -240,7 +267,7 @@ public class GridManager : MonoBehaviour
             }
         }
         Debug.Log("Correct Answer, Well Done!");
-        return true;        
+        return true;
     }
 
     public void TutorialController(int skipValue)
@@ -346,7 +373,7 @@ public class GridManager : MonoBehaviour
         {
             return;
         }
-    
+
         for (int i = 0; i < tiles.Count; i++)
         {
             if (tiles[i].heldBlock == null)
@@ -358,10 +385,10 @@ public class GridManager : MonoBehaviour
             hintsOnDisplay.Add(currentHint);
             currentHint.SetActive(true);
 
-            if (tiles[i].heldConfig == puzzle.solution[i])            
-                currentHint.GetComponent<SpriteRenderer>().color = Color.cyan;            
-            else                            
-                currentHint.GetComponent<SpriteRenderer>().color = Color.red;            
+            if (tiles[i].heldConfig == puzzle.solution[i])
+                currentHint.GetComponent<SpriteRenderer>().color = Color.cyan;
+            else
+                currentHint.GetComponent<SpriteRenderer>().color = Color.red;
         }
 
         dragController.hintsRemaining--;
