@@ -92,6 +92,7 @@ public class GridManager : MonoBehaviour
             tutorialManager.ResetTutorialIndex();
             tutorialCanvas.SetActive(true);
             tutorialNextPromptButton.interactable = true;
+            tutorialNextPromptButton.transform.GetChild(0).gameObject.SetActive(true);
             MenuManager.gameIsPaused = true;
             puzzle.gameObject.SetActive(false);
         }
@@ -292,6 +293,7 @@ public class GridManager : MonoBehaviour
                 blocks[1].gameObject.SetActive(false);
                 MenuManager.gameIsPaused = false;
                 tutorialNextPromptButton.interactable = false;
+                tutorialNextPromptButton.transform.GetChild(0).gameObject.SetActive(false);
             }
         }
         else if (tutorialManager.promptIndex == 2 && tiles[1].heldConfig == new BlockData(6, 3))
@@ -320,6 +322,7 @@ public class GridManager : MonoBehaviour
         else if (tutorialManager.promptIndex == 6)
         {
             solvedHUD.SetActive(true);
+            MenuManager.gameIsPaused = true;
             menuManager.UpdateSaveScores(SaveManager.solvedEasy);
             return;
         }
@@ -363,6 +366,7 @@ public class GridManager : MonoBehaviour
             yield return new WaitForSeconds(1f);
             tutorialManager.promptIndex = 5;
             tutorialNextPromptButton.interactable = true;
+            tutorialNextPromptButton.transform.GetChild(0).gameObject.SetActive(true);
             tutorialManager.UpdateDisplayedPrompt();
         }
     }
