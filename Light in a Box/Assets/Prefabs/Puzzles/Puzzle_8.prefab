@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &7091860091255399106
+--- !u!1 &3054717145657860256
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,38 +8,38 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 7091860091255399105}
-  - component: {fileID: 7091860091255399104}
-  - component: {fileID: 7091860091255399107}
+  - component: {fileID: 7441765237846870714}
+  - component: {fileID: 3536540334417057872}
+  - component: {fileID: 785846798920928060}
   m_Layer: 0
-  m_Name: Puzzle_2
+  m_Name: Puzzle_8
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &7091860091255399105
+--- !u!4 &7441765237846870714
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7091860091255399106}
+  m_GameObject: {fileID: 3054717145657860256}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.5, y: 0.5, z: 0}
+  m_LocalPosition: {x: 1, y: 1, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
-  - {fileID: 8271183920722049052}
+  - {fileID: 1620170815640748180}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!212 &7091860091255399104
+--- !u!212 &3536540334417057872
 SpriteRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7091860091255399106}
+  m_GameObject: {fileID: 3054717145657860256}
   m_Enabled: 1
   m_CastShadows: 0
   m_ReceiveShadows: 0
@@ -73,43 +73,53 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: e409f9611c57d964097f47dd0989e94a, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 3a7da90d8d0acca489137472561ac4ee, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 0.47058824}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 2, y: 2}
+  m_Size: {x: 18, y: 18}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &7091860091255399107
+--- !u!114 &785846798920928060
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7091860091255399106}
+  m_GameObject: {fileID: 3054717145657860256}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d6a7ad2c199829d42bb1879cecd463d2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  width: 2
-  height: 2
-  lightPos: {x: 0, y: 0}
+  width: 3
+  height: 3
+  lightPos: {x: 1, y: 1}
   solvedValue: 999
   solution:
   - id: 0
     r: 0
-  - id: 10
-    r: 0
   - id: 0
     r: 0
-  - id: 6
+  - id: 16
     r: 0
---- !u!1 &7590245024982426387
+  - id: 7
+    r: 1
+  - id: 6
+    r: 3
+  - id: 6
+    r: 2
+  - id: 1
+    r: 2
+  - id: 1
+    r: 2
+  - id: 0
+    r: 0
+--- !u!1 &3948063191519230497
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -117,36 +127,36 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 8271183920722049052}
-  - component: {fileID: 5521824396531354868}
+  - component: {fileID: 1620170815640748180}
+  - component: {fileID: 3540535791716232188}
   m_Layer: 0
-  m_Name: Puzzle_2
+  m_Name: Puzzle_8 Unlit
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &8271183920722049052
+--- !u!4 &1620170815640748180
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7590245024982426387}
+  m_GameObject: {fileID: 3948063191519230497}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 7091860091255399105}
+  m_Father: {fileID: 7441765237846870714}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!212 &5521824396531354868
+--- !u!212 &3540535791716232188
 SpriteRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7590245024982426387}
+  m_GameObject: {fileID: 3948063191519230497}
   m_Enabled: 1
   m_CastShadows: 0
   m_ReceiveShadows: 0
@@ -180,12 +190,12 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: -1
-  m_Sprite: {fileID: 21300000, guid: e409f9611c57d964097f47dd0989e94a, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 3a7da90d8d0acca489137472561ac4ee, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 0.3137255}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 2, y: 2}
+  m_Size: {x: 18, y: 18}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1

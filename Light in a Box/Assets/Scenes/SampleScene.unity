@@ -1723,7 +1723,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 35
+  m_RootOrder: 34
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &498470866
 PrefabInstance:
@@ -3379,7 +3379,7 @@ Transform:
   m_Children:
   - {fileID: 825700776}
   m_Father: {fileID: 0}
-  m_RootOrder: 34
+  m_RootOrder: 35
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &891217824
 MonoBehaviour:
@@ -5400,7 +5400,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   width: 3
-  height: 2
+  height: 3
   tilePrefab: {fileID: 3631247408558610802, guid: 4e1d33da548f91549a1afaae36e35cf2, type: 3}
   outerWall: {fileID: 1421281939605886699, guid: b5df1a3f527ca6847ac7baace77b8a0a, type: 3}
   outerWallCorner: {fileID: 2925296284778164302, guid: 07cb2fa8784283742b5379d66435785a, type: 3}
@@ -5436,8 +5436,20 @@ MonoBehaviour:
   - {fileID: 7091860091255399107, guid: c16ca6a1cdfcfe84ca53eab68bbf4aae, type: 3}
   - {fileID: 6855228833137588283, guid: e8fb7df13bd5bf3499e08e1e2d7604c9, type: 3}
   - {fileID: 8056018617829675591, guid: eb3ef33e8e78b964eb074d9084442d21, type: 3}
-  - {fileID: 4683438798848488752, guid: cdfcac3716386c84aaeb1f8cce7d548d, type: 3}
   - {fileID: 3880300884578529332, guid: 35ec36bdc19790d4289d7bb58a6852dd, type: 3}
+  - {fileID: 2590676578920221670, guid: 3d82dcdb8d2931d46a16ebb4aa80b551, type: 3}
+  - {fileID: 7823661480215799547, guid: 39095b7bd7dfb5d4dbeca0cb24bb3553, type: 3}
+  - {fileID: 785846798920928060, guid: 99a6e34109e46f74b827f7f1bfd0b5c3, type: 3}
+  - {fileID: 5475212947866480546, guid: 056e3ba71c3873540b7270ce735fd3c1, type: 3}
+  - {fileID: 9102565022089581203, guid: 628a083bf2817554f815b8fcd34086a5, type: 3}
+  - {fileID: 8822091686330561403, guid: 403582079b79d454a9a4aacfe43effed, type: 3}
+  - {fileID: 8822091686330561403, guid: ad6faa2ef71b3ca448ee1dd02a8ca876, type: 3}
+  - {fileID: 8822091686330561403, guid: 453caae116162c440842b02c5c97a48d, type: 3}
+  - {fileID: 8822091686330561403, guid: 94d8fced47e3b9e478346e9999437092, type: 3}
+  - {fileID: 8822091686330561403, guid: a8b233aacc5d4a249acb67952fcb28bf, type: 3}
+  - {fileID: 8822091686330561403, guid: f4fd05596a1ccce4e90307bc38384628, type: 3}
+  - {fileID: 8822091686330561403, guid: 2f20a8b2c713fbc44adf0b5a67dfc2b1, type: 3}
+  - {fileID: 8822091686330561403, guid: 6941b1ebe2966364a9e10fa76f4e5ac9, type: 3}
   - {fileID: 2027266072752125747, guid: 6a83cfc5bf3e4314cac0d4e397d2d1ee, type: 3}
   tutorialCanvas: {fileID: 1744623320}
   tutorialNextPromptButton: {fileID: 540873555}
