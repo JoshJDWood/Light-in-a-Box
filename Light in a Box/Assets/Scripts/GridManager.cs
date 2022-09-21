@@ -232,6 +232,14 @@ public class GridManager : MonoBehaviour
         }
     }
 
+    public void ResetPuzzleScoreValues()
+    {
+        int[] ResetValues = new int[puzzlePrefabs.Count];
+        for (int i = 0; i < ResetValues.Length; i++) { ResetValues[i] = 1000; }
+
+        SetPuzzleSolvedValues(ResetValues);
+    }
+
     public bool NewBestScore(int solvedValue)
     {
         if (solvedValue < puzzlePrefabs[currentPuzzleIndex].solvedValue)

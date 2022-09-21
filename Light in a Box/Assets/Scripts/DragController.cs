@@ -73,7 +73,7 @@ public class DragController : MonoBehaviour
 
         if (isDragActive && Input.GetMouseButtonUp(0))
         {
-            int hitsLength = Physics2D.Raycast(worldPos, Vector2.zero, new ContactFilter2D().NoFilter(), hits, 5.0f);
+            int hitsLength = Physics2D.Raycast(lastDragged.transform.position, Vector2.zero, new ContactFilter2D().NoFilter(), hits, 5.0f);
             for (int i = 0; i < hitsLength; i++)
             {
                 if (hits[i].transform.gameObject.GetComponent<Draggable>() == lastDragged)

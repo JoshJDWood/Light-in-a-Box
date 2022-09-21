@@ -126,7 +126,7 @@ public class MenuManager : MonoBehaviour
                 levelButton.name = "Level Button " + (i); //so that levels start at number 1 not 0
                 levelButton.GetComponentInChildren<Text>().text = "" + (i);
             }
-            levelButton.transform.Translate(new Vector2(150 * x, -150 * y));
+            levelButton.transform.Translate(new Vector2(150 * x, -110 * y));
             levelButton.onClick.AddListener(() => { gridManager.SpawnNewPuzzle(j); });
             levelButton.onClick.AddListener(() => { Resume(); });
 
@@ -184,6 +184,19 @@ public class MenuManager : MonoBehaviour
                     solvedText.gameObject.SetActive(true);
             }
         }
+    }
+
+    public void ResetScores()
+    {
+        gridManager.ResetPuzzleScoreValues();
+
+        for (int i = 1; i < LevelsMenuUI.transform.childCount; i++) //starts from 1 to miss back button
+        {
+            Destroy(LevelsMenuUI.transform.GetChild(i).gameObject);
+        }
+
+        formatLevelButtons();
+        SaveManager.SaveFile(gridManager.GetPuzzleSolvedValues(), dragController.hardMode, dragController.hintsRemaining, saveFileName);
     }
     public void Back()
     {
