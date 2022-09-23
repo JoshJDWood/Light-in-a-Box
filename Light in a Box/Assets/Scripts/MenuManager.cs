@@ -6,12 +6,13 @@ using UnityEngine;
 
 public class MenuManager : MonoBehaviour
 {
-    public static bool gameIsPaused = false;
+    public static bool gameIsPaused = true;
 
     [SerializeField] private GameObject pauseMenuUI;
     [SerializeField] private GameObject LevelsMenuUI;
     [SerializeField] private GameObject SettingsMenuUI;
     [SerializeField] private GameObject HUD;
+    [SerializeField] private GameObject titleScreen;
     [SerializeField] private GameObject solvedHUD;
     [SerializeField] private GameObject checkButton;
     [SerializeField] private Button easyButton;
@@ -24,6 +25,7 @@ public class MenuManager : MonoBehaviour
     [SerializeField] private DragController dragController;
     [SerializeField] private AudioManager audioManager;
     [SerializeField] private GridManager gridManager;
+    [SerializeField] private TutorialManager tutorialManager;
 
     private void Awake()
     {
@@ -33,7 +35,7 @@ public class MenuManager : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Escape))
+        if (Input.GetKeyDown(KeyCode.Escape) || Input.GetKeyDown(KeyCode.Space))
         {
             if (gameIsPaused)
             {
@@ -53,8 +55,11 @@ public class MenuManager : MonoBehaviour
         LevelsMenuUI.SetActive(false);
         SettingsMenuUI.SetActive(false);
         solvedHUD.SetActive(false);
+        titleScreen.SetActive(false);
         HUD.SetActive(true);
-        if (gridManager.currentPuzzleIndex != 0) //to prevent unpausing when entering the tutorial
+        if (gridManager.currentPuzzleIndex == 0 && tutorialManager.promptIndex == 0) //to prevent unpausing when entering the tutorial
+            gameIsPaused = true;
+        else
             gameIsPaused = false;
     }
 
