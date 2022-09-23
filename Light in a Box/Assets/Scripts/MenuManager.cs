@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.UI;
+using UnityEngine.Audio;
 using UnityEngine;
 
 public class MenuManager : MonoBehaviour
@@ -15,6 +16,7 @@ public class MenuManager : MonoBehaviour
     [SerializeField] private GameObject checkButton;
     [SerializeField] private Button easyButton;
     [SerializeField] private Button hardButton;
+    [SerializeField] private AudioMixer AudioMixer;
     [SerializeField] private Button levelButtonPrefab;
     [SerializeField] private Text hintsRemainingText;
     [SerializeField] private string saveFileName;
@@ -198,6 +200,17 @@ public class MenuManager : MonoBehaviour
         formatLevelButtons();
         SaveManager.SaveFile(gridManager.GetPuzzleSolvedValues(), dragController.hardMode, dragController.hintsRemaining, saveFileName);
     }
+
+    public void SetVolumeMusic(float volume)
+    {
+        AudioMixer.SetFloat("VolumeMusic" ,volume);
+    }
+
+    public void SetVolumeSFX(float volume)
+    {
+        AudioMixer.SetFloat("VolumeSFX", volume);
+    }
+
     public void Back()
     {
         audioManager.Play("swapMenu");
