@@ -8,6 +8,7 @@ public class MenuManager : MonoBehaviour
 {
     public static bool gameIsPaused = true;
 
+    [SerializeField] private Camera cam;
     [SerializeField] private GameObject pauseMenuUI;
     [SerializeField] private GameObject LevelsMenuUI;
     [SerializeField] private GameObject SettingsMenuUI;
@@ -55,12 +56,17 @@ public class MenuManager : MonoBehaviour
         LevelsMenuUI.SetActive(false);
         SettingsMenuUI.SetActive(false);
         solvedHUD.SetActive(false);
-        titleScreen.SetActive(false);
         HUD.SetActive(true);
         if (gridManager.currentPuzzleIndex == 0 && tutorialManager.promptIndex == 0) //to prevent unpausing when entering the tutorial
             gameIsPaused = true;
         else
             gameIsPaused = false;
+    }
+
+    public void StartGame()
+    {
+        titleScreen.SetActive(false);
+        Resume();
     }
 
     public void Pause()
