@@ -109,7 +109,7 @@ public class MenuManager : MonoBehaviour
             hardButton.interactable = true;
             easyButton.interactable = false;
         }
-        if (gridManager.currentPuzzleIndex != -1)
+        if (gridManager.currentPuzzleIndex > 0)
         {
             gridManager.SpawnNewPuzzle(gridManager.currentPuzzleIndex);
         }

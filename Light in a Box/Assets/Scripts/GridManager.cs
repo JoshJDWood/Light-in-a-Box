@@ -88,7 +88,7 @@ public class GridManager : MonoBehaviour
 
         if (i == 0)
         {
-            dragController.hardMode = false;
+            menuManager.HardMode(false);
             tutorialManager.ResetTutorialIndex();
             tutorialCanvas.SetActive(true);
             tutorialNextPromptButton.interactable = true;
@@ -304,7 +304,7 @@ public class GridManager : MonoBehaviour
                 tutorialNextPromptButton.transform.GetChild(0).gameObject.SetActive(false);
             }
         }
-        else if (tutorialManager.promptIndex == 2 && tiles[1].heldConfig == new BlockData(6, 3))
+        else if (tutorialManager.promptIndex == 2 && tiles[2].heldConfig == new BlockData(6, 3))
         {
             audioManager.Play("win");
             StartCoroutine(TutorialPhase3());
@@ -356,17 +356,6 @@ public class GridManager : MonoBehaviour
             tutorialManager.promptIndex = 4;
             tutorialManager.UpdateDisplayedPrompt();
             puzzle.gameObject.SetActive(true);
-            foreach (Tile t in tiles)
-            {
-                t.ExitTile();
-            }
-            int x = 0, y = 0;
-            foreach (Draggable block in blocks)
-            {
-                block.transform.position = new Vector2(spawnX + x * spawnGap, spawnY + (puzzle.height / 2) - y * spawnGap);
-                x++;
-            }
-            StartCoroutine(dragController.RelightSequence(false));
         }
 
         IEnumerator TutorialPhase5()
