@@ -14,6 +14,7 @@ public class GridManager : MonoBehaviour
     [SerializeField] private List<Puzzle> puzzlePrefabs;
     [SerializeField] private GameObject tutorialCanvas;
     [SerializeField] private Button tutorialNextPromptButton;
+    [SerializeField] private List<Button> SetOutlineModeButtons;
     [SerializeField] private GameObject solvedHUD;
 
     private List<Tile> tiles = new List<Tile>();
@@ -21,6 +22,7 @@ public class GridManager : MonoBehaviour
     private List<GameObject> hintsOnDisplay = new List<GameObject>();
     private Puzzle puzzle;
     public int currentPuzzleIndex = -1;
+    public OutlineMode currentOutlineMode = OutlineMode.Pulse;
 
     [SerializeField] private CastBeam lightSource;
     [SerializeField] private DragController dragController;
@@ -28,6 +30,7 @@ public class GridManager : MonoBehaviour
     [SerializeField] private AudioManager audioManager;
     [SerializeField] private MenuManager menuManager;
 
+    private Coroutine pulseBlocks;
     private float wallThickness = 0.1f; //actually half wall thinkness
     private int outerWallCount = 0;
     private int outerWallCornerCount = 0;
@@ -44,6 +47,7 @@ public class GridManager : MonoBehaviour
         {
             blocks.Add(block);
         }
+        SetOutlineMode((int)currentOutlineMode, false);
         puzzle = FindObjectOfType<Puzzle>();
     }
 
@@ -84,7 +88,9 @@ public class GridManager : MonoBehaviour
                     y++;
                 }
             }
-        }        
+        }
+
+        SetOutlineMode((int)currentOutlineMode, false);
 
         if (i == 0)
         {
@@ -128,8 +134,87 @@ public class GridManager : MonoBehaviour
         {
             Destroy(b.gameObject);
         }
+        StopPulseCoroutine();
         blocks.Clear();
         hintsOnDisplay.Clear();
+    }
+
+    private void StartPulseCoroutine() 
+    {
+            pulseBlocks = StartCoroutine(Pulse(1.0f, 0.8f, 5.0f)); 
+    }
+
+    private void StopPulseCoroutine() 
+    { 
+        if (pulseBlocks != null)
+            StopCoroutine(pulseBlocks); 
+    }
+
+    public enum OutlineMode
+    {
+        Off,
+        Pulse,
+        On
+    }
+    public void SetOutlineMode(int outlineMode, bool saveIt)
+    {
+        currentOutlineMode = (OutlineMode)outlineMode;
+
+        foreach (Button button in SetOutlineModeButtons)
+            button.interactable = true;
+        SetOutlineModeButtons[outlineMode].interactable = false;
+
+        switch ((OutlineMode)outlineMode)
+        {
+            case OutlineMode.Off:
+                {
+                    StopPulseCoroutine();
+                    Color newColor = new Color(1, 1, 1, 0);
+                    foreach (Draggable b in blocks)
+                        b.transform.GetComponent<SpriteRenderer>().color = newColor;
+                    break;
+                }
+            case OutlineMode.Pulse:
+                {
+                    StopPulseCoroutine();
+                    StartPulseCoroutine();
+                    break;
+                }
+            case OutlineMode.On:
+                {
+                    StopPulseCoroutine();
+                    Color newColor = new Color(1, 1, 1, 1);
+                    foreach (Draggable b in blocks)
+                        b.transform.GetComponent<SpriteRenderer>().color = newColor;
+                    break;
+                }
+        }
+        if (saveIt)
+            SaveManager.SaveFile(GetPuzzleSolvedValues(), dragController.hardMode, (int)currentOutlineMode, dragController.hintsRemaining, menuManager.saveFileName);
+    }
+
+    public void SetOutlineMode(int outlineMode) { SetOutlineMode(outlineMode, true);}
+
+    IEnumerator Pulse(float aValue, float halfTime, float pulseGap)
+    {
+        yield return new WaitForFixedUpdate();
+        float alpha = blocks[0].transform.GetComponent<SpriteRenderer>().color.a;
+        for (float t = 0.0f; t < 1.0f; t += Time.deltaTime / halfTime)
+        {
+            Color newColor = new Color(1, 1, 1, Mathf.Lerp(0, aValue, t));
+            foreach (Draggable b in blocks)
+                b.transform.GetComponent<SpriteRenderer>().color = newColor;
+            yield return null;
+        }
+        for (float t = 0.0f; t < 1.0f; t += Time.deltaTime / halfTime)
+        {
+            Color newColor = new Color(1, 1, 1, Mathf.Lerp(aValue, 0, t));
+            foreach (Draggable b in blocks)
+                b.transform.GetComponent<SpriteRenderer>().color = newColor;
+            yield return null;
+        }
+        yield return new WaitForSeconds(pulseGap);
+        pulseBlocks = StartCoroutine(Pulse(aValue, halfTime, pulseGap));
     }
 
     public static List<T> Shuffle<T>(List<T> ts)

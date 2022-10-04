@@ -21,7 +21,7 @@ public class MenuManager : MonoBehaviour
     [SerializeField] private AudioMixer AudioMixer;
     [SerializeField] private Button levelButtonPrefab;
     [SerializeField] private Text hintsRemainingText;
-    [SerializeField] private string saveFileName;
+    public string saveFileName;
 
     [SerializeField] private DragController dragController;
     [SerializeField] private AudioManager audioManager;
@@ -173,6 +173,7 @@ public class MenuManager : MonoBehaviour
             dragController.hintsRemaining = data.hintsRemaining;
             hintsRemainingText.text = "" + dragController.hintsRemaining;
             gridManager.SetPuzzleSolvedValues(data.solvedValues);
+            gridManager.SetOutlineMode(data.outlineMode, false);
         }
     }
 
@@ -180,7 +181,7 @@ public class MenuManager : MonoBehaviour
     {
         if (gridManager.NewBestScore(solvedValue))
         {
-            SaveManager.SaveFile(gridManager.GetPuzzleSolvedValues(), dragController.hardMode, dragController.hintsRemaining, saveFileName);
+            SaveManager.SaveFile(gridManager.GetPuzzleSolvedValues(), dragController.hardMode, (int)gridManager.currentOutlineMode, dragController.hintsRemaining, saveFileName);
             Transform buttonTransform = LevelsMenuUI.gameObject.transform.Find("Level Button " + (gridManager.currentPuzzleIndex));
             Text solvedText = buttonTransform.Find("Solved Text").GetComponent<Text>();
             solvedText.text = "" + solvedValue;
@@ -209,7 +210,7 @@ public class MenuManager : MonoBehaviour
         }
 
         formatLevelButtons();
-        SaveManager.SaveFile(gridManager.GetPuzzleSolvedValues(), dragController.hardMode, dragController.hintsRemaining, saveFileName);
+        SaveManager.SaveFile(gridManager.GetPuzzleSolvedValues(), dragController.hardMode, (int)gridManager.currentOutlineMode, dragController.hintsRemaining, saveFileName);
     }
 
     public void SetVolumeMusic(float volume)
@@ -234,7 +235,7 @@ public class MenuManager : MonoBehaviour
 
     public void QuitGame()
     {
-        SaveManager.SaveFile(gridManager.GetPuzzleSolvedValues(), dragController.hardMode, dragController.hintsRemaining, saveFileName);
+        SaveManager.SaveFile(gridManager.GetPuzzleSolvedValues(), dragController.hardMode, (int)gridManager.currentOutlineMode, dragController.hintsRemaining, saveFileName);
         Debug.Log("Quitting Game...");
         Application.Quit();
     }
