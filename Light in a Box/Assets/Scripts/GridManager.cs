@@ -14,7 +14,9 @@ public class GridManager : MonoBehaviour
     [SerializeField] private List<Puzzle> puzzlePrefabs;
     [SerializeField] private GameObject tutorialCanvas;
     [SerializeField] private Button tutorialNextPromptButton;
-    [SerializeField] private List<Button> SetOutlineModeButtons;
+    [SerializeField] private List<Button> setOutlineModeButtons;
+    [SerializeField] private Text levelNumberText;
+    private Vector2 levelNumberDefaultPos = new Vector2(-0.5f, -0.15f);
     [SerializeField] private GameObject solvedHUD;
 
     private List<Tile> tiles = new List<Tile>();
@@ -58,6 +60,8 @@ public class GridManager : MonoBehaviour
         DeleteOldPuzzle();
         currentPuzzleIndex = i;
         this.puzzle = Instantiate(puzzlePrefabs[i]);
+        levelNumberText.text = "" + i;
+        levelNumberText.gameObject.transform.position = new Vector2(levelNumberDefaultPos.x + (float)puzzle.width/2, levelNumberDefaultPos.y + (float)puzzle.height);
         GenerateGrid(puzzle.width, puzzle.height);
         lightSource.transform.position = puzzle.lightPos;
         float x = 0, y = 0;
@@ -94,6 +98,7 @@ public class GridManager : MonoBehaviour
 
         if (i == 0)
         {
+            levelNumberText.text = "Tutorial";
             menuManager.HardMode(false);
             tutorialManager.ResetTutorialIndex();
             tutorialCanvas.SetActive(true);
@@ -160,9 +165,9 @@ public class GridManager : MonoBehaviour
     {
         currentOutlineMode = (OutlineMode)outlineMode;
 
-        foreach (Button button in SetOutlineModeButtons)
+        foreach (Button button in setOutlineModeButtons)
             button.interactable = true;
-        SetOutlineModeButtons[outlineMode].interactable = false;
+        setOutlineModeButtons[outlineMode].interactable = false;
 
         switch ((OutlineMode)outlineMode)
         {

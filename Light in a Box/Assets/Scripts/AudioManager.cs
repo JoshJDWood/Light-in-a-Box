@@ -5,7 +5,8 @@ using UnityEngine;
 public class AudioManager : MonoBehaviour
 {
 
-    public Sound[] sounds;
+    [SerializeField] private Sound[] sounds;
+    [SerializeField] private AudioSource Music; 
 
     private void Awake()
     {
@@ -16,6 +17,7 @@ public class AudioManager : MonoBehaviour
 
             s.source.volume = s.volume;
             s.source.pitch = s.pitch;
+            s.source.mute = s.mute;
             s.source.loop = s.loop;
             s.source.outputAudioMixerGroup = s.output;
         }
@@ -30,5 +32,18 @@ public class AudioManager : MonoBehaviour
             return;
         }
         s.source.Play();
+    }
+
+    public void MuteSounds(bool mute)
+    {
+        foreach (Sound s in sounds)
+        {
+            s.source.mute = mute;
+        }
+    }
+
+    public void MuteMusic(bool mute)
+    {
+        Music.mute = mute;
     }
 }
