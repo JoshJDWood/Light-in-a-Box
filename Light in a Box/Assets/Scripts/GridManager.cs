@@ -64,7 +64,7 @@ public class GridManager : MonoBehaviour
         levelNumberText.gameObject.transform.position = new Vector2(levelNumberDefaultPos.x + (float)puzzle.width/2, levelNumberDefaultPos.y + (float)puzzle.height);
         GenerateGrid(puzzle.width, puzzle.height);
         lightSource.transform.position = puzzle.lightPos;
-        float x = 0, y = 0;
+        float x = 0, y = 0, z = 0, n = 0;
         List<BlockData> newBlocks = new List<BlockData>();
         foreach (BlockData bD in puzzle.solution)
         {
@@ -81,7 +81,7 @@ public class GridManager : MonoBehaviour
         {
             if (bD.id != 0)
             {
-                GameObject newBlock = Instantiate(blockPrefabs[bD.id], new Vector2(spawnX + x * spawnGap, spawnY + ((float)puzzle.height / 2) - y * spawnGap),
+                GameObject newBlock = Instantiate(blockPrefabs[bD.id], new Vector2(spawnX + z + x * spawnGap, spawnY + ((float)puzzle.height / 2) - y * spawnGap),
                     Quaternion.Euler(new Vector3(0, 0, 90 * bD.r)));
                 newBlock.GetComponent<Draggable>().UpdateCR();
                 blocks.Add(newBlock.GetComponent<Draggable>());
@@ -90,6 +90,12 @@ public class GridManager : MonoBehaviour
                 if (x == 0)
                 {
                     y++;
+                }
+                n++;
+                if (n == 6)
+                {
+                    z = 6f;
+                    y = 0;
                 }
             }
         }
@@ -174,7 +180,7 @@ public class GridManager : MonoBehaviour
             case OutlineMode.Off:
                 {
                     StopPulseCoroutine();
-                    Color newColor = new Color(1, 1, 1, 0);
+                    Color newColor = new Color(0.51f, 0.51f, 0.51f); //colour that the blockBG blends into the tiles
                     foreach (Draggable b in blocks)
                         b.transform.GetComponent<SpriteRenderer>().color = newColor;
                     break;
@@ -188,7 +194,7 @@ public class GridManager : MonoBehaviour
             case OutlineMode.On:
                 {
                     StopPulseCoroutine();
-                    Color newColor = new Color(1, 1, 1, 1);
+                    Color newColor = new Color(1, 1, 1);
                     foreach (Draggable b in blocks)
                         b.transform.GetComponent<SpriteRenderer>().color = newColor;
                     break;
@@ -206,14 +212,16 @@ public class GridManager : MonoBehaviour
         float alpha = blocks[0].transform.GetComponent<SpriteRenderer>().color.a;
         for (float t = 0.0f; t < 1.0f; t += Time.deltaTime / halfTime)
         {
-            Color newColor = new Color(1, 1, 1, Mathf.Lerp(0, aValue, t));
+            float colorValue = Mathf.Lerp(0.51f, aValue, t);
+            Color newColor = new Color(colorValue, colorValue, colorValue);
             foreach (Draggable b in blocks)
                 b.transform.GetComponent<SpriteRenderer>().color = newColor;
             yield return null;
         }
         for (float t = 0.0f; t < 1.0f; t += Time.deltaTime / halfTime)
         {
-            Color newColor = new Color(1, 1, 1, Mathf.Lerp(aValue, 0, t));
+            float colorValue = Mathf.Lerp(aValue, 0.51f, t);
+            Color newColor = new Color(colorValue, colorValue, colorValue);
             foreach (Draggable b in blocks)
                 b.transform.GetComponent<SpriteRenderer>().color = newColor;
             yield return null;

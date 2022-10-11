@@ -22,6 +22,7 @@ public class MenuManager : MonoBehaviour
     [SerializeField] private Button levelButtonPrefab;
     [SerializeField] private Text hintsRemainingText;
     public string saveFileName;
+    private bool tutorialCompleted = false;
 
     [SerializeField] private DragController dragController;
     [SerializeField] private AudioManager audioManager;
@@ -66,6 +67,8 @@ public class MenuManager : MonoBehaviour
     public void StartGame()
     {
         titleScreen.SetActive(false);
+        if (!tutorialCompleted)
+            gridManager.SpawnNewPuzzle(0);
         Resume();
     }
 
@@ -173,6 +176,8 @@ public class MenuManager : MonoBehaviour
             dragController.hintsRemaining = data.hintsRemaining;
             hintsRemainingText.text = "" + dragController.hintsRemaining;
             gridManager.SetPuzzleSolvedValues(data.solvedValues);
+            if (data.solvedValues[0] != SaveManager.unsolvedVal)
+                tutorialCompleted = true;
             gridManager.SetOutlineMode(data.outlineMode, false);
         }
     }
