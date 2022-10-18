@@ -259,7 +259,7 @@ public class GridManager : MonoBehaviour
         IEnumerator OpenLevelSelectionDelayed()
         {
             yield return new WaitForFixedUpdate();
-            menuManager.OpenLevelSelection();
+            menuManager.OpenMenuScreen(1);
         }
     }
 

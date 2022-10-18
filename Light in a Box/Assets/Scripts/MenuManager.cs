@@ -9,6 +9,7 @@ public class MenuManager : MonoBehaviour
     public static bool gameIsPaused = true;
 
     [SerializeField] private Camera cam;
+    [SerializeField] private List<GameObject> MenuScreens = new List<GameObject>();
     [SerializeField] private GameObject pauseMenuUI;
     [SerializeField] private GameObject LevelsMenuUI;
     [SerializeField] private GameObject SettingsMenuUI;
@@ -76,32 +77,23 @@ public class MenuManager : MonoBehaviour
     {
         audioManager.Play("pause");
         dragController.DropForPause();
-        LevelsMenuUI.SetActive(false);
-        SettingsMenuUI.SetActive(false);
+        foreach (GameObject screen in MenuScreens)
+            screen.SetActive(false);
         solvedHUD.SetActive(false);
         HUD.SetActive(false);
         pauseMenuUI.SetActive(true);        
         gameIsPaused = true;
     }
 
-    public void OpenLevelSelection()
+    public void OpenMenuScreen(int i)
     {
         audioManager.Play("swapMenu");
-        pauseMenuUI.SetActive(false);
-        SettingsMenuUI.SetActive(false);
         solvedHUD.SetActive(false);
         HUD.SetActive(false);
-        LevelsMenuUI.SetActive(true);
-    }
-
-    public void OpenSettings()
-    {
-        audioManager.Play("swapMenu");
-        pauseMenuUI.SetActive(false);
-        LevelsMenuUI.SetActive(false);
-        solvedHUD.SetActive(false);
-        HUD.SetActive(false);
-        SettingsMenuUI.SetActive(true);
+        pauseMenuUI.SetActive(true);
+        foreach (GameObject screen in MenuScreens)
+            screen.SetActive(false);
+        MenuScreens[i].SetActive(true);        
     }
 
     public void HardMode(bool hardMode)
@@ -226,16 +218,6 @@ public class MenuManager : MonoBehaviour
     public void SetVolumeSFX(float volume)
     {
         AudioMixer.SetFloat("VolumeSFX", volume);
-    }
-
-    public void Back()
-    {
-        audioManager.Play("swapMenu");
-        LevelsMenuUI.SetActive(false);
-        SettingsMenuUI.SetActive(false);
-        solvedHUD.SetActive(false);
-        HUD.SetActive(false);
-        pauseMenuUI.SetActive(true);
     }
 
     public void QuitGame()
