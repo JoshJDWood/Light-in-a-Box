@@ -13,7 +13,7 @@ public class DragController : MonoBehaviour
 
     public bool isDragActive = false;
     public bool hardMode = false;
-    public int hintsRemaining = 100;
+    public int hintsRemaining = 10;
     private int guesses = 0;
 
     private Vector2 screenPos;

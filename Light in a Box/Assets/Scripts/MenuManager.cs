@@ -172,6 +172,10 @@ public class MenuManager : MonoBehaviour
                 tutorialCompleted = true;
             gridManager.SetOutlineMode(data.outlineMode, false);
         }
+        else
+        {
+            gridManager.ResetPuzzleScoreValues();
+        }
     }
 
     public void UpdateSaveScores(int solvedValue)

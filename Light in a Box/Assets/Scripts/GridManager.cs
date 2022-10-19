@@ -36,7 +36,7 @@ public class GridManager : MonoBehaviour
     private float wallThickness = 0.1f; //actually half wall thinkness
     private int outerWallCount = 0;
     private int outerWallCornerCount = 0;
-    private float spawnX = -2.5f;
+    private float spawnX = -2.4f;
     private float spawnY = 0.5f;
     private float spawnGap = 1.1f;
 
@@ -94,7 +94,7 @@ public class GridManager : MonoBehaviour
                 n++;
                 if (n == 6)
                 {
-                    z = 6f;
+                    z = 5.7f;
                     y = 0;
                 }
             }
