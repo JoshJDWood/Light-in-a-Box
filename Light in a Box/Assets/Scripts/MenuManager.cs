@@ -32,7 +32,8 @@ public class MenuManager : MonoBehaviour
 
     private void Awake()
     {
-        LoadSaveData();
+        LoadSaveData(); //removed for webgl where there is no save file
+        //gridManager.ResetPuzzleScoreValues(); //added in place of loading save file for webgl version
         formatLevelButtons();
     }
 
@@ -134,7 +135,7 @@ public class MenuManager : MonoBehaviour
                 levelButton.name = "Level Button " + (i); //so that levels start at number 1 not 0
                 levelButton.GetComponentInChildren<Text>().text = "" + (i);
             }
-            levelButton.transform.Translate(new Vector2(150 * x, -110 * y));
+            levelButton.transform.Translate(new Vector2(150 * (x - 2), -150 * (y - 2)));
             levelButton.onClick.AddListener(() => { gridManager.SpawnNewPuzzle(j); });
             levelButton.onClick.AddListener(() => { Resume(); });
 

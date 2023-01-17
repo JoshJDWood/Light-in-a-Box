@@ -47,19 +47,19 @@ public class DragController : MonoBehaviour
         }
 
         //testing rotation of blocks
-        if (isDragActive)
-        {
-            if (Input.GetKeyDown(KeyCode.LeftArrow))
-            {
-                lastDragged.transform.Rotate(0, 0, 90);
-                lastDragged.UpdateCR();
-            }
-            else if (Input.GetKeyDown(KeyCode.RightArrow))
-            {
-                lastDragged.transform.Rotate(0, 0, -90);
-                lastDragged.UpdateCR();
-            }
-        }
+        //if (isDragActive)
+        //{
+        //    if (Input.GetKeyDown(KeyCode.LeftArrow))
+        //    {
+        //        lastDragged.transform.Rotate(0, 0, 90);
+        //        lastDragged.UpdateCR();
+        //    }
+        //    else if (Input.GetKeyDown(KeyCode.RightArrow))
+        //    {
+        //        lastDragged.transform.Rotate(0, 0, -90);
+        //        lastDragged.UpdateCR();
+        //    }
+        //}
 
         if (Input.GetKeyDown(KeyCode.Return) && hardMode)
         {
