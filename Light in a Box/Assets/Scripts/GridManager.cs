@@ -155,7 +155,7 @@ public class GridManager : MonoBehaviour
 
     private void StartPulseCoroutine() 
     {
-            pulseBlocks = StartCoroutine(Pulse(1.0f, 0.8f, 5.0f)); 
+            pulseBlocks = StartCoroutine(Pulse(1.0f, 0.8f, 3.0f)); 
     }
 
     private void StopPulseCoroutine() 

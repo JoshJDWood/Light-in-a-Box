@@ -99,7 +99,7 @@ MonoBehaviour:
   width: 3
   height: 3
   lightPos: {x: 1, y: 1}
-  solvedValue: 1000
+  solvedValue: 999
   solution:
   - id: 11
     r: 2
