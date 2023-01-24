@@ -17,19 +17,7 @@ public class CastBeam : MonoBehaviour
     bool winColor = false;
     int maxBounces = 4;
     int beamCount = 0;
-
-    // Start is called before the first frame update
-    void Start()
-    {
-
-    }
-
-
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
+        
 
     public void Relight(bool beatPuzzle)
     {
@@ -82,8 +70,9 @@ public class CastBeam : MonoBehaviour
     void CastRay(Vector2 pos, Vector2 dir)
     {
         RaycastHit2D hit = Physics2D.Raycast(pos, dir, 10);
-
-        if (Math.Abs(hit.point.x - prevRayPos.x) + Math.Abs(hit.point.y - prevRayPos.y) < 0.001)
+        float xDiff = Math.Abs(hit.point.x - prevRayPos.x);
+        float yDiff = Math.Abs(hit.point.y - prevRayPos.y);
+        if (xDiff * xDiff + yDiff * yDiff <= 0.00001) //fix for corners/(close to corners) that cause lighting errors
         {
             skipCorner = true;
             return;
