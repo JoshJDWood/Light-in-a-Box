@@ -1812,7 +1812,7 @@ MonoBehaviour:
   lightSource: {fileID: 891217824}
   isDragActive: 0
   hardMode: 0
-  hintsRemaining: 10
+  hintsRemaining: 5
 --- !u!4 &336238177
 Transform:
   m_ObjectHideFlags: 0
