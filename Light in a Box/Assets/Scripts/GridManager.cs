@@ -399,8 +399,6 @@ public class GridManager : MonoBehaviour
 
     public void TutorialController(int skipValue)
     {
-
-
         if (tutorialManager.promptIndex == 0)
         {
             foreach (Draggable block in blocks)
@@ -415,12 +413,12 @@ public class GridManager : MonoBehaviour
             foreach (Draggable block in blocks)
             {
                 GameObject currentHint = block.gameObject.transform.GetChild(0).gameObject;
-                currentHint.SetActive(false);
-                blocks[1].gameObject.SetActive(false);
-                MenuManager.gameIsPaused = false;
-                tutorialNextPromptButton.interactable = false;
-                tutorialNextPromptButton.transform.GetChild(0).gameObject.SetActive(false);
+                currentHint.SetActive(false);                
             }
+            blocks[1].gameObject.SetActive(false);
+            MenuManager.gameIsPaused = false;
+            tutorialNextPromptButton.interactable = false;
+            tutorialNextPromptButton.transform.GetChild(0).gameObject.SetActive(false);
         }
         else if (tutorialManager.promptIndex == 2 && tiles[2].heldConfig == new BlockData(6, 3))
         {
@@ -432,12 +430,16 @@ public class GridManager : MonoBehaviour
             audioManager.Play("win");
             StartCoroutine(TutorialPhase4());
         }
-        else if (tutorialManager.promptIndex == 4 && tiles[1].heldConfig == new BlockData(6, 3) && tiles[3].heldConfig == new BlockData(1, 2))
+        else if(tutorialManager.promptIndex == 4)
+        {
+            puzzle.gameObject.SetActive(true);
+        }
+        else if (tutorialManager.promptIndex == 5 && tiles[1].heldConfig == new BlockData(6, 3) && tiles[3].heldConfig == new BlockData(1, 2))
         {
             audioManager.Play("win");
-            StartCoroutine(TutorialPhase5());
+            StartCoroutine(TutorialPhase6());
         }
-        else if (tutorialManager.promptIndex == 5)
+        else if (tutorialManager.promptIndex == 6)
         {
             foreach (Draggable block in blocks)
             {
@@ -445,7 +447,7 @@ public class GridManager : MonoBehaviour
                 currentHint.SetActive(false);
             }
         }
-        else if (tutorialManager.promptIndex == 6)
+        else if (tutorialManager.promptIndex == 7)
         {
             solvedHUD.SetActive(true);
             MenuManager.gameIsPaused = true;
@@ -472,14 +474,13 @@ public class GridManager : MonoBehaviour
             tutorialManager.tutorialPrompts[3].transform.GetChild(0).gameObject.SetActive(false);
             yield return new WaitForSeconds(1.5f);
             tutorialManager.promptIndex = 4;
-            tutorialManager.UpdateDisplayedPrompt();
-            puzzle.gameObject.SetActive(true);
+            tutorialManager.UpdateDisplayedPrompt();            
         }
 
-        IEnumerator TutorialPhase5()
+        IEnumerator TutorialPhase6()
         {
             yield return new WaitForSeconds(1f);
-            tutorialManager.promptIndex = 5;
+            tutorialManager.promptIndex = 6;
             tutorialNextPromptButton.interactable = true;
             tutorialNextPromptButton.transform.GetChild(0).gameObject.SetActive(true);
             tutorialManager.UpdateDisplayedPrompt();
@@ -515,6 +516,11 @@ public class GridManager : MonoBehaviour
             StartCoroutine(dragController.RelightSequence(false));
         else
             lightSource.LightOff();
+
+        if (currentPuzzleIndex == 0 && tutorialManager.promptIndex == 4)
+        {
+            TutorialController(1);
+        }
     }
 
     public void GiveHint()
