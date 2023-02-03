@@ -66,10 +66,10 @@ public class GridManager : MonoBehaviour
             dragController.ResetGuesses();
             currentPuzzleIndex = i;
         }
-        
+
         this.puzzle = Instantiate(puzzlePrefabs[i]);
         levelNumberText.text = "" + i;
-        levelNumberText.gameObject.transform.position = new Vector2(levelNumberDefaultPos.x + (float)puzzle.width/2, levelNumberDefaultPos.y + (float)puzzle.height);
+        levelNumberText.gameObject.transform.position = new Vector2(levelNumberDefaultPos.x + (float)puzzle.width / 2, levelNumberDefaultPos.y + (float)puzzle.height);
         GenerateGrid(puzzle.width, puzzle.height);
         lightSource.transform.position = puzzle.lightPos;
         float x = 0, y = 0, z = 0, n = 0;
@@ -158,15 +158,15 @@ public class GridManager : MonoBehaviour
         hintsOnDisplay.Clear();
     }
 
-    private void StartPulseCoroutine() 
+    private void StartPulseCoroutine()
     {
-            pulseBlocks = StartCoroutine(Pulse(1.0f, 0.8f, 3.0f)); 
+        pulseBlocks = StartCoroutine(Pulse(1.0f, 0.8f, 3.0f));
     }
 
-    private void StopPulseCoroutine() 
-    { 
+    private void StopPulseCoroutine()
+    {
         if (pulseBlocks != null)
-            StopCoroutine(pulseBlocks); 
+            StopCoroutine(pulseBlocks);
     }
 
     public enum OutlineMode
@@ -212,7 +212,7 @@ public class GridManager : MonoBehaviour
             SaveManager.SaveFile(GetPuzzleSolvedValues(), dragController.hardMode, (int)currentOutlineMode, dragController.hintsRemaining, menuManager.saveFileName);
     }
 
-    public void SetOutlineMode(int outlineMode) { SetOutlineMode(outlineMode, true);}
+    public void SetOutlineMode(int outlineMode) { SetOutlineMode(outlineMode, true); }
 
     IEnumerator Pulse(float aValue, float halfTime, float pulseGap)
     {
@@ -277,7 +277,7 @@ public class GridManager : MonoBehaviour
         {
             for (int x = -5; x < 8; x++)
             {
-                GameObject spawnedBGTile  = Instantiate(backgroundTile, new Vector2(x, y), Quaternion.identity, backgroundTiles.gameObject.transform);
+                GameObject spawnedBGTile = Instantiate(backgroundTile, new Vector2(x, y), Quaternion.identity, backgroundTiles.gameObject.transform);
                 spawnedBGTile.name = $"Tile {x},{y}";
             }
         }
@@ -484,6 +484,37 @@ public class GridManager : MonoBehaviour
             tutorialNextPromptButton.transform.GetChild(0).gameObject.SetActive(true);
             tutorialManager.UpdateDisplayedPrompt();
         }
+    }
+
+    public void ResetBlocksPos()
+    {
+        float x = 0, y = 0, z = 0, n = 0;
+        foreach (Draggable b in blocks)
+        {
+            b.transform.position = new Vector2(spawnX + z + x * spawnGap, spawnY + ((float)puzzle.height / 2) - y * spawnGap);
+
+            x = (x + 1) % 2;
+            if (x == 0)
+            {
+                y++;
+            }
+            n++;
+            if (n == 6)
+            {
+                z = 5.7f;
+                y = 0;
+            }
+        }
+
+        foreach (Tile t in tiles)
+        {
+            t.ExitTile();
+        }
+
+        if (!dragController.hardMode)
+            StartCoroutine(dragController.RelightSequence(false));
+        else
+            lightSource.LightOff();
     }
 
     public void GiveHint()
