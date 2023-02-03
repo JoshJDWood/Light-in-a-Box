@@ -47,19 +47,19 @@ public class DragController : MonoBehaviour
         }
 
         //testing rotation of blocks
-        if (isDragActive)
-        {
-            if (Input.GetKeyDown(KeyCode.LeftArrow))
-            {
-                lastDragged.transform.Rotate(0, 0, 90);
-                lastDragged.UpdateCR();
-            }
-            else if (Input.GetKeyDown(KeyCode.RightArrow))
-            {
-                lastDragged.transform.Rotate(0, 0, -90);
-                lastDragged.UpdateCR();
-            }
-        }
+        //if (isDragActive)
+        //{
+        //    if (Input.GetKeyDown(KeyCode.LeftArrow))
+        //    {
+        //        lastDragged.transform.Rotate(0, 0, 90);
+        //        lastDragged.UpdateCR();
+        //    }
+        //    else if (Input.GetKeyDown(KeyCode.RightArrow))
+        //    {
+        //        lastDragged.transform.Rotate(0, 0, -90);
+        //        lastDragged.UpdateCR();
+        //    }
+        //}
 
         if (Input.GetKeyDown(KeyCode.Return) && hardMode)
         {
@@ -223,6 +223,11 @@ public class DragController : MonoBehaviour
         lastDragged.gameObject.layer = isDragging ? Layer.Ignore : Layer.Default;
     }
 
+    public void ResetGuesses()
+    {
+        guesses = 0;
+    }
+
     public void CheckSolutionHardMode()
     {
         if (!isDragActive)
@@ -233,7 +238,6 @@ public class DragController : MonoBehaviour
                 StartCoroutine(DelayShowSolvedHUD());
                 audioManager.Play("win");
                 menuManager.UpdateSaveScores(guesses);
-                guesses = 0;
                 MenuManager.gameIsPaused = true;
                 StartCoroutine(RelightSequence(true));
             }

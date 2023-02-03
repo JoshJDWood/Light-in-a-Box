@@ -59,9 +59,14 @@ public class GridManager : MonoBehaviour
     public void SpawnNewPuzzle(int i)
     {
         tutorialCanvas.SetActive(false);
-
         DeleteOldPuzzle();
-        currentPuzzleIndex = i;
+
+        if (currentPuzzleIndex != i)
+        {
+            dragController.ResetGuesses();
+            currentPuzzleIndex = i;
+        }
+        
         this.puzzle = Instantiate(puzzlePrefabs[i]);
         levelNumberText.text = "" + i;
         levelNumberText.gameObject.transform.position = new Vector2(levelNumberDefaultPos.x + (float)puzzle.width/2, levelNumberDefaultPos.y + (float)puzzle.height);
