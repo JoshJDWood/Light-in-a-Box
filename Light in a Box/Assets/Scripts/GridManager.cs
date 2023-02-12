@@ -7,8 +7,6 @@ public class GridManager : MonoBehaviour
 {
     [SerializeField] private int width, height;
     [SerializeField] private Tile tilePrefab;
-    [SerializeField] private GameObject backgroundTiles;
-    [SerializeField] private GameObject backgroundTile;
     [SerializeField] private GameObject outerWall;
     [SerializeField] private GameObject outerWallCorner;
     [SerializeField] private Text hintsRemainingText;
@@ -46,7 +44,6 @@ public class GridManager : MonoBehaviour
 
     void Start()
     {
-        GenerateBackground();
         GenerateGrid(width, height);
         foreach (Draggable block in FindObjectsOfType<Draggable>())
         {
@@ -271,18 +268,6 @@ public class GridManager : MonoBehaviour
         }
     }
 
-    void GenerateBackground()
-    {
-        for (int y = -2; y < 5; y++)
-        {
-            for (int x = -5; x < 8; x++)
-            {
-                GameObject spawnedBGTile = Instantiate(backgroundTile, new Vector2(x, y), Quaternion.identity, backgroundTiles.gameObject.transform);
-                spawnedBGTile.name = $"Tile {x},{y}";
-            }
-        }
-    }
-
     void GenerateGrid(int width, int height)
     {
         for (int y = 0; y < height; y++)
@@ -489,6 +474,8 @@ public class GridManager : MonoBehaviour
 
     public void ResetBlocksPos()
     {
+        RemoveHint();
+
         float x = 0, y = 0, z = 0, n = 0;
         foreach (Draggable b in blocks)
         {
