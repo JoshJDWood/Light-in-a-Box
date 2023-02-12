@@ -22,6 +22,7 @@ public class MenuManager : MonoBehaviour
     [SerializeField] private AudioMixer AudioMixer;
     [SerializeField] private Button levelButtonPrefab;
     [SerializeField] private Text hintsRemainingText;
+    [SerializeField] private GameObject adFailedPopup;
     public string saveFileName;
     private bool tutorialCompleted = false;
 
@@ -60,6 +61,7 @@ public class MenuManager : MonoBehaviour
         SettingsMenuUI.SetActive(false);
         solvedHUD.SetActive(false);
         HUD.SetActive(true);
+        adFailedPopup.SetActive(false);
         if (gridManager.currentPuzzleIndex == 0 && tutorialManager.promptIndex == 0) //to prevent unpausing when entering the tutorial
             gameIsPaused = true;
         else
@@ -159,6 +161,13 @@ public class MenuManager : MonoBehaviour
             }
         }
     }
+
+    public void ShowAdFailedPopup()
+    {
+        adFailedPopup.SetActive(true);
+        gameIsPaused = true;
+    }
+
 
     public void LoadSaveData()
     {

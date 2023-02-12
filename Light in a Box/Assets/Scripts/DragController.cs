@@ -10,6 +10,7 @@ public class DragController : MonoBehaviour
     [SerializeField] private AudioManager audioManager;
     [SerializeField] private MenuManager menuManager;
     [SerializeField] private CastBeam lightSource;
+    [SerializeField] private RewardedAdsButton rewardedAdsButton;
 
     public bool isDragActive = false;
     public bool hardMode = false;
@@ -84,7 +85,7 @@ public class DragController : MonoBehaviour
             }
             if (hitsLength == 1 && hits[0].collider.CompareTag("ValidTile"))
             {
-                Debug.Log("hit had tag of " + hits[0].collider.tag);
+                //Debug.Log("hit had tag of " + hits[0].collider.tag);
                 lastDragged.transform.position = hits[0].transform.position;
                 Drop();
                 hits[0].transform.gameObject.GetComponent<Tile>().EnterTile(lastDragged);
@@ -111,13 +112,13 @@ public class DragController : MonoBehaviour
             {
                 if (hitsLength > 0)
                 {
-                    Debug.Log("number of hits " + hitsLength);
-                    for (int i = 0; i < hitsLength; i++)
-                        Debug.Log("drop and hit the " + hits[i].transform.gameObject.name);
+                    //Debug.Log("number of hits " + hitsLength);
+                    //for (int i = 0; i < hitsLength; i++)
+                    //    Debug.Log("drop and hit the " + hits[i].transform.gameObject.name);
                 }
                 else
                 {
-                    Debug.Log("drop hit nothing");
+                    //Debug.Log("drop hit nothing");
                 }
                 Drop();
                 solvedHUD.SetActive(false);
@@ -157,13 +158,13 @@ public class DragController : MonoBehaviour
             }
             if (hitsLength > 0)
             {
-                Debug.Log("number of hits " + hitsLength);
-                for (int i = 0; i < hitsLength; i++)
-                    Debug.Log("drop and hit the " + hits[i].transform.gameObject.name);
+                //Debug.Log("number of hits " + hitsLength);
+                //for (int i = 0; i < hitsLength; i++)
+                //    Debug.Log("drop and hit the " + hits[i].transform.gameObject.name);
             }
             else
             {
-                Debug.Log("pick up hit nothing");
+                //Debug.Log("pick up hit nothing");
             }
 
             if (draggable != null)
@@ -250,10 +251,27 @@ public class DragController : MonoBehaviour
 
     public void GiveHint()
     {
-        if (hintsRemaining > 0 && !isDragActive)
+        if (isDragActive)
+        {
+            return;
+        }
+
+        if (hintsRemaining > 0)
         {
             gridManager.GiveHint();
         }
+        else
+        {
+            if (rewardedAdsButton.GetAdIsLoaded())
+            {
+                rewardedAdsButton.ShowAd();
+            }
+            else
+            {
+                menuManager.ShowAdFailedPopup();
+            }
+        }
+
     }
 
     //*****//for resizing while dragging//*****//

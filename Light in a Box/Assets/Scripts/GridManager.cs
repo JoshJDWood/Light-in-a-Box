@@ -548,6 +548,19 @@ public class GridManager : MonoBehaviour
         }
 
         dragController.hintsRemaining--;
+        if (dragController.hintsRemaining > 0)
+        {
+            hintsRemainingText.text = "" + dragController.hintsRemaining;
+        }
+        else
+        {
+            hintsRemainingText.text = "Watch Ad";
+        }
+    }
+
+    public void RewardHint()
+    {
+        dragController.hintsRemaining++;
         hintsRemainingText.text = "" + dragController.hintsRemaining;
     }
 
