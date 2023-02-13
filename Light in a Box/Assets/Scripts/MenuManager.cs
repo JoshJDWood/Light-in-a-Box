@@ -176,7 +176,14 @@ public class MenuManager : MonoBehaviour
         {
             HardMode(data.hardMode);
             dragController.hintsRemaining = data.hintsRemaining;
-            hintsRemainingText.text = "" + dragController.hintsRemaining;
+            if (dragController.hintsRemaining == 0)
+            {
+                hintsRemainingText.text = "Watch Ad";
+            }
+            else
+            {
+                hintsRemainingText.text = "" + dragController.hintsRemaining;
+            }
             gridManager.SetPuzzleSolvedValues(data.solvedValues);
             if (data.solvedValues[0] != SaveManager.unsolvedVal)
                 tutorialCompleted = true;
