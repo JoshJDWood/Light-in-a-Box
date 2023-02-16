@@ -206,7 +206,8 @@ public class GridManager : MonoBehaviour
                 }
         }
         if (saveIt)
-            SaveManager.SaveFile(GetPuzzleSolvedValues(), dragController.hardMode, (int)currentOutlineMode, dragController.hintsRemaining, menuManager.saveFileName);
+            SaveManager.SaveFile(GetPuzzleSolvedValues(), dragController.hardMode, (int)currentOutlineMode, 
+                audioManager.GetAudioSettings(), dragController.hintsRemaining, menuManager.saveFileName);
     }
 
     public void SetOutlineMode(int outlineMode) { SetOutlineMode(outlineMode, true); }

@@ -8,11 +8,12 @@ public static class SaveManager
     public static int unsolvedVal = 1000;
     public static int solvedEasy = 999;
 
-    public static void SaveFile(int[] solvedValues, bool hardMode,int outlineMode, int hintsRemaining, string fileName)
+    public static void SaveFile(int[] solvedValues, bool hardMode,int outlineMode, Vector2 audioSettings, int hintsRemaining, string fileName)
     {
         SaveData data = new SaveData();
         data.hardMode = hardMode;
         data.solvedValues = solvedValues;
+        data.audioSettings = audioSettings;
         data.hintsRemaining = hintsRemaining;
         data.outlineMode = outlineMode;
 
@@ -41,6 +42,7 @@ public static class SaveManager
         public bool hardMode;
         public int hintsRemaining;
         public int outlineMode;
+        public Vector2 audioSettings;
         public int[] solvedValues;
     }
 }

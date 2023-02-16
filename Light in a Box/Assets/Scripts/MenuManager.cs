@@ -19,7 +19,6 @@ public class MenuManager : MonoBehaviour
     [SerializeField] private GameObject checkButton;
     [SerializeField] private Button easyButton;
     [SerializeField] private Button hardButton;
-    [SerializeField] private AudioMixer AudioMixer;
     [SerializeField] private Button levelButtonPrefab;
     [SerializeField] private Text hintsRemainingText;
     [SerializeField] private GameObject adFailedPopup;
@@ -188,6 +187,7 @@ public class MenuManager : MonoBehaviour
             if (data.solvedValues[0] != SaveManager.unsolvedVal)
                 tutorialCompleted = true;
             gridManager.SetOutlineMode(data.outlineMode, false);
+            audioManager.SetAudioSettings(data.audioSettings);
         }
         else
         {
@@ -199,7 +199,8 @@ public class MenuManager : MonoBehaviour
     {
         if (gridManager.NewBestScore(solvedValue))
         {
-            SaveManager.SaveFile(gridManager.GetPuzzleSolvedValues(), dragController.hardMode, (int)gridManager.currentOutlineMode, dragController.hintsRemaining, saveFileName);
+            SaveManager.SaveFile(gridManager.GetPuzzleSolvedValues(), dragController.hardMode, (int)gridManager.currentOutlineMode,
+                audioManager.GetAudioSettings(), dragController.hintsRemaining, saveFileName);
             Transform buttonTransform = LevelsMenuUI.gameObject.transform.Find("Level Button " + (gridManager.currentPuzzleIndex));
             Text solvedText = buttonTransform.Find("Solved Text").GetComponent<Text>();
             solvedText.text = "" + solvedValue;
@@ -228,22 +229,14 @@ public class MenuManager : MonoBehaviour
         }
 
         formatLevelButtons();
-        SaveManager.SaveFile(gridManager.GetPuzzleSolvedValues(), dragController.hardMode, (int)gridManager.currentOutlineMode, dragController.hintsRemaining, saveFileName);
-    }
-
-    public void SetVolumeMusic(float volume)
-    {
-        AudioMixer.SetFloat("VolumeMusic" ,volume);
-    }
-
-    public void SetVolumeSFX(float volume)
-    {
-        AudioMixer.SetFloat("VolumeSFX", volume);
+        SaveManager.SaveFile(gridManager.GetPuzzleSolvedValues(), dragController.hardMode, (int)gridManager.currentOutlineMode, 
+            audioManager.GetAudioSettings(), dragController.hintsRemaining, saveFileName);
     }
 
     public void QuitGame()
     {
-        SaveManager.SaveFile(gridManager.GetPuzzleSolvedValues(), dragController.hardMode, (int)gridManager.currentOutlineMode, dragController.hintsRemaining, saveFileName);
+        SaveManager.SaveFile(gridManager.GetPuzzleSolvedValues(), dragController.hardMode, (int)gridManager.currentOutlineMode, 
+            audioManager.GetAudioSettings(), dragController.hintsRemaining, saveFileName);
         Debug.Log("Quitting Game...");
         Application.Quit();
     }
