@@ -1660,6 +1660,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _androidAdUnitId: Rewarded_Android
   _iOSAdUnitId: Rewarded_iOS
+  adError: 
   gridManager: {fileID: 1319194138}
 --- !u!1 &328990055
 GameObject:
@@ -4250,6 +4251,7 @@ MonoBehaviour:
   levelButtonPrefab: {fileID: 6389194836730489089, guid: 148eebbbda001324cb74413b06c34280, type: 3}
   hintsRemainingText: {fileID: 1237216295}
   adFailedPopup: {fileID: 1150569381}
+  rewardedAdsButton: {fileID: 327473100}
   saveFileName: SaveFile.json
   dragController: {fileID: 336238176}
   audioManager: {fileID: 1541403596}

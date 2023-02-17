@@ -7,7 +7,8 @@ public class RewardedAdsButton : MonoBehaviour, IUnityAdsLoadListener, IUnityAds
     [SerializeField] string _androidAdUnitId = "Rewarded_Android";
     [SerializeField] string _iOSAdUnitId = "Rewarded_iOS";
     string _adUnitId = "Rewarded_Android"; //changed to android only as only plan on releasing on android pressently
-    private bool AdIsLoaded = false;
+    private bool adIsLoaded = false;
+    public string adError;
 
     [SerializeField] GridManager gridManager;
 
@@ -37,13 +38,13 @@ public class RewardedAdsButton : MonoBehaviour, IUnityAdsLoadListener, IUnityAds
         if (adUnitId.Equals(_adUnitId))
         {
             // Enable the button for users to click:
-            AdIsLoaded = true;
+            adIsLoaded = true;
         }
     }
 
     public bool GetAdIsLoaded()
     {
-        return AdIsLoaded;
+        return adIsLoaded;
     }
 
     // Implement a method to execute when the user clicks the button:
@@ -53,7 +54,7 @@ public class RewardedAdsButton : MonoBehaviour, IUnityAdsLoadListener, IUnityAds
             Advertisement.Show(_adUnitId, this);
 
             // stop new add from playing until new ad is loaded
-            AdIsLoaded = false;
+            adIsLoaded = false;
     }
 
     // Implement the Show Listener's OnUnityAdsShowComplete callback method to determine if the user gets a reward:
@@ -66,7 +67,7 @@ public class RewardedAdsButton : MonoBehaviour, IUnityAdsLoadListener, IUnityAds
             gridManager.RewardHint();
 
             // Load another ad:
-            Advertisement.Load(_adUnitId, this);
+            LoadAd();
         }
     }
 
@@ -75,12 +76,14 @@ public class RewardedAdsButton : MonoBehaviour, IUnityAdsLoadListener, IUnityAds
     {
         Debug.Log($"Error loading Ad Unit {adUnitId}: {error.ToString()} - {message}");
         // Use the error details to determine whether to try to load another ad.
+        adError = "Load Error:" + error.ToString();
     }
 
     public void OnUnityAdsShowFailure(string adUnitId, UnityAdsShowError error, string message)
     {
         Debug.Log($"Error showing Ad Unit {adUnitId}: {error.ToString()} - {message}");
         // Use the error details to determine whether to try to load another ad.
+        adError = "Show Error:" + error.ToString();
     }
 
     public void OnUnityAdsShowStart(string adUnitId) { }

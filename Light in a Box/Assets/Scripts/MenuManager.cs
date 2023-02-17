@@ -22,6 +22,8 @@ public class MenuManager : MonoBehaviour
     [SerializeField] private Button levelButtonPrefab;
     [SerializeField] private Text hintsRemainingText;
     [SerializeField] private GameObject adFailedPopup;
+    [SerializeField] private RewardedAdsButton rewardedAdsButton;
+
     public string saveFileName;
     private bool tutorialCompleted = false;
 
@@ -164,6 +166,13 @@ public class MenuManager : MonoBehaviour
     public void ShowAdFailedPopup()
     {
         adFailedPopup.SetActive(true);
+        Text failedText = adFailedPopup.GetComponentInChildren<Text>();
+        if (rewardedAdsButton.adError == "")
+        {
+            rewardedAdsButton.adError = "Unknown Error.";
+        }
+        failedText.text = "Ad failed. Error type: " + rewardedAdsButton.adError + " Please try again later";
+        rewardedAdsButton.LoadAd(); //try to load new ad
         gameIsPaused = true;
     }
 

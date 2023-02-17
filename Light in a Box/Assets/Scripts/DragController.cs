@@ -251,7 +251,7 @@ public class DragController : MonoBehaviour
 
     public void GiveHint()
     {
-        if (isDragActive)
+        if (isDragActive || (gridManager.currentPuzzleIndex == -1 && hintsRemaining > 0))
         {
             return;
         }
@@ -271,7 +271,6 @@ public class DragController : MonoBehaviour
                 menuManager.ShowAdFailedPopup();
             }
         }
-
     }
 
     //*****//for resizing while dragging//*****//
