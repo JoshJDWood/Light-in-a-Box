@@ -157,7 +157,7 @@ public class GridManager : MonoBehaviour
 
     private void StartPulseCoroutine()
     {
-        pulseBlocks = StartCoroutine(Pulse(1.0f, 0.8f, 3.0f));
+        pulseBlocks = StartCoroutine(Pulse(1.0f, 0.8f, 2.5f));
     }
 
     private void StopPulseCoroutine()
@@ -185,7 +185,7 @@ public class GridManager : MonoBehaviour
             case OutlineMode.Off:
                 {
                     StopPulseCoroutine();
-                    Color newColor = new Color(0.51f, 0.51f, 0.51f); //colour that the blockBG blends into the tiles
+                    Color newColor = new Color(0.51f, 0.51f, 0.51f); //colour that the blockBG blends into the tiles for material-lit
                     foreach (Draggable b in blocks)
                         b.transform.GetComponent<SpriteRenderer>().color = newColor;
                     break;
@@ -399,7 +399,8 @@ public class GridManager : MonoBehaviour
             foreach (Draggable block in blocks)
             {
                 GameObject currentHint = block.gameObject.transform.GetChild(0).gameObject;
-                currentHint.SetActive(false);                
+                currentHint.GetComponent<SpriteRenderer>().color = Color.white;
+                //currentHint.SetActive(false);                
             }
             blocks[1].gameObject.SetActive(false);
             MenuManager.gameIsPaused = false;
@@ -448,6 +449,7 @@ public class GridManager : MonoBehaviour
         {
             yield return new WaitForFixedUpdate();
             tutorialManager.tutorialPrompts[2].transform.GetChild(0).gameObject.SetActive(false);
+            blocks[0].gameObject.transform.GetChild(0).gameObject.SetActive(false);
             yield return new WaitForSeconds(1.5f);
             tutorialManager.promptIndex = 3;
             tutorialManager.UpdateDisplayedPrompt();
@@ -458,6 +460,7 @@ public class GridManager : MonoBehaviour
         {
             yield return new WaitForFixedUpdate();
             tutorialManager.tutorialPrompts[3].transform.GetChild(0).gameObject.SetActive(false);
+            blocks[1].gameObject.transform.GetChild(0).gameObject.SetActive(false);
             yield return new WaitForSeconds(1.5f);
             tutorialManager.promptIndex = 4;
             tutorialManager.UpdateDisplayedPrompt();            
