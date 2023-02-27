@@ -4253,6 +4253,7 @@ MonoBehaviour:
   hintsRemainingText: {fileID: 1237216295}
   adFailedPopup: {fileID: 1150569381}
   rewardedAdsButton: {fileID: 327473100}
+  adsInitializer: {fileID: 1713655516}
   saveFileName: SaveFile.json
   dragController: {fileID: 336238176}
   audioManager: {fileID: 1541403596}

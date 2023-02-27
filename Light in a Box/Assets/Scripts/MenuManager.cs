@@ -23,6 +23,7 @@ public class MenuManager : MonoBehaviour
     [SerializeField] private Text hintsRemainingText;
     [SerializeField] private GameObject adFailedPopup;
     [SerializeField] private RewardedAdsButton rewardedAdsButton;
+    [SerializeField] private AdsInitializer adsInitializer;
 
     public string saveFileName;
     private bool tutorialCompleted = false;
@@ -167,12 +168,24 @@ public class MenuManager : MonoBehaviour
     {
         adFailedPopup.SetActive(true);
         Text failedText = adFailedPopup.GetComponentInChildren<Text>();
-        if (rewardedAdsButton.adError == "")
+        if(!adsInitializer.IsInitialized())
+        {
+            rewardedAdsButton.adError = "Ads Inintialization Failed.";
+        }
+        else if (rewardedAdsButton.adError == "")
         {
             rewardedAdsButton.adError = "Unknown Error.";
         }
         failedText.text = "Ad failed. Error type: " + rewardedAdsButton.adError + " Please try again later";
-        rewardedAdsButton.LoadAd(); //try to load new ad
+
+        if (adsInitializer.IsInitialized())
+        {
+            rewardedAdsButton.LoadAd(); //try to load new ad
+        }
+        else
+        {
+            adsInitializer.InitializeAds(); // retry initialization
+        }
         gameIsPaused = true;
     }
 
