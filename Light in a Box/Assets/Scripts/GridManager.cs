@@ -185,7 +185,7 @@ public class GridManager : MonoBehaviour
             case OutlineMode.Off:
                 {
                     StopPulseCoroutine();
-                    Color newColor = new Color(0.51f, 0.51f, 0.51f); //colour that the blockBG blends into the tiles for material-lit
+                    Color newColor = new Color(0.59f, 0.59f, 0.59f); //colour that the blockBG blends into the tiles for material-lit
                     foreach (Draggable b in blocks)
                         b.transform.GetComponent<SpriteRenderer>().color = newColor;
                     break;
@@ -218,7 +218,7 @@ public class GridManager : MonoBehaviour
         float alpha = blocks[0].transform.GetComponent<SpriteRenderer>().color.a;
         for (float t = 0.0f; t < 1.0f; t += Time.deltaTime / halfTime)
         {
-            float colorValue = Mathf.Lerp(0.51f, aValue, t);
+            float colorValue = Mathf.Lerp(0.59f, aValue, t);
             Color newColor = new Color(colorValue, colorValue, colorValue);
             foreach (Draggable b in blocks)
                 b.transform.GetComponent<SpriteRenderer>().color = newColor;
@@ -226,7 +226,7 @@ public class GridManager : MonoBehaviour
         }
         for (float t = 0.0f; t < 1.0f; t += Time.deltaTime / halfTime)
         {
-            float colorValue = Mathf.Lerp(aValue, 0.51f, t);
+            float colorValue = Mathf.Lerp(aValue, 0.59f, t);
             Color newColor = new Color(colorValue, colorValue, colorValue);
             foreach (Draggable b in blocks)
                 b.transform.GetComponent<SpriteRenderer>().color = newColor;

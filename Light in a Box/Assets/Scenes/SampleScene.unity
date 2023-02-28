@@ -530,7 +530,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -100, y: -100}
+  m_AnchoredPosition: {x: -160, y: -100}
   m_SizeDelta: {x: 300, y: 75.792786}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &79355711
@@ -560,13 +560,13 @@ MonoBehaviour:
     m_BestFit: 0
     m_MinSize: 2
     m_MaxSize: 46
-    m_Alignment: 4
+    m_Alignment: 5
     m_AlignByGeometry: 0
     m_RichText: 1
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Block Outlines
+  m_Text: Block Visibility
 --- !u!222 &79355712
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1140,7 +1140,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -97.47, y: 100}
+  m_AnchoredPosition: {x: -110, y: 100}
   m_SizeDelta: {x: 200, y: 75.792786}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &190666891
@@ -1170,7 +1170,7 @@ MonoBehaviour:
     m_BestFit: 0
     m_MinSize: 2
     m_MaxSize: 46
-    m_Alignment: 4
+    m_Alignment: 5
     m_AlignByGeometry: 0
     m_RichText: 1
     m_HorizontalOverflow: 0
@@ -1221,7 +1221,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 175, y: -100}
+  m_AnchoredPosition: {x: 185, y: -100}
   m_SizeDelta: {x: 70, y: 70}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &235914367
@@ -1698,7 +1698,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 150, y: 200}
+  m_AnchoredPosition: {x: 160, y: 200}
   m_SizeDelta: {x: 100, y: 75.792786}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &328990057
@@ -1961,7 +1961,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -84.8, y: 0}
+  m_AnchoredPosition: {x: -110, y: 0}
   m_SizeDelta: {x: 200, y: 75.792786}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &346630666
@@ -1991,7 +1991,7 @@ MonoBehaviour:
     m_BestFit: 0
     m_MinSize: 2
     m_MaxSize: 300
-    m_Alignment: 4
+    m_Alignment: 5
     m_AlignByGeometry: 0
     m_RichText: 1
     m_HorizontalOverflow: 0
@@ -3932,7 +3932,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 1
-  m_Sprite: {fileID: 21300000, guid: 5e25906029b3ed94dbf0947edc266bdb, type: 3}
+  m_Sprite: {fileID: 21300000, guid: aad011474543ef34ebd03233c292230b, type: 3}
   m_Color: {r: 1, g: 1, b: 0, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -4454,7 +4454,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -100, y: 200}
+  m_AnchoredPosition: {x: -110, y: 200}
   m_SizeDelta: {x: 200, y: 75.792786}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &832721906
@@ -4484,7 +4484,7 @@ MonoBehaviour:
     m_BestFit: 0
     m_MinSize: 3
     m_MaxSize: 46
-    m_Alignment: 4
+    m_Alignment: 5
     m_AlignByGeometry: 0
     m_RichText: 1
     m_HorizontalOverflow: 0
@@ -4771,12 +4771,12 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'This is a Puzzle. Your objective is to place all available blocks in such
+  m_Text: 'This is a Puzzle. Your objective is to place ALL available blocks in such
     a way that:
 
-    White sections remain lit.
+    WHITE sections remain LIT.
 
-    Dark sections are cast in shadow.
+    DARK sections are cast in SHADOW.
 
 '
 --- !u!222 &885077962
@@ -5096,8 +5096,8 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: When a Hint is used the blocks will show they are in the correct square
-    by displaying a blue indicator, or in the wrong square by displaying a red indicator.
+  m_Text: "When a Hint is used:\nBlocks in the CORRECT square will shine BLUE. \nBlocks
+    in the WRONG square will shine RED."
 --- !u!222 &942836471
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -5207,7 +5207,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: On
+  m_Text: Light
 --- !u!222 &1008475436
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -5252,7 +5252,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 50, y: 200}
+  m_AnchoredPosition: {x: 60, y: 200}
   m_SizeDelta: {x: 100, y: 75.792786}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1025829820
@@ -8535,7 +8535,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 1
-  m_Sprite: {fileID: 21300000, guid: 5e25906029b3ed94dbf0947edc266bdb, type: 3}
+  m_Sprite: {fileID: 21300000, guid: aad011474543ef34ebd03233c292230b, type: 3}
   m_Color: {r: 1, g: 1, b: 0, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -8885,7 +8885,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Off
+  m_Text: Dark
 --- !u!222 &1682758304
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -10270,7 +10270,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 35, y: -100}
+  m_AnchoredPosition: {x: 45, y: -100}
   m_SizeDelta: {x: 70, y: 70}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1946618879
@@ -10436,7 +10436,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 105, y: -100}
+  m_AnchoredPosition: {x: 115, y: -100}
   m_SizeDelta: {x: 70, y: 70}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1976478495
@@ -10758,7 +10758,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 1
-  m_Sprite: {fileID: 21300000, guid: 5e25906029b3ed94dbf0947edc266bdb, type: 3}
+  m_Sprite: {fileID: 21300000, guid: aad011474543ef34ebd03233c292230b, type: 3}
   m_Color: {r: 1, g: 1, b: 0, a: 1}
   m_FlipX: 0
   m_FlipY: 0
