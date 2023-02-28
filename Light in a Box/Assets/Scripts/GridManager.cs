@@ -538,7 +538,10 @@ public class GridManager : MonoBehaviour
                 currentHint.GetComponent<SpriteRenderer>().color = Color.red;
         }
 
-        dragController.hintsRemaining--;
+        if (currentPuzzleIndex != 0)
+        {
+            dragController.hintsRemaining--;
+        }
         if (dragController.hintsRemaining > 0)
         {
             hintsRemainingText.text = "" + dragController.hintsRemaining;

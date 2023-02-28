@@ -64,7 +64,7 @@ public class MenuManager : MonoBehaviour
         solvedHUD.SetActive(false);
         HUD.SetActive(true);
         adFailedPopup.SetActive(false);
-        if (gridManager.currentPuzzleIndex == 0 && tutorialManager.promptIndex == 0) //to prevent unpausing when entering the tutorial
+        if (gridManager.currentPuzzleIndex == 0 && tutorialManager.promptIndex < 2) //to prevent unpausing when entering the tutorial
             gameIsPaused = true;
         else
             gameIsPaused = false;
