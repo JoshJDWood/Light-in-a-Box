@@ -124,6 +124,7 @@ public class MenuManager : MonoBehaviour
     private void formatLevelButtons()
     {
         int[] solvedValues = gridManager.GetPuzzleSolvedValues();
+        float scaleFactor = (float)Screen.height / 1080; //scaling for different resolutions
         int x = 0, y = 0;
         for (int i = 0; i < solvedValues.Length; i++)
         {
@@ -139,7 +140,7 @@ public class MenuManager : MonoBehaviour
                 levelButton.name = "Level Button " + (i); //so that levels start at number 1 not 0
                 levelButton.GetComponentInChildren<Text>().text = "" + (i);
             }
-            levelButton.transform.Translate(new Vector2(150 * (x - 2), -150 * (y - 2)));
+            levelButton.transform.Translate(new Vector2(scaleFactor * 150 * (x - 2),scaleFactor * -150 * (y - 2)));
             levelButton.onClick.AddListener(() => { gridManager.SpawnNewPuzzle(j); });
             levelButton.onClick.AddListener(() => { Resume(); });
 

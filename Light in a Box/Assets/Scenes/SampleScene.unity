@@ -181,7 +181,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: -10
   m_Sprite: {fileID: 7482667652216324306, guid: 48e93eef0688c4a259cb0eddcd8661f7, type: 3}
-  m_Color: {r: 0.42745098, g: 0.4509804, b: 0.5019608, a: 1}
+  m_Color: {r: 0.49803922, g: 0.52156866, b: 0.5411765, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -10839,7 +10839,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: (Click to start)
+  m_Text: (Touch to start)
 --- !u!222 &2035170434
 CanvasRenderer:
   m_ObjectHideFlags: 0
