@@ -8391,7 +8391,7 @@ MonoBehaviour:
     loop: 0
     source: {fileID: 0}
   - name: drop2
-    clip: {fileID: 8300000, guid: 897fcf3cf2dd25c41aaab68269e8c462, type: 3}
+    clip: {fileID: 8300000, guid: 14cbb68495f111046832620ce9e5de0c, type: 3}
     volume: 0.5
     pitch: 1
     mute: 0
@@ -8399,7 +8399,7 @@ MonoBehaviour:
     loop: 0
     source: {fileID: 0}
   - name: drop3
-    clip: {fileID: 8300000, guid: 14cbb68495f111046832620ce9e5de0c, type: 3}
+    clip: {fileID: 8300000, guid: 897fcf3cf2dd25c41aaab68269e8c462, type: 3}
     volume: 0.5
     pitch: 1
     mute: 0
@@ -9118,7 +9118,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _androidGameId: 5154080
   _iOSGameId: 5154081
-  _testMode: 0
+  _testMode: 1
   rewardedAdsButton: {fileID: 327473100}
 --- !u!4 &1713655517
 Transform:

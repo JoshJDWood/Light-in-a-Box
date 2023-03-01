@@ -20,6 +20,7 @@ public class DragController : MonoBehaviour
     private Vector2 screenPos;
     private Vector3 worldPos;
     private Draggable lastDragged;
+    private Vector2 lastPickupPos;
     private int draggedIndex = 2;
     private Vector2 dragOffset;
     private List<RaycastHit2D> hits = new List<RaycastHit2D>();
@@ -87,25 +88,10 @@ public class DragController : MonoBehaviour
             {
                 //Debug.Log("hit had tag of " + hits[0].collider.tag);
                 lastDragged.transform.position = hits[0].transform.position;
-                Drop();
-                hits[0].transform.gameObject.GetComponent<Tile>().EnterTile(lastDragged);
-                lastDragged.SeeWalls();
+                Drop(hits[0].transform.gameObject.GetComponent<Tile>(), UnityEngine.Random.Range(1, 3));
                 if (!hardMode)
                 {
-                    if (gridManager.CheckSolution())
-                    {
-                        StartCoroutine(DelayShowSolvedHUD());
-                        audioManager.Play("win");
-                        menuManager.UpdateSaveScores(SaveManager.solvedEasy);
-                        MenuManager.gameIsPaused = true;
-                        StartCoroutine(RelightSequence(true));
-                    }
-                    else
-                    {
-                        solvedHUD.SetActive(false);
-                        StartCoroutine(RelightSequence(false));
-                    }
-                    
+                    CheckSolution();
                 }
             }
             else
@@ -115,12 +101,18 @@ public class DragController : MonoBehaviour
                     //Debug.Log("number of hits " + hitsLength);
                     //for (int i = 0; i < hitsLength; i++)
                     //    Debug.Log("drop and hit the " + hits[i].transform.gameObject.name);
+                    lastDragged.transform.position = lastPickupPos; //if dropped on something other that an empty tile will jump back to old position
+                    Drop(lastDragged.inTile, 3);//allows to jump back into tile its just left
+                    if (!hardMode && lastDragged.inTile != null)
+                    {
+                        CheckSolution();
+                    }
                 }
                 else
                 {
                     //Debug.Log("drop hit nothing");
-                }
-                Drop();
+                    Drop(null, UnityEngine.Random.Range(1, 3));
+                }                
                 solvedHUD.SetActive(false);
             }
             hits.Clear();
@@ -181,6 +173,7 @@ public class DragController : MonoBehaviour
     {
         audioManager.Play("pickUp");
         gridManager.RemoveHint();
+        lastPickupPos = lastDragged.transform.position;
         grow = StartCoroutine(ResizeDraggable(defaultSize, dragSize, 0.01f));
         lastDragged.UpdateSortingOrder(draggedIndex);
         draggedIndex++;
@@ -200,14 +193,20 @@ public class DragController : MonoBehaviour
         lastDragged.transform.position = (Vector2)worldPos + dragOffset;
     }
 
-    void Drop()
+    void Drop(Tile inTile, int dropSound)
     {
-        audioManager.Play("drop" + UnityEngine.Random.Range(1, 4));
+        audioManager.Play("drop" + dropSound);
         StopCoroutine(grow);
         lastDragged.transform.localScale = defaultSize;
         lastDragged.gameObject.GetComponent<SpriteRenderer>().sortingOrder = -2;
         gridManager.IgnoreTiles();
         UpdateDragStatus(false);
+        lastDragged.inTile = inTile;
+        if (inTile != null)
+        {
+            lastDragged.SeeWalls();
+            inTile.EnterTile(lastDragged);
+        }
     }
 
     public void DropForPause()
@@ -215,6 +214,23 @@ public class DragController : MonoBehaviour
         if (isDragActive)
         {
             StartCoroutine(DropOnDelay());
+        }
+    }
+
+    private void CheckSolution()
+    {
+        if (gridManager.CheckSolution())
+        {
+            StartCoroutine(DelayShowSolvedHUD());
+            audioManager.Play("win");
+            menuManager.UpdateSaveScores(SaveManager.solvedEasy);
+            MenuManager.gameIsPaused = true;
+            StartCoroutine(RelightSequence(true));
+        }
+        else
+        {
+            solvedHUD.SetActive(false);
+            StartCoroutine(RelightSequence(false));
         }
     }
 
@@ -310,6 +326,6 @@ public class DragController : MonoBehaviour
     IEnumerator DropOnDelay()
     {
         yield return new WaitForFixedUpdate();
-        Drop();
+        Drop(null, UnityEngine.Random.Range(1, 3));
     }
 }

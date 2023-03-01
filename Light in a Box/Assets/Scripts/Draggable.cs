@@ -8,6 +8,7 @@ public class Draggable : MonoBehaviour
     public int oRS;
     public int orderInLayer = 1;
     public bool isDragging;
+    public Tile inTile = null;
 
 
     public void UpdateSortingOrder(int order)
