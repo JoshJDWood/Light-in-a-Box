@@ -9118,7 +9118,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _androidGameId: 5154080
   _iOSGameId: 5154081
-  _testMode: 1
+  _testMode: 0
   rewardedAdsButton: {fileID: 327473100}
 --- !u!4 &1713655517
 Transform:
