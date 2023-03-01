@@ -320,7 +320,7 @@ public class DragController : MonoBehaviour
     IEnumerator DelayShowSolvedHUD()
     {
         yield return new WaitForSeconds(2f);
-        solvedHUD.SetActive(true);
+        menuManager.ShowSolvedHUD(false);
     }
 
     IEnumerator DropOnDelay()

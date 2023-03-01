@@ -4096,7 +4096,7 @@ MonoBehaviour:
       m_Calls: []
   m_FontData:
     m_Font: {fileID: 12800000, guid: e7b3c576f1d63be458f9930cf8d9932a, type: 3}
-    m_FontSize: 35
+    m_FontSize: 34
     m_FontStyle: 0
     m_BestFit: 0
     m_MinSize: 0
@@ -4246,6 +4246,7 @@ MonoBehaviour:
   HUD: {fileID: 774000802}
   titleScreen: {fileID: 1697786102}
   solvedHUD: {fileID: 648594815}
+  solvedHUDText: {fileID: 777176270}
   checkButton: {fileID: 1078167635}
   easyButton: {fileID: 1025829820}
   hardButton: {fileID: 328990057}
@@ -9118,7 +9119,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _androidGameId: 5154080
   _iOSGameId: 5154081
-  _testMode: 1
+  _testMode: 0
   rewardedAdsButton: {fileID: 327473100}
 --- !u!4 &1713655517
 Transform:

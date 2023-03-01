@@ -366,9 +366,7 @@ public class GridManager : MonoBehaviour
         else if (currentPuzzleIndex == 0)
         {
             TutorialController(0);
-
-            if (tutorialManager.promptIndex != 7)
-                return false;
+            return false;
         }
 
         for (int i = 0; i < tiles.Count; i++)
@@ -419,7 +417,7 @@ public class GridManager : MonoBehaviour
         }
         else if(tutorialManager.promptIndex == 4)
         {
-            puzzle.gameObject.SetActive(true);
+            //advances through reset button
         }
         else if (tutorialManager.promptIndex == 5 && tiles[1].heldConfig == new BlockData(6, 3) && tiles[3].heldConfig == new BlockData(1, 2))
         {
@@ -436,14 +434,22 @@ public class GridManager : MonoBehaviour
         }
         else if (tutorialManager.promptIndex == 7)
         {
-            solvedHUD.SetActive(true);
-            MenuManager.gameIsPaused = true;
-            menuManager.UpdateSaveScores(SaveManager.solvedEasy);
-            return;
+            
         }
 
         tutorialManager.promptIndex += skipValue;
-        tutorialManager.UpdateDisplayedPrompt();
+        if (tutorialManager.promptIndex < 8)
+        {
+            tutorialManager.UpdateDisplayedPrompt();
+        }
+
+        if (tutorialManager.promptIndex == 8)
+        {
+            MenuManager.gameIsPaused = true;
+            menuManager.ShowSolvedHUD(true);
+            menuManager.UpdateSaveScores(SaveManager.solvedEasy);
+            return;
+        }
 
         IEnumerator TutorialPhase3()
         {
@@ -478,11 +484,16 @@ public class GridManager : MonoBehaviour
 
     public void ResetBlocksPos()
     {
+        if (currentPuzzleIndex == -1)
+        {
+            return;
+        }
         RemoveHint();
 
         float x = 0, y = 0, z = 0, n = 0;
         foreach (Draggable b in blocks)
         {
+            b.inTile = null;
             b.transform.position = new Vector2(spawnX + z + x * spawnGap, spawnY + ((float)puzzle.height / 2) - y * spawnGap);
 
             x = (x + 1) % 2;
@@ -511,6 +522,7 @@ public class GridManager : MonoBehaviour
         if (currentPuzzleIndex == 0 && tutorialManager.promptIndex == 4)
         {
             TutorialController(1);
+            puzzle.gameObject.SetActive(true);
         }
     }
 

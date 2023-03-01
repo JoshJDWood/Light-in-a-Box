@@ -16,6 +16,7 @@ public class MenuManager : MonoBehaviour
     [SerializeField] private GameObject HUD;
     [SerializeField] private GameObject titleScreen;
     [SerializeField] private GameObject solvedHUD;
+    [SerializeField] private Text solvedHUDText;
     [SerializeField] private GameObject checkButton;
     [SerializeField] private Button easyButton;
     [SerializeField] private Button hardButton;
@@ -99,6 +100,20 @@ public class MenuManager : MonoBehaviour
         foreach (GameObject screen in MenuScreens)
             screen.SetActive(false);
         MenuScreens[i].SetActive(true);        
+    }
+
+    public void ShowSolvedHUD(bool tutorial)
+    {
+        solvedHUD.SetActive(true);
+        if (tutorial)
+        {
+            solvedHUDText.text = "Congratulations!\nTutorial Complete";
+        }
+        else
+        {
+            solvedHUDText.text = "Congratulations!\nPuzzle Solved";
+        }
+
     }
 
     public void HardMode(bool hardMode)
