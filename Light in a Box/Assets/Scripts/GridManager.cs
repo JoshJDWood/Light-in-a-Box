@@ -426,11 +426,7 @@ public class GridManager : MonoBehaviour
         }
         else if (tutorialManager.promptIndex == 6)
         {
-            foreach (Draggable block in blocks)
-            {
-                GameObject currentHint = block.gameObject.transform.GetChild(0).gameObject;
-                currentHint.SetActive(false);
-            }
+            //advances through hint button
         }
         else if (tutorialManager.promptIndex == 7)
         {
@@ -476,8 +472,6 @@ public class GridManager : MonoBehaviour
         {
             yield return new WaitForSeconds(1f);
             tutorialManager.promptIndex = 6;
-            tutorialNextPromptButton.interactable = true;
-            tutorialNextPromptButton.transform.GetChild(0).gameObject.SetActive(true);
             tutorialManager.UpdateDisplayedPrompt();
         }
     }
@@ -528,9 +522,17 @@ public class GridManager : MonoBehaviour
 
     public void GiveHint()
     {
-        if (puzzle == null)
+        if (puzzle == null || (currentPuzzleIndex == 0 && tutorialManager.promptIndex <= 4))
         {
             return;
+        }
+
+        foreach (Draggable b in blocks)
+        {
+            GameObject currentHint = b.gameObject.transform.GetChild(0).gameObject;
+            hintsOnDisplay.Add(currentHint);
+            currentHint.SetActive(true);
+            currentHint.GetComponent<SpriteRenderer>().color = Color.red;
         }
 
         for (int i = 0; i < tiles.Count; i++)
@@ -541,8 +543,6 @@ public class GridManager : MonoBehaviour
             }
 
             GameObject currentHint = tiles[i].heldBlock.gameObject.transform.GetChild(0).gameObject;
-            hintsOnDisplay.Add(currentHint);
-            currentHint.SetActive(true);
 
             if (tiles[i].heldConfig == puzzle.solution[i])
                 currentHint.GetComponent<SpriteRenderer>().color = Color.cyan;
@@ -550,10 +550,17 @@ public class GridManager : MonoBehaviour
                 currentHint.GetComponent<SpriteRenderer>().color = Color.red;
         }
 
-        if (currentPuzzleIndex != 0)
+        if (currentPuzzleIndex == 0 && tutorialManager.promptIndex == 6)
+        {
+            TutorialController(1);
+            tutorialNextPromptButton.interactable = true;
+            tutorialNextPromptButton.transform.GetChild(0).gameObject.SetActive(true);
+        }
+        else if (currentPuzzleIndex != 0)
         {
             dragController.hintsRemaining--;
         }
+
         if (dragController.hintsRemaining > 0)
         {
             hintsRemainingText.text = "" + dragController.hintsRemaining;

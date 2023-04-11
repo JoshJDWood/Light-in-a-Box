@@ -5097,8 +5097,8 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "When a Hint is used:\nBlocks in the CORRECT square will shine BLUE. \nBlocks
-    in the WRONG square will shine RED."
+  m_Text: "Use a Hint:\nBlocks in the CORRECT square will shine BLUE. \nBlocks in
+    the WRONG square will shine RED."
 --- !u!222 &942836471
 CanvasRenderer:
   m_ObjectHideFlags: 0

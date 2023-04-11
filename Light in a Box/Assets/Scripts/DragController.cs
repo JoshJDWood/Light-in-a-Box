@@ -63,15 +63,15 @@ public class DragController : MonoBehaviour
         //    }
         //}
 
-        if (Input.GetKeyDown(KeyCode.Return) && hardMode)
-        {
-            CheckSolutionHardMode();
-        }
-
-        if (Input.GetKeyDown(KeyCode.H))
-        {
-            GiveHint();
-        }
+        //if (Input.GetKeyDown(KeyCode.Return) && hardMode)
+        //{
+        //    CheckSolutionHardMode();
+        //}
+        //
+        //if (Input.GetKeyDown(KeyCode.H))
+        //{
+        //    GiveHint();
+        //}
 
         if (isDragActive && Input.GetMouseButtonUp(0))
         {
